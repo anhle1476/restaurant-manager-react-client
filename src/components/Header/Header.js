@@ -8,14 +8,9 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  InputGroupAddon,
-  InputGroup,
-  Input,
-  Form,
   NavItem,
   NavLink,
 } from "reactstrap";
-import cx from "classnames";
 import Notifications from "../Notifications";
 import { logoutUser } from "../../actions/user";
 import {
@@ -29,8 +24,6 @@ import userAvatar from "../../images/userAvatar.png";
 import search from "../../images/search.svg";
 import notify from "../../images/notify.svg";
 import lightNotify from "../../images/light-notify.svg";
-import messages from "../../images/messages.svg";
-import lightMessages from "../../images/messages-filled.svg";
 import arrowUnactive from "../../images/Arrow 6.svg";
 import arrowActive from "../../images/Arrow 5.svg";
 
@@ -52,7 +45,6 @@ class Header extends React.Component {
     this.state = {
       menuOpen: false,
       notificationsOpen: false,
-      messagesOpen: false,
       accountOpen: false,
       notificationsTabSelected: 1,
       focus: false,
@@ -70,12 +62,6 @@ class Header extends React.Component {
   toggleNotifications = () => {
     this.setState({
       notificationsOpen: !this.state.notificationsOpen,
-    });
-  };
-
-  toggleMessages = () => {
-    this.setState({
-      messagesOpen: !this.state.messagesOpen,
     });
   };
 
@@ -134,7 +120,7 @@ class Header extends React.Component {
     });
   };
   render() {
-    const { focus } = this.state;
+    const { notificationsOpen, accountOpen } = this.state;
     const { openUsersList } = this.props;
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -164,46 +150,10 @@ class Header extends React.Component {
             style={{ marginRight: 12 }}
           />
         </NavItem>
-        <button
-          className={`btn btn-bordered ml-auto ${s.fullVersionBtn}`}
-          onMouseOver={() => this.changeArrowImg()}
-          onMouseLeave={() => this.changeArrowImgOut()}
-        >
-          <a
-            href="https://flatlogic.com/templates/one-react-template/demo"
-            target={"_black"}
-          >
-            Unlock Full Version
-            <img src={this.state.arrowImg} alt="" style={{ marginLeft: 14 }} />
-          </a>
-        </button>
-        <Form className={`d-md-down-none`} inline>
-          <InputGroup
-            onFocus={this.toggleFocus}
-            onBlur={this.toggleFocus}
-            className={`${cx("input-group-no-border", { focus: !!focus })}`}
-          >
-            <Input
-              id="search-input"
-              placeholder="Search"
-              className={`${cx({ focus: !!focus })} ${s.headerSearchInput}`}
-              style={{ borderBottomLeftRadius: 4, borderTopLeftRadius: 4 }}
-            />
-            <InputGroupAddon addonType={"prepend"}>
-              <img
-                src={search}
-                alt="search"
-                width="24px"
-                height="23px"
-                style={{ marginRight: 12 }}
-              />
-            </InputGroupAddon>
-          </InputGroup>
-        </Form>
-        <Nav>
+        <Nav className="ml-auto">
           <Dropdown
             nav
-            isOpen={this.state.notificationsOpen}
+            isOpen={notificationsOpen}
             toggle={this.toggleNotifications}
             id="basic-nav-dropdown"
             className={`${s.notificationsMenu}`}
@@ -213,7 +163,7 @@ class Header extends React.Component {
               className={"text-white"}
               style={{ marginLeft: 20 }}
             >
-              {this.state.notificationsOpen ? (
+              {notificationsOpen ? (
                 <img
                   src={lightNotify}
                   alt="notify"
@@ -237,48 +187,9 @@ class Header extends React.Component {
             </DropdownMenu>
           </Dropdown>
           <Dropdown
-            isOpen={this.state.messagesOpen}
-            toggle={this.toggleMessages}
             nav
             className={`${s.notificationsMenu}`}
-          >
-            <DropdownToggle
-              nav
-              className={"text-white"}
-              style={{ marginLeft: 20 }}
-            >
-              {this.state.messagesOpen ? (
-                <img
-                  src={lightMessages}
-                  alt="notify"
-                  width="24px"
-                  height={"24px"}
-                />
-              ) : (
-                <>
-                  <img
-                    src={messages}
-                    alt="email"
-                    width="24px"
-                    height={"24px"}
-                  />
-                  <i
-                    className={`fa fa-circle text-success mb-2 ${s.emailStyle}`}
-                  />
-                </>
-              )}
-            </DropdownToggle>
-            <DropdownMenu
-              right
-              className={`${s.notificationsWrapper} py-0 animated animated-fast fadeInUp`}
-            >
-              <Notifications notificationsTabSelected={2} />
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown
-            nav
-            className={`${s.notificationsMenu}`}
-            isOpen={this.state.accountOpen}
+            isOpen={accountOpen}
             toggle={this.toggleAccount}
           >
             <DropdownToggle
