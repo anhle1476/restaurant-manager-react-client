@@ -9,7 +9,6 @@ import { changeActiveSidebarItem } from "../../actions/navigation";
 import { logoutUser } from "../../actions/user";
 
 import lightDashboardIcon from "../../images/light-dashboard.svg";
-import darkDashboardIcon from "../../images/dark-dashboard.svg";
 import lightTables from "../../images/tables.svg";
 import darkTables from "../../images/tables-dark.svg";
 import lightUI from "../../images/ui-elements.svg";
@@ -44,13 +43,16 @@ class Sidebar extends React.Component {
     this.doLogout = this.doLogout.bind(this);
   }
 
-  dismissAlert(id) {
+  dismissAlert = (id) => {
     this.props.dispatch(dismissAlert(id));
-  }
+  };
 
-  doLogout() {
+  doLogout = () => {
     this.props.dispatch(logoutUser());
-  }
+  };
+
+  handleActiveSidebarItemChange = (activeItem) =>
+    this.props.dispatch(changeActiveSidebarItem(activeItem));
 
   render() {
     return (
@@ -70,96 +72,60 @@ class Sidebar extends React.Component {
               style={{ width: 50 }}
               className={s.logoStyle}
             />
-            <span>Fat Man</span>
-            <small> Restaurant</small>
+            <div>
+              <span>Fat Man</span>
+              <small> Restaurant</small>
+            </div>
           </header>
           <h5 className={s.navTitle}>APP</h5>
           <ul className={s.nav}>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               activeItem={this.props.activeItem}
               header="Dashboard"
               isHeader
               link="/app/main/dashboard"
               index="main"
             >
-              {window.location.href.includes("dashboard") ? (
-                <img
-                  src={darkDashboardIcon}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              ) : (
-                <img
-                  src={lightDashboardIcon}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              )}
+              <img
+                src={lightDashboardIcon}
+                alt="lightDashboard"
+                className={s.sidebarIcon}
+              />
             </LinksGroup>
           </ul>
           <h5 className={s.navTitle}>TEMPLATE</h5>
           <ul className={s.nav}>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               activeItem={this.props.activeItem}
               header="Typography"
               isHeader
               link="/app/typography"
               index="main"
             >
-              {window.location.href.includes("typography") ? (
-                <img
-                  src={darkTypography}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              ) : (
-                <img
-                  src={lightTypography}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              )}
+              <img
+                src={lightTypography}
+                alt="lightDashboard"
+                className={s.sidebarIcon}
+              />
             </LinksGroup>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               activeItem={this.props.activeItem}
               header="Tables"
               isHeader
               link="/app/tables"
               index="main"
             >
-              {window.location.href.includes("tables") ? (
-                <img
-                  src={darkTables}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              ) : (
-                <img
-                  src={lightTables}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              )}
+              <img
+                src={lightTables}
+                alt="lightDashboard"
+                className={s.sidebarIcon}
+              />
             </LinksGroup>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               activeItem={this.props.activeItem}
               header="UI Elements"
               isHeader
@@ -185,29 +151,17 @@ class Sidebar extends React.Component {
                 },
               ]}
             >
-              {window.location.href.includes("ui") ? (
-                <img
-                  src={darkUI}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              ) : (
-                <img
-                  src={lightUI}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              )}
+              <img
+                src={lightUI}
+                alt="lightDashboard"
+                className={s.sidebarIcon}
+              />
             </LinksGroup>
           </ul>
           <ul className={s.downNav}>
             <hr />
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               header="Settings"
               isHeader
               index="main"
@@ -215,47 +169,31 @@ class Sidebar extends React.Component {
               <img
                 src={settingsIcon}
                 alt="lightDashboard"
-                width={"24px"}
-                height={"24px"}
+                className={s.sidebarIcon}
               />
             </LinksGroup>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               header="Account"
               isHeader
             >
               <img
                 src={accountIcon}
                 alt="lightDashboard"
-                width={"24px"}
-                height={"24px"}
+                className={s.sidebarIcon}
               />
             </LinksGroup>
             <LinksGroup
-              onActiveSidebarItemChange={(activeItem) =>
-                this.props.dispatch(changeActiveSidebarItem(activeItem))
-              }
+              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
               header="Logout"
               isHeader
               onClick={() => this.doLogout()}
             >
-              {window.location.href.includes("another-page") ? (
-                <img
-                  src={logoutIcon}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              ) : (
-                <img
-                  src={logoutIcon}
-                  alt="lightDashboard"
-                  width={"24px"}
-                  height={"24px"}
-                />
-              )}
+              <img
+                src={logoutIcon}
+                alt="lightDashboard"
+                className={s.sidebarIcon}
+              />
             </LinksGroup>
           </ul>
         </nav>
