@@ -11,11 +11,19 @@
   background-color: var(--sidebar-bg-color);
   color: var(--sidebar-color);
   transition: background-color 0.2s ease, margin 0.2s ease;
+  display: flex;
+  flex-direction: column;
   @include scroll-bar($sidebar-scrollbar-bg);
 }
 
 .logoStyle {
   margin-right: 8px;
+  min-height: 66px;
+}
+
+.navItems {
+  flex-grow: 1;
+  overflow: auto;
 }
 
 .sidebarWrapper {

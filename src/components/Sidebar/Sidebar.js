@@ -10,11 +10,8 @@ import { logoutUser } from "../../actions/user";
 
 import lightDashboardIcon from "../../images/light-dashboard.svg";
 import lightTables from "../../images/tables.svg";
-import darkTables from "../../images/tables-dark.svg";
 import lightUI from "../../images/ui-elements.svg";
-import darkUI from "../../images/ui-elements-dark.svg";
 import lightTypography from "../../images/Typography.svg";
-import darkTypography from "../../images/Typography-dark.svg";
 import logo from "../../images/logo.svg";
 import settingsIcon from "../../images/settings.svg";
 import logoutIcon from "../../images/logout.svg";
@@ -77,125 +74,115 @@ class Sidebar extends React.Component {
               <small> Restaurant</small>
             </div>
           </header>
-          <h5 className={s.navTitle}>APP</h5>
-          <ul className={s.nav}>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              activeItem={this.props.activeItem}
-              header="Dashboard"
-              isHeader
-              link="/app/main/dashboard"
-              index="main"
-            >
-              <img
-                src={lightDashboardIcon}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-          </ul>
-          <h5 className={s.navTitle}>TEMPLATE</h5>
-          <ul className={s.nav}>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              activeItem={this.props.activeItem}
-              header="Typography"
-              isHeader
-              link="/app/typography"
-              index="main"
-            >
-              <img
-                src={lightTypography}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              activeItem={this.props.activeItem}
-              header="Tables"
-              isHeader
-              link="/app/tables"
-              index="main"
-            >
-              <img
-                src={lightTables}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              activeItem={this.props.activeItem}
-              header="UI Elements"
-              isHeader
-              link="/app/ui"
-              index="ui"
-              exact={false}
-              childrenLinks={[
-                {
-                  header: "Notifications",
-                  link: "/app/ui/notifications",
-                },
-                {
-                  header: "Charts",
-                  link: "/app/ui/charts",
-                },
-                {
-                  header: "Icons",
-                  link: "/app/ui/icons",
-                },
-                {
-                  header: "Maps",
-                  link: "/app/ui/maps",
-                },
-              ]}
-            >
-              <img
-                src={lightUI}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-          </ul>
-          <ul className={s.downNav}>
-            <hr />
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              header="Settings"
-              isHeader
-              index="main"
-            >
-              <img
-                src={settingsIcon}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              header="Account"
-              isHeader
-            >
-              <img
-                src={accountIcon}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-            <LinksGroup
-              onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-              header="Logout"
-              isHeader
-              onClick={() => this.doLogout()}
-            >
-              <img
-                src={logoutIcon}
-                alt="lightDashboard"
-                className={s.sidebarIcon}
-              />
-            </LinksGroup>
-          </ul>
+          <div className={s.navItems}>
+            <h5 className={s.navTitle}>QUẢN LÝ NHÀ HÀNG</h5>
+            <ul className={s.nav}>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Dashboard"
+                isHeader
+                link="/app/main/dashboard"
+                index="main"
+              >
+                <img
+                  src={lightDashboardIcon}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+            <h5 className={s.navTitle}>TEMPLATE</h5>
+            <ul className={s.nav}>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Typography"
+                isHeader
+                link="/app/typography"
+                index="main"
+              >
+                <img
+                  src={lightTypography}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Tables"
+                isHeader
+                link="/app/tables"
+                index="main"
+              >
+                <img
+                  src={lightTables}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="UI Elements"
+                isHeader
+                link="/app/ui"
+                index="ui"
+                exact={false}
+                childrenLinks={[
+                  {
+                    header: "Notifications",
+                    link: "/app/ui/notifications",
+                  },
+                  {
+                    header: "Charts",
+                    link: "/app/ui/charts",
+                  },
+                  {
+                    header: "Icons",
+                    link: "/app/ui/icons",
+                  },
+                  {
+                    header: "Maps",
+                    link: "/app/ui/maps",
+                  },
+                ]}
+              >
+                <img
+                  src={lightUI}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+            <ul className={s.downNav}>
+              <hr />
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                header="Account"
+                isHeader
+              >
+                <img
+                  src={accountIcon}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                header="Logout"
+                isHeader
+                onClick={() => this.doLogout()}
+              >
+                <img
+                  src={logoutIcon}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+          </div>
         </nav>
       </div>
     );

@@ -1,9 +1,8 @@
 import React from "react";
 import NotificationsDemo from "./notifications-demo/Notifications";
 import NewNotificationsDemo from "./notifications-demo/NewNotifications";
-import MessagesDemo from "./notifications-demo/Messages";
 import ProgressDemo from "./notifications-demo/Progress";
-import AccountDemo from './notifications-demo/Account'
+import AccountDemo from "./notifications-demo/Account";
 
 import s from "./Notifications.module.scss";
 
@@ -49,9 +48,6 @@ class Notifications extends React.Component {
       case 1:
         notificationsTab = <NotificationsDemo />;
         break;
-      case 2:
-        notificationsTab = <MessagesDemo />;
-        break;
       case 3:
         notificationsTab = <ProgressDemo />;
         break;
@@ -63,7 +59,13 @@ class Notifications extends React.Component {
         break;
     }
     return (
-      <section className={`${this.props.notificationsTabSelected === 4 ? s.notificationsAccount : s.notifications} card navbar-notifications`}>
+      <section
+        className={`${
+          this.props.notificationsTabSelected === 4
+            ? s.notificationsAccount
+            : s.notifications
+        } card navbar-notifications`}
+      >
         {this.state.newNotifications || notificationsTab}
       </section>
     );

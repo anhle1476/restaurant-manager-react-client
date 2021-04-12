@@ -20,7 +20,6 @@ import {
   changeActiveSidebarItem,
 } from "../../actions/navigation";
 
-import userAvatar from "../../images/userAvatar.png";
 import search from "../../images/search.svg";
 import notify from "../../images/notify.svg";
 import lightNotify from "../../images/light-notify.svg";
@@ -200,11 +199,7 @@ class Header extends React.Component {
               <span
                 className={`${s.avatar} rounded-circle thumb-sm float-left mr-2`}
               >
-                {user.avatar || user.email === "admin@flatlogic.com" ? (
-                  <img src={user.avatar || userAvatar} alt="..." />
-                ) : (
-                  <span>{firstUserLetter}</span>
-                )}
+                {firstUserLetter}
               </span>
             </DropdownToggle>
             <DropdownMenu
