@@ -35,7 +35,6 @@ function TablePagination({
         <Pagination>
           <PaginationItem disabled={!canPreviousPage}>
             <PaginationLink
-              first
               onClick={(e) => handlePaginationClick(e, () => gotoPage(0))}
             >
               &#8249;&#8249;
@@ -43,7 +42,6 @@ function TablePagination({
           </PaginationItem>
           <PaginationItem disabled={!canPreviousPage}>
             <PaginationLink
-              previous
               onClick={(e) => handlePaginationClick(e, () => previousPage())}
             >
               &#8249;
@@ -52,7 +50,6 @@ function TablePagination({
 
           <PaginationItem disabled={!canNextPage}>
             <PaginationLink
-              next
               onClick={(e) => handlePaginationClick(e, () => nextPage())}
             >
               &#8250;
@@ -60,7 +57,6 @@ function TablePagination({
           </PaginationItem>
           <PaginationItem disabled={!canNextPage}>
             <PaginationLink
-              last
               onClick={(e) =>
                 handlePaginationClick(e, () => gotoPage(pageCount - 1))
               }
@@ -76,8 +72,8 @@ function TablePagination({
           </strong>{" "}
         </span>
       </Col>
-      <Col>
-        <Form inline>
+      <Col className="d-flex justify-content-end">
+        <Form inline onSubmit={(e) => e.preventDefault()}>
           <FormGroup>
             <Label>Đi đến trang: </Label>
             <Input
