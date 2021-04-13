@@ -1,0 +1,7 @@
+{
+  "name": "StaffManager",
+  "version": "0.0.0",
+  "private": true,
+  "main": "StaffManager.js",
+  "license": "MIT"
+}

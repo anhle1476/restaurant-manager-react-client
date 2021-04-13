@@ -1,0 +1,6 @@
+{
+  "name": "GlobalFilter",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GlobalFilter.js"
+}

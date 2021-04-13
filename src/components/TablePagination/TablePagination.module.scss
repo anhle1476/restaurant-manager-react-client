@@ -1,0 +1,15 @@
+@import "../../styles/app";
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+
+  nav {
+    display: flex;
+    align-items: center;
+
+    ul {
+      margin-bottom: 0;
+    }
+  }
+}

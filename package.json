@@ -65,6 +65,7 @@
     "font-awesome": "4.7.0",
     "glyphicons-halflings": "^1.9.1",
     "line-awesome": "1.2.1",
+    "match-sorter": "^6.3.0",
     "moment": "^2.22.2",
     "rc-hammerjs": "^0.6.9",
     "react": "^16.8",

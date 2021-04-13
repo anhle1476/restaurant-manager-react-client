@@ -1,6 +1,7 @@
 export let STAFF_DATA = [
   {
     id: 21,
+    username: "Cleo123",
     fullname: "Cleo Fry",
     phoneNumber: "0716283089",
     role: {
@@ -13,6 +14,7 @@ export let STAFF_DATA = [
   },
   {
     id: 23,
+    username: "Kathryn123",
     fullname: "Kathryn Hancock",
     phoneNumber: "0395216671",
     role: {
@@ -25,6 +27,7 @@ export let STAFF_DATA = [
   },
   {
     id: 24,
+    username: "Rojas123",
     fullname: "Rojas Colon",
     phoneNumber: "0202771330",
     role: {
@@ -37,6 +40,7 @@ export let STAFF_DATA = [
   },
   {
     id: 37,
+    username: "Padilla123",
     fullname: "Padilla Clemons",
     phoneNumber: "0123959288",
     role: {
@@ -49,6 +53,7 @@ export let STAFF_DATA = [
   },
   {
     id: 2,
+    username: "Leigh123",
     fullname: "Leigh Bates",
     phoneNumber: "0753880040",
     role: {
@@ -61,6 +66,7 @@ export let STAFF_DATA = [
   },
   {
     id: 29,
+    username: "Megan123",
     fullname: "Megan Dennis",
     phoneNumber: "0754732276",
     role: {
@@ -73,6 +79,7 @@ export let STAFF_DATA = [
   },
   {
     id: 27,
+    username: "Ana123",
     fullname: "Ana Jenkins",
     phoneNumber: "0554463583",
     role: {
@@ -85,6 +92,7 @@ export let STAFF_DATA = [
   },
   {
     id: 13,
+    username: "Dina123",
     fullname: "Dina Mcgowan",
     phoneNumber: "096577857",
     role: {
@@ -97,6 +105,7 @@ export let STAFF_DATA = [
   },
   {
     id: 45,
+    username: "Chaney123",
     fullname: "Chaney Glenn",
     phoneNumber: "0890719528",
     role: {
@@ -109,6 +118,7 @@ export let STAFF_DATA = [
   },
   {
     id: 45,
+    username: "Garner123",
     fullname: "Garner Franklin",
     phoneNumber: "0503677080",
     role: {
@@ -174,7 +184,7 @@ export const addStaff = (data) => {
 export const getRoleById = (id) => ROLE_DATA.find((role) => role.id === id);
 
 export const updateRole = (data) => {
-  ROLE_DATA = ROLE_DATA.map((role) => (role.id === data.id ? data : staff));
+  ROLE_DATA = ROLE_DATA.map((role) => (role.id === data.id ? data : role));
   return data;
 };
 

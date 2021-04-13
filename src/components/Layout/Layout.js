@@ -14,7 +14,6 @@ import {
   toggleSidebar,
 } from "../../actions/navigation";
 import s from "./Layout.module.scss";
-import BreadcrumbHistory from "../BreadcrumbHistory";
 
 // pages
 import Typography from "../../pages/typography";
