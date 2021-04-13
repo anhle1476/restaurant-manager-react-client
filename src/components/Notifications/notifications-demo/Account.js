@@ -5,7 +5,6 @@ import { logoutUser } from "../../../actions/user";
 
 import s from "./ListGroup.module.scss";
 
-import settingsIcon from "../../../images/settings.svg";
 import logoutIcon from "../../../images/logout.svg";
 import accountIcon from "../../../images/account.svg";
 import { withRouter } from "react-router";

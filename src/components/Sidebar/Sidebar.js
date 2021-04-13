@@ -13,7 +13,6 @@ import lightTables from "../../images/tables.svg";
 import lightUI from "../../images/ui-elements.svg";
 import lightTypography from "../../images/Typography.svg";
 import logo from "../../images/logo.svg";
-import settingsIcon from "../../images/settings.svg";
 import logoutIcon from "../../images/logout.svg";
 import accountIcon from "../../images/account.svg";
 
@@ -87,6 +86,32 @@ class Sidebar extends React.Component {
               >
                 <img
                   src={lightDashboardIcon}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Nhân sự"
+                isHeader
+                link="/app/manager"
+                index="manager"
+                exact={false}
+                childrenLinks={[
+                  {
+                    header: "Nhân viên",
+                    link: "/app/manager/staffs",
+                  },
+                  {
+                    header: "Chức vụ",
+                    link: "/app/manager/roles",
+                  },
+                ]}
+              >
+                <img
+                  src={lightUI}
                   alt="lightDashboard"
                   className={s.sidebarIcon}
                 />

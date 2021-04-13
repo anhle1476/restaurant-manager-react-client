@@ -23,6 +23,7 @@ import Notifications from "../../pages/notifications/Notifications";
 import Icons from "../../pages/icons";
 import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
+import StaffManager from "../../pages/staffManager/StaffManager";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -44,7 +45,6 @@ class Layout extends React.Component {
   }
 
   componentDidMount() {
-
     this.handleResize();
     window.addEventListener("resize", this.handleResize.bind(this));
   }
@@ -62,7 +62,11 @@ class Layout extends React.Component {
   }
 
   handleCloseSidebar(e) {
-    if (e.target.closest("#sidebar-drawer") == null && this.props.sidebarOpened && window.innerWidth <= 768) {
+    if (
+      e.target.closest("#sidebar-drawer") == null &&
+      this.props.sidebarOpened &&
+      window.innerWidth <= 768
+    ) {
       this.props.dispatch(toggleSidebar());
     }
   }
@@ -90,7 +94,7 @@ class Layout extends React.Component {
           "flatlogic-one",
           "dashboard-light",
         ].join(" ")}
-        onClick={e => this.handleCloseSidebar(e)}
+        onClick={(e) => this.handleCloseSidebar(e)}
       >
         <Sidebar />
         <div className={s.wrap}>
@@ -98,7 +102,6 @@ class Layout extends React.Component {
 
           <Hammer onSwipe={this.handleSwipe}>
             <main className={s.content}>
-              <BreadcrumbHistory url={this.props.location.pathname} />
               <TransitionGroup>
                 <CSSTransition
                   key={this.props.location.key}
@@ -115,6 +118,10 @@ class Layout extends React.Component {
                       path="/app/main/dashboard"
                       exact
                       component={Dashboard}
+                    />
+                    <Route
+                      path={"/app/manager/staffs"}
+                      component={StaffManager}
                     />
                     <Route path={"/app/typography"} component={Typography} />
                     <Route path={"/app/tables"} component={Tables} />
