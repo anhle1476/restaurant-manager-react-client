@@ -6,9 +6,11 @@ import staffApi from "../../api/staffApi";
 import s from "./StaffManager.module.scss";
 
 import CustomTable from "../../components/CustomTable/CustomTable";
+import AddStaffModal from "../../components/AddStaffModal/AddStaffModal";
 
 const StaffManager = () => {
   const [staffs, setStaffs] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -45,6 +47,10 @@ const StaffManager = () => {
       accessor: "role",
     },
     {
+      Header: "Lương/Ca",
+      accessor: "salaryPerShift",
+    },
+    {
       Header: "",
       accessor: "id",
       Cell: ({ value }) => (
@@ -54,6 +60,10 @@ const StaffManager = () => {
       ),
     },
   ];
+
+  const toggleAddModal = () => {
+    setShowAddModal(!showAddModal);
+  };
 
   return (
     <>
@@ -65,10 +75,14 @@ const StaffManager = () => {
       <Row>
         <Col>
           <CustomTable tableData={tableData} tableColumns={tableColumns}>
-            abc
+            <Button color="warning" onClick={toggleAddModal}>
+              Thêm nhân viên
+            </Button>
           </CustomTable>
         </Col>
       </Row>
+
+      <AddStaffModal show={showAddModal} toggle={toggleAddModal} />
     </>
   );
 };

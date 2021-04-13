@@ -140,15 +140,6 @@ class Header extends React.Component {
             <i className={`la la-bars`} style={{ color: "#000" }} />
           </NavLink>
         </NavItem>
-        <NavItem className={"d-md-down-block d-md-none ml-auto"}>
-          <img
-            src={search}
-            alt="search"
-            width="24px"
-            height="23px"
-            style={{ marginRight: 12 }}
-          />
-        </NavItem>
         <Nav className="ml-auto">
           <Dropdown
             nav

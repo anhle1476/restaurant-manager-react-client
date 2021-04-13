@@ -98,7 +98,7 @@ function TablePagination({
             >
               {[5, 10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
+                  Hiển thị {pageSize}
                 </option>
               ))}
             </Input>

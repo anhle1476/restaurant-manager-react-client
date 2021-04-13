@@ -4,6 +4,7 @@ export let STAFF_DATA = [
     username: "Cleo123",
     fullname: "Cleo Fry",
     phoneNumber: "0716283089",
+    salaryPerShift: 120000,
     role: {
       id: 2,
       name: "Thu ngân",
@@ -17,6 +18,7 @@ export let STAFF_DATA = [
     username: "Kathryn123",
     fullname: "Kathryn Hancock",
     phoneNumber: "0395216671",
+    salaryPerShift: 100000,
     role: {
       id: 6,
       name: "Giữ xe",
@@ -30,6 +32,7 @@ export let STAFF_DATA = [
     username: "Rojas123",
     fullname: "Rojas Colon",
     phoneNumber: "0202771330",
+    salaryPerShift: 200000,
     role: {
       id: 1,
       name: "Quản trị viên",
@@ -43,6 +46,7 @@ export let STAFF_DATA = [
     username: "Padilla123",
     fullname: "Padilla Clemons",
     phoneNumber: "0123959288",
+    salaryPerShift: 200000,
     role: {
       id: 1,
       name: "Quản trị viên",
@@ -56,6 +60,7 @@ export let STAFF_DATA = [
     username: "Leigh123",
     fullname: "Leigh Bates",
     phoneNumber: "0753880040",
+    salaryPerShift: 120000,
     role: {
       id: 6,
       name: "Giữ xe",
@@ -69,6 +74,7 @@ export let STAFF_DATA = [
     username: "Megan123",
     fullname: "Megan Dennis",
     phoneNumber: "0754732276",
+    salaryPerShift: 200000,
     role: {
       id: 3,
       name: "Đầu bếp",
@@ -82,6 +88,7 @@ export let STAFF_DATA = [
     username: "Ana123",
     fullname: "Ana Jenkins",
     phoneNumber: "0554463583",
+    salaryPerShift: 100000,
     role: {
       id: 6,
       name: "Giữ xe",
@@ -95,6 +102,7 @@ export let STAFF_DATA = [
     username: "Dina123",
     fullname: "Dina Mcgowan",
     phoneNumber: "096577857",
+    salaryPerShift: 130000,
     role: {
       id: 2,
       name: "Thu ngân",
@@ -108,6 +116,7 @@ export let STAFF_DATA = [
     username: "Chaney123",
     fullname: "Chaney Glenn",
     phoneNumber: "0890719528",
+    salaryPerShift: 100000,
     role: {
       id: 2,
       name: "Thu ngân",
@@ -121,6 +130,7 @@ export let STAFF_DATA = [
     username: "Garner123",
     fullname: "Garner Franklin",
     phoneNumber: "0503677080",
+    salaryPerShift: 180000,
     role: {
       id: 3,
       name: "Đầu bếp",

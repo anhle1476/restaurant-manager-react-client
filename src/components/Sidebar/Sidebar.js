@@ -12,7 +12,7 @@ import lightDashboardIcon from "../../images/light-dashboard.svg";
 import lightTables from "../../images/tables.svg";
 import lightUI from "../../images/ui-elements.svg";
 import lightTypography from "../../images/Typography.svg";
-import logo from "../../images/logo.svg";
+import logo from "../../images/main-logo.svg";
 import logoutIcon from "../../images/logout.svg";
 import accountIcon from "../../images/account.svg";
 
