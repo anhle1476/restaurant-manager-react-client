@@ -7,10 +7,22 @@ import staffApi from "../../api/staffApi";
 
 import CustomTable from "../../components/CustomTable/CustomTable";
 import AddStaffModal from "../../components/AddStaffModal/AddStaffModal";
+import EditStaffModal from "../../components/EditStaffModal/EditStaffModal";
+
+const STAFF_SCHEMA = {
+  id: 0,
+  username: "",
+  fullname: "",
+  phoneNumber: "",
+  salaryPerShift: 0,
+  role: {},
+  deleted: false,
+};
 
 const StaffManager = () => {
   const [staffs, setStaffs] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editStaff, setEditStaff] = useState(STAFF_SCHEMA);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,7 +66,7 @@ const StaffManager = () => {
       Header: "",
       accessor: "id",
       Cell: ({ value }) => (
-        <Button color="warning" onClick={() => console.log(value)}>
+        <Button color="warning" onClick={() => toggleEditModal(value)}>
           <i className="fa fa-eye"></i>
         </Button>
       ),
@@ -67,6 +79,11 @@ const StaffManager = () => {
 
   const addStaff = (newStaff) => {
     setStaffs([...staffs, newStaff]);
+  };
+
+  const toggleEditModal = (id) => {
+    let editing = id ? staffs.find((s) => s.id === id) : undefined;
+    setEditStaff(editing ? editing : STAFF_SCHEMA);
   };
 
   return (
@@ -90,6 +107,11 @@ const StaffManager = () => {
         show={showAddModal}
         toggle={toggleAddModal}
         addStaff={addStaff}
+      />
+      <EditStaffModal
+        show={Boolean(editStaff.id)}
+        toggle={toggleEditModal}
+        staff={editStaff}
       />
     </>
   );

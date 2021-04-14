@@ -16,6 +16,7 @@ import {
 import roleApi from "../../api/roleApi";
 import staffApi from "../../api/staffApi";
 import { toastError, toastSuccess } from "../../utils/toastUtils";
+import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
 
 const INITIAL_FEEDBACK = {
   username: "",
@@ -84,7 +85,7 @@ const AddStaffModal = ({ show, toggle, addStaff }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalHeader>Thêm nhân viên</ModalHeader>
+        <ModalCustomHeader toggle={toggle}>Thêm nhân viên</ModalCustomHeader>
         <ModalBody className="bg-white">
           <FormGroup>
             <Label for="username">Tên tài khoản</Label>
