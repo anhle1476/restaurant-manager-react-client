@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import {
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Form,
@@ -28,7 +27,7 @@ const INITIAL_FEEDBACK = {
   salaryPerShift: "",
 };
 
-const AddStaffModal = ({ show, toggle, addStaff }) => {
+const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
   const [roles, setRoles] = useState([]);
   const [data, setData] = useState({
     username: "",
@@ -69,7 +68,7 @@ const AddStaffModal = ({ show, toggle, addStaff }) => {
     console.log(staffData);
     try {
       const res = await staffApi.create(staffData);
-      addStaff(res.data);
+      handleAddStaff(res.data);
       toastSuccess("Thêm nhân viên thành công");
       toggle();
     } catch (ex) {

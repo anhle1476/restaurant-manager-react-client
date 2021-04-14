@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 
 import {
   Modal,
-  ModalHeader,
   ModalBody,
   Form,
   FormGroup,
@@ -19,14 +18,16 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
-import roleApi from "../../api/roleApi";
 import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
 
-const EditStaffModal = ({ show, toggle, staff }) => {
+import roleApi from "../../api/roleApi";
+import staffApi from "../../api/staffApi";
+import { toastError, toastSuccess } from "../../utils/toastUtils";
+
+const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
   const [roles, setRoles] = useState([]);
-  const [editInfo, SetEditInfo] = useState({});
-  const [editInfoFeedback, SetEditInfoFeedback] = useState({});
+  const [editInfo, setEditInfo] = useState({});
+  const [editInfoFeedback, setEditInfoFeedback] = useState({});
   const [activeTab, setActiveTab] = useState("1");
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const EditStaffModal = ({ show, toggle, staff }) => {
   }, []);
 
   useEffect(() => {
-    SetEditInfo(staff);
+    setEditInfo(staff);
   }, [staff]);
 
   const toggleTab = (tab) => {
@@ -50,11 +51,20 @@ const EditStaffModal = ({ show, toggle, staff }) => {
   };
 
   const handleChangeEditInfo = ({ target }) => {
-    SetEditInfo({ ...editInfo, [target.name]: target.value });
+    setEditInfo({ ...editInfo, [target.name]: target.value });
   };
 
-  const handleSubmitEditInfo = (e) => {
+  const handleSubmitEditInfo = async (e) => {
     e.preventDefault();
+    try {
+      const res = await staffApi.update(editInfo);
+      handleEditStaff(res.data);
+      setEditInfoFeedback({});
+      toastSuccess("Cập nhật thông tin thành công");
+    } catch (ex) {
+      setEditInfoFeedback(ex.response.data);
+      toastError("Cập nhật thông tin thất bại, vui lòng thử lại");
+    }
   };
 
   return (

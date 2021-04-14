@@ -77,13 +77,17 @@ const StaffManager = () => {
     setShowAddModal(!showAddModal);
   };
 
-  const addStaff = (newStaff) => {
+  const handleAddStaff = (newStaff) => {
     setStaffs([...staffs, newStaff]);
   };
 
   const toggleEditModal = (id) => {
     let editing = id ? staffs.find((s) => s.id === id) : undefined;
     setEditStaff(editing ? editing : STAFF_SCHEMA);
+  };
+
+  const handleEditStaff = (edited) => {
+    setStaffs(staffs.map((s) => (s.id === edited.id ? edited : s)));
   };
 
   return (
@@ -102,16 +106,18 @@ const StaffManager = () => {
           </CustomTable>
         </Col>
       </Row>
+      <Button color="primary">Nhân viên đã khóa</Button>
 
       <AddStaffModal
         show={showAddModal}
         toggle={toggleAddModal}
-        addStaff={addStaff}
+        handleAddStaff={handleAddStaff}
       />
       <EditStaffModal
         show={Boolean(editStaff.id)}
         toggle={toggleEditModal}
         staff={editStaff}
+        handleEditStaff={handleEditStaff}
       />
     </>
   );
