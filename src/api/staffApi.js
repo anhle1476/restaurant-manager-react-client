@@ -1,58 +1,30 @@
-import {
-  STAFF_DATA,
-  getStaffById,
-  updateStaff,
-  deleteStaff,
-  addStaff,
-  restoreStaff,
-} from "./fake-data";
+import { BASE_URL } from "./constant";
+import axios from "axios";
+
+const STAFFS_URL = `${BASE_URL}/staffs`;
 
 const create = (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(addStaff(data));
-    }, 100);
-  });
+  return axios.post(STAFFS_URL, data);
 };
 
 const getAll = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(STAFF_DATA.filter((staff) => !staff.deleted));
-    }, 100);
-  });
+  return axios.get(STAFFS_URL);
 };
 
 const getById = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(getStaffById(id));
-    }, 100);
-  });
+  return axios.get(`${STAFFS_URL}/${id}`);
 };
 
 const update = (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(updateStaff(data));
-    }, 100);
-  });
+  return axios.put(`${STAFFS_URL}/${data.id}`, data);
 };
 
 const softDelete = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(deleteStaff(id));
-    }, 100);
-  });
+  return axios.delete(`${STAFFS_URL}/${id}`);
 };
 
 const restore = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(restoreStaff(id));
-    }, 100);
-  });
+  return axios.post(`${STAFFS_URL}/${id}/restore`);
 };
 
 export default {

@@ -14,6 +14,8 @@ import {
 } from "reactstrap";
 
 import roleApi from "../../api/roleApi";
+import staffApi from "../../api/staffApi";
+import { toastError, toastSuccess } from "../../utils/toastUtils";
 
 const INITIAL_FEEDBACK = {
   username: "",
@@ -25,7 +27,7 @@ const INITIAL_FEEDBACK = {
   salaryPerShift: "",
 };
 
-const AddStaffModal = ({ show, toggle }) => {
+const AddStaffModal = ({ show, toggle, addStaff }) => {
   const [roles, setRoles] = useState([]);
   const [data, setData] = useState({
     username: "",
@@ -42,8 +44,8 @@ const AddStaffModal = ({ show, toggle }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await roleApi.getAll();
-        setRoles(data);
+        const res = await roleApi.getAll();
+        setRoles(res.data);
       } catch (ex) {
         console.log(ex);
       }
@@ -51,7 +53,7 @@ const AddStaffModal = ({ show, toggle }) => {
     fetchData();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.password !== data.confirmPassword) {
       setFeedBack({
@@ -61,6 +63,18 @@ const AddStaffModal = ({ show, toggle }) => {
       return;
     }
     setFeedBack(INITIAL_FEEDBACK);
+
+    const staffData = mapStaffData(data, roles);
+    console.log(staffData);
+    try {
+      const res = await staffApi.create(staffData);
+      addStaff(res.data);
+      toastSuccess("Thêm nhân viên thành công");
+      toggle();
+    } catch (ex) {
+      setFeedBack({ ...feedBack, ...ex.response.data });
+      toastError("Đã có lỗi xảy ra, vui lòng thử lại");
+    }
   };
 
   const handleChange = ({ target }) => {
@@ -143,7 +157,9 @@ const AddStaffModal = ({ show, toggle }) => {
                 --- Chọn chức vụ ---
               </option>
               {roles.map((role) => (
-                <option value={role.id}>{role.name}</option>
+                <option key={role.id} value={role.id}>
+                  {role.name}
+                </option>
               ))}
             </Input>
             <FormFeedback>{feedBack.role}</FormFeedback>
@@ -175,5 +191,14 @@ const AddStaffModal = ({ show, toggle }) => {
     </Modal>
   );
 };
+
+const mapStaffData = (data, roles) => ({
+  username: data.username,
+  password: data.password,
+  fullname: data.fullname,
+  phoneNumber: data.phoneNumber,
+  role: roles.find((r) => r.id === Number(data.role)),
+  salaryPerShift: Number(data.salaryPerShift),
+});
 
 export default AddStaffModal;

@@ -1,58 +1,30 @@
-import {
-  ROLE_DATA,
-  getRoleById,
-  updateRole,
-  deleteRole,
-  addRole,
-  restoreRole,
-} from "./fake-data";
+import { BASE_URL } from "./constant";
+import axios from "axios";
+
+const ROLES_URL = `${BASE_URL}/roles`;
 
 const create = (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(addRole(data));
-    }, 100);
-  });
+  return axios.post(ROLES_URL, data);
 };
 
 const getAll = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(ROLE_DATA.filter((staff) => !staff.deleted));
-    }, 100);
-  });
+  return axios.get(ROLES_URL);
 };
 
 const getById = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(getRoleById(id));
-    }, 100);
-  });
+  return axios.get(`${ROLES_URL}/${id}`);
 };
 
 const update = (data) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(updateRole(data));
-    }, 100);
-  });
+  return axios.put(`${ROLES_URL}/${data.id}`, data);
 };
 
 const softDelete = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(deleteRole(id));
-    }, 100);
-  });
+  return axios.delete(`${ROLES_URL}/${id}`);
 };
 
 const restore = (id) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(restoreRole(id));
-    }, 100);
-  });
+  return axios.post(`${ROLES_URL}/${id}/restore`);
 };
 
 export default {

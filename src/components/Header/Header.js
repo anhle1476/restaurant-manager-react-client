@@ -20,7 +20,6 @@ import {
   changeActiveSidebarItem,
 } from "../../actions/navigation";
 
-import search from "../../images/search.svg";
 import notify from "../../images/notify.svg";
 import lightNotify from "../../images/light-notify.svg";
 import arrowUnactive from "../../images/Arrow 6.svg";

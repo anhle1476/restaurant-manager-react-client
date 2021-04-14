@@ -3,7 +3,7 @@ import { Row, Col, Button } from "reactstrap";
 
 import staffApi from "../../api/staffApi";
 
-import s from "./StaffManager.module.scss";
+//import s from "./StaffManager.module.scss";
 
 import CustomTable from "../../components/CustomTable/CustomTable";
 import AddStaffModal from "../../components/AddStaffModal/AddStaffModal";
@@ -15,8 +15,8 @@ const StaffManager = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await staffApi.getAll();
-        setStaffs(data);
+        const res = await staffApi.getAll();
+        setStaffs(res.data);
       } catch (ex) {
         console.log(ex);
       }
@@ -65,6 +65,10 @@ const StaffManager = () => {
     setShowAddModal(!showAddModal);
   };
 
+  const addStaff = (newStaff) => {
+    setStaffs([...staffs, newStaff]);
+  };
+
   return (
     <>
       <Row>
@@ -82,7 +86,11 @@ const StaffManager = () => {
         </Col>
       </Row>
 
-      <AddStaffModal show={showAddModal} toggle={toggleAddModal} />
+      <AddStaffModal
+        show={showAddModal}
+        toggle={toggleAddModal}
+        addStaff={addStaff}
+      />
     </>
   );
 };

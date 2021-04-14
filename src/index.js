@@ -7,6 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 
 import App from "./components/App";
 import reducers from "./reducers";
+import axios from "axios";
 
 const initialState = {};
 const middleware = [thunk];
@@ -29,6 +30,10 @@ if (window.navigator.userAgent.includes("Chrome") && ReactReduxDevTools) {
     compose(applyMiddleware(...middleware))
   );
 }
+
+// TODO: remove after finish setup security
+axios.defaults.headers.common["Authorization"] =
+  "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQURNSU4iLCJzdGFmZklkIjoiMSIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MTgxOTcwOTcsImV4cCI6MTYxOTAyNDQwMH0.-zJa0bntu7eZ8sOb9Sf99wrKtLHucnpXkUbfnNZ6bg97TkVl2j5hO2636OIDm6svF0J9Xe4_Mh7_Uwa1cLZPZw";
 
 ReactDOM.render(
   <Provider store={store}>
