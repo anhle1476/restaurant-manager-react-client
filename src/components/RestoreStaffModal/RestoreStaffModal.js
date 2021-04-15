@@ -60,7 +60,7 @@ const RestoreStaffModal = ({ show, toggle, handleRestoreStaff }) => {
       handleRestoreStaff(restored);
       toastSuccess("Khôi phục thành công");
     } catch (ex) {
-      toastError("Lỗi: " + ex.response.data.message);
+      toastError("Khôi phục thất bại: " + ex?.response?.data?.message);
       console.log(ex.response.data);
     }
   };

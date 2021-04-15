@@ -128,8 +128,8 @@ const EditStaffModal = ({
       toastSuccess("Khóa tài khoản thành công");
       toggle();
     } catch (ex) {
+      toastError("Khóa tài khoản thất bại: " + ex?.response?.data?.message);
       console.log(ex.response.data);
-      toastError("Khóa tài khoản thất bại, Vui lòng thử lại");
     }
   };
 
