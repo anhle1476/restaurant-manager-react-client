@@ -5,7 +5,7 @@ import staffApi from "../../api/staffApi";
 
 //import s from "./StaffManager.module.scss";
 
-import CustomTable from "../../components/CustomTable/CustomTable";
+import CustomTable from "../../components/Table/CustomTable/CustomTable";
 import AddStaffModal from "../../components/Staff/AddStaffModal/AddStaffModal";
 import EditStaffModal from "../../components/Staff/EditStaffModal/EditStaffModal";
 import RestoreStaffModal from "../../components/Staff/RestoreStaffModal/RestoreStaffModal";
