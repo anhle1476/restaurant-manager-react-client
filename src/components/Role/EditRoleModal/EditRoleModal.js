@@ -19,10 +19,10 @@ import {
   Col,
   Table,
 } from "reactstrap";
-import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
+import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
-import roleApi from "../../api/roleApi";
-import { toastError, toastSuccess } from "../../utils/toastUtils";
+import roleApi from "../../../api/roleApi";
+import { toastError, toastSuccess } from "../../../utils/toastUtils";
 
 const EDIT_INFO_SCHEMA = { id: 0, name: "", code: "" };
 

@@ -12,9 +12,9 @@ import {
   Button,
 } from "reactstrap";
 
-import roleApi from "../../api/roleApi";
-import { toastError, toastSuccess } from "../../utils/toastUtils";
-import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
+import roleApi from "../../../api/roleApi";
+import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 const ADD_SCHEMA = { name: "", code: "MISC" };
 const FEEDBACK_SCHEMA = { name: "" };

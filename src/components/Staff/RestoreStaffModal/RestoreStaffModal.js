@@ -11,13 +11,13 @@ import {
   Table,
 } from "reactstrap";
 
-import roleApi from "../../api/roleApi";
-import { toastError, toastSuccess } from "../../utils/toastUtils";
-import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
+import staffApi from "../../../api/staffApi";
+import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
-import s from "./RestoreRoleModal.module.scss";
+import s from "./RestoreStaffModal.module.scss";
 
-const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
+const RestoreStaffModal = ({ show, toggle, handleRestoreStaff }) => {
   const [deleted, setDeleted] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -27,7 +27,7 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
 
   const fetchData = async () => {
     try {
-      const res = await roleApi.getAllDeleted();
+      const res = await staffApi.getAllDeleted();
       setDeleted(res.data);
     } catch (ex) {
       toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
@@ -38,21 +38,23 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
     setSearch(target.value);
   };
 
-  const searchFilter = ({ name, code }) => {
+  const searchFilter = ({ username, fullname, phoneNumber, role }) => {
     const keyword = search.toLowerCase();
     return (
-      name.toLowerCase().indexOf(keyword) !== -1 ||
-      code.toLowerCase().indexOf(keyword) !== -1
+      username.toLowerCase().indexOf(keyword) !== -1 ||
+      fullname.toLowerCase().indexOf(keyword) !== -1 ||
+      phoneNumber.toLowerCase().indexOf(keyword) !== -1 ||
+      role.name.toLowerCase().indexOf(keyword) !== -1
     );
   };
 
   const handleSubmitRestore = async (id) => {
     try {
-      await roleApi.restore(id);
+      await staffApi.restore(id);
       const restored = deleted.find((d) => d.id === id);
       setDeleted(deleted.filter((d) => d.id !== id));
       restored.deleted = false;
-      handleRestoreRole(restored);
+      handleRestoreStaff(restored);
       toastSuccess("Khôi phục thành công");
     } catch (ex) {
       toastError("Khôi phục thất bại: " + ex?.response?.data?.message);
@@ -66,7 +68,7 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
       isOpen={show}
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chức vụ đã khóa</ModalCustomHeader>
+      <ModalCustomHeader toggle={toggle}>Nhân viên đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
         <Form onSubmit={(e) => e.preventDefault()}>
           <FormGroup>
@@ -81,8 +83,10 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
         <Table className={s.restoreTable}>
           <thead>
             <tr>
-              <th>Tên chức vụ</th>
-              <th>Mã</th>
+              <th>Tài khoản</th>
+              <th>Họ và tên</th>
+              <th>Số điện thoại</th>
+              <th>Chức vụ</th>
               <th></th>
             </tr>
           </thead>
@@ -90,10 +94,16 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
             {deleted.filter(searchFilter).map((d) => (
               <tr key={d.id}>
                 <th>
-                  <p className={s.tableRow}>{d.name}</p>
+                  <p className={s.tableRow}>{d.username}</p>
                 </th>
                 <th>
-                  <p className={s.tableRow}>{d.code}</p>
+                  <p className={s.tableRow}>{d.fullname}</p>
+                </th>
+                <th>
+                  <p className={s.tableRow}>{d.phoneNumber}</p>
+                </th>
+                <th>
+                  <p className={s.tableRow}>{d.role.name}</p>
                 </th>
                 <th>
                   <Button
@@ -110,7 +120,7 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
           </tbody>
         </Table>
         {deleted.length === 0 && (
-          <p className="text-center">Không có chức vụ nào bị khóa</p>
+          <p className="text-center">Không có nhân viên nào bị khóa</p>
         )}
       </ModalBody>
       <ModalFooter>
@@ -122,4 +132,4 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
   );
 };
 
-export default RestoreRoleModal;
+export default RestoreStaffModal;

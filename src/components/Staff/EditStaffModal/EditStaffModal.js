@@ -19,11 +19,11 @@ import {
   Col,
   FormText,
 } from "reactstrap";
-import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
+import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
-import roleApi from "../../api/roleApi";
-import staffApi from "../../api/staffApi";
-import { toastError, toastSuccess } from "../../utils/toastUtils";
+import roleApi from "../../../api/roleApi";
+import staffApi from "../../../api/staffApi";
+import { toastError, toastSuccess } from "../../../utils/toastUtils";
 
 const REISSUE_PASSWORD_SCHEMA = {
   newPassword: "",

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Table } from "reactstrap";
 
 import roleApi from "../../api/roleApi";
-import EditRoleModal from "../../components/EditRoleModal/EditRoleModal";
-import RestoreRoleModal from "../../components/RestoreRoleModal/RestoreRoleModal";
+import EditRoleModal from "../../components/Role/EditRoleModal/EditRoleModal";
+import RestoreRoleModal from "../../components/Role/RestoreRoleModal/RestoreRoleModal";
+import AddRoleModal from "../../components/Role/AddRoleModal/AddRoleModal";
 
 import s from "./RoleManager.module.scss";
 
 import { toastError } from "../../utils/toastUtils";
-import AddRoleModal from "../../components/AddRoleModal/AddRoleModal";
 
 const RoleManager = () => {
   const [roles, setRoles] = useState([]);
