@@ -63,7 +63,7 @@ const EditStaffModal = ({
   }, []);
 
   useEffect(() => {
-    setEditInfo(staff);
+    setEditInfo({ ...staff, role: String(staff.role.id) });
   }, [staff]);
 
   const toggleTab = (tab) => {
@@ -77,7 +77,7 @@ const EditStaffModal = ({
   const handleSubmitEditInfo = async (e) => {
     e.preventDefault();
     try {
-      const res = await staffApi.update(editInfo);
+      const res = await staffApi.update(mapStaffData(editInfo, roles));
       handleEditStaff(res.data);
       setEditInfoFeedback({});
       toastSuccess("Cập nhật thông tin thành công");
@@ -337,5 +337,14 @@ const EditStaffModal = ({
     </Modal>
   );
 };
+
+const mapStaffData = (data, roles) => ({
+  id: data.id,
+  username: data.username,
+  fullname: data.fullname,
+  phoneNumber: data.phoneNumber,
+  role: roles.find((r) => r.id === Number(data.role)),
+  salaryPerShift: Number(data.salaryPerShift),
+});
 
 export default EditStaffModal;

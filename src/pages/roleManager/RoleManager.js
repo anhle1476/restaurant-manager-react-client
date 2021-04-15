@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Table } from "reactstrap";
 
 import roleApi from "../../api/roleApi";
+import EditRoleModal from "../../components/EditRoleModal/EditRoleModal";
+import RestoreRoleModal from "../../components/RestoreRoleModal/RestoreRoleModal";
+
+import s from "./RoleManager.module.scss";
 
 import { toastError } from "../../utils/toastUtils";
+import AddRoleModal from "../../components/AddRoleModal/AddRoleModal";
 
 const RoleManager = () => {
   const [roles, setRoles] = useState([]);
+  const [editRole, setEditRole] = useState({});
+  const [showAdd, setShowAdd] = useState(false);
+  const [showRestore, setShowRestore] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,6 +27,24 @@ const RoleManager = () => {
     }
     fetchData();
   }, []);
+
+  const toggleEditRole = (role) => {
+    setEditRole(role?.id ? role : {});
+  };
+
+  const handleUpdateRole = (updated) => {
+    setRoles(roles.map((r) => (r.id === updated.id ? updated : r)));
+  };
+
+  const handleDeleteRole = (id) => {
+    setRoles(roles.filter((r) => r.id !== id));
+  };
+
+  const toggleAdd = () => setShowAdd(!showAdd);
+
+  const toggleRestore = () => setShowRestore(!showRestore);
+
+  const handlePushNewRole = (newRole) => setRoles([...roles, newRole]);
 
   return (
     <>
@@ -38,7 +64,7 @@ const RoleManager = () => {
           <Table>
             <thead>
               <tr>
-                <th>Tên chức vụ</th>
+                <th className={s.roleName}>Tên chức vụ</th>
                 <th>Mã</th>
                 <th></th>
               </tr>
@@ -46,12 +72,12 @@ const RoleManager = () => {
             <tbody>
               {roles
                 .filter((r) => r.code !== "MISC")
-                .map(({ id, name, code }) => (
-                  <tr key={id}>
-                    <th>{name}</th>
-                    <th>{code}</th>
+                .map((r) => (
+                  <tr key={r.id}>
+                    <th className={s.roleName}>{r.name}</th>
+                    <th>{r.code}</th>
                     <th className="d-flex justify-content-end">
-                      <Button color="warning">
+                      <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>
                       </Button>
                     </th>
@@ -71,7 +97,9 @@ const RoleManager = () => {
           md="4"
           className="d-flex justify-content-md-end align-items-center"
         >
-          <Button color="warning">Thêm chức vụ</Button>
+          <Button color="warning" onClick={toggleAdd}>
+            Thêm chức vụ
+          </Button>
         </Col>
       </Row>
       <Row>
@@ -79,18 +107,20 @@ const RoleManager = () => {
           <Table>
             <thead>
               <tr>
-                <th>Tên chức vụ</th>
+                <th className={s.roleName}>Tên chức vụ</th>
+                <th>Mã</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {roles
                 .filter((r) => r.code === "MISC")
-                .map(({ id, name }) => (
-                  <tr key={id}>
-                    <th>{name}</th>
+                .map((r) => (
+                  <tr key={r.id}>
+                    <th className={s.roleName}>{r.name}</th>
+                    <th>{r.code}</th>
                     <th className="d-flex justify-content-end">
-                      <Button color="warning">
+                      <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>
                       </Button>
                     </th>
@@ -100,7 +130,26 @@ const RoleManager = () => {
           </Table>
         </Col>
       </Row>
-      <Button color="primary">Chức vụ đã khóa</Button>
+      <Button color="primary" onClick={toggleRestore}>
+        Chức vụ đã khóa
+      </Button>
+      <AddRoleModal
+        show={showAdd}
+        toggle={toggleAdd}
+        handleAddRole={handlePushNewRole}
+      />
+      <EditRoleModal
+        show={Boolean(editRole.id)}
+        toggle={toggleEditRole}
+        role={editRole}
+        handleUpdateRole={handleUpdateRole}
+        handleDeleteRole={handleDeleteRole}
+      />
+      <RestoreRoleModal
+        show={showRestore}
+        toggle={toggleRestore}
+        handleRestoreRole={handlePushNewRole}
+      />
     </>
   );
 };

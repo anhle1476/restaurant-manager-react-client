@@ -1,0 +1,6 @@
+{
+  "name": "EditRoleModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditRoleModal.js"
+}
