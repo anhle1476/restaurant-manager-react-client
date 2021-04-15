@@ -31,7 +31,7 @@ function TablePagination({
 
   return (
     <Row className="table-pagination">
-      <Col className={s.paginationContainer}>
+      <Col sm="12" md="5" className={s.paginationContainer}>
         <Pagination>
           <PaginationItem disabled={!canPreviousPage}>
             <PaginationLink
@@ -69,24 +69,26 @@ function TablePagination({
           Trang{" "}
           <strong>
             {pageIndex + 1}/{pageOptions.length}
-          </strong>{" "}
+          </strong>
         </span>
       </Col>
-      <Col className="d-flex justify-content-end">
+      <Col sm="12" md="7" className="d-flex justify-content-end">
         <Form inline onSubmit={(e) => e.preventDefault()}>
           <FormGroup>
-            <Label>Đi đến trang: </Label>
-            <Input
-              type="number"
-              min={1}
-              max={pageCount}
-              defaultValue={pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-              }}
-              style={{ width: "100px" }}
-            />
+            <Label>
+              Đến trang:
+              <Input
+                type="number"
+                min={1}
+                max={pageCount}
+                defaultValue={pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  gotoPage(page);
+                }}
+                style={{ width: "100px" }}
+              />
+            </Label>
           </FormGroup>
           <FormGroup>
             <Input
@@ -98,7 +100,7 @@ function TablePagination({
             >
               {[5, 10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
-                  Hiển thị {pageSize}
+                  {pageSize} hàng
                 </option>
               ))}
             </Input>

@@ -10,6 +10,7 @@ import {
   Input,
   FormFeedback,
   Button,
+  FormText,
 } from "reactstrap";
 
 import roleApi from "../../api/roleApi";
@@ -47,7 +48,7 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
         const res = await roleApi.getAll();
         setRoles(res.data);
       } catch (ex) {
-        console.log(ex);
+        toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
       }
     }
     fetchData();
@@ -163,6 +164,9 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
               ))}
             </Input>
             <FormFeedback>{feedBack.role}</FormFeedback>
+            {data.role === "1" && (
+              <FormText>Chức vụ này có quyền ADMIN</FormText>
+            )}
           </FormGroup>
           <FormGroup>
             <Label for="salaryPerShift">Lương/Ca</Label>

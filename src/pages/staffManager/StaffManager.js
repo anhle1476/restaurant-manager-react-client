@@ -8,6 +8,8 @@ import staffApi from "../../api/staffApi";
 import CustomTable from "../../components/CustomTable/CustomTable";
 import AddStaffModal from "../../components/AddStaffModal/AddStaffModal";
 import EditStaffModal from "../../components/EditStaffModal/EditStaffModal";
+import { toastError } from "../../utils/toastUtils";
+import RestoreStaffModal from "../../components/RestoreStaffModal/RestoreStaffModal";
 
 const STAFF_SCHEMA = {
   id: 0,
@@ -22,6 +24,7 @@ const STAFF_SCHEMA = {
 const StaffManager = () => {
   const [staffs, setStaffs] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showRestoreModal, setShowRestoreModal] = useState(false);
   const [editStaff, setEditStaff] = useState(STAFF_SCHEMA);
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const StaffManager = () => {
         const res = await staffApi.getAll();
         setStaffs(res.data);
       } catch (ex) {
-        console.log(ex);
+        toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
       }
     }
     fetchData();
@@ -77,6 +80,10 @@ const StaffManager = () => {
     setShowAddModal(!showAddModal);
   };
 
+  const toggleRestoreModal = () => {
+    setShowRestoreModal(!showRestoreModal);
+  };
+
   const handleAddStaff = (newStaff) => {
     setStaffs([...staffs, newStaff]);
   };
@@ -88,6 +95,14 @@ const StaffManager = () => {
 
   const handleEditStaff = (edited) => {
     setStaffs(staffs.map((s) => (s.id === edited.id ? edited : s)));
+  };
+
+  const handleDeleteStaff = (id) => {
+    setStaffs(staffs.filter((s) => s.id !== id));
+  };
+
+  const handleRestoreStaff = (restored) => {
+    setStaffs([...staffs, restored]);
   };
 
   return (
@@ -106,7 +121,9 @@ const StaffManager = () => {
           </CustomTable>
         </Col>
       </Row>
-      <Button color="primary">Nhân viên đã khóa</Button>
+      <Button color="primary" onClick={toggleRestoreModal}>
+        Nhân viên đã khóa
+      </Button>
 
       <AddStaffModal
         show={showAddModal}
@@ -118,7 +135,13 @@ const StaffManager = () => {
         toggle={toggleEditModal}
         staff={editStaff}
         handleEditStaff={handleEditStaff}
+        handleDeleteStaff={handleDeleteStaff}
       />
+      <RestoreStaffModal
+        show={showRestoreModal}
+        toggle={toggleRestoreModal}
+        handleRestoreStaff={handleRestoreStaff}
+      ></RestoreStaffModal>
     </>
   );
 };

@@ -17,6 +17,7 @@ import {
   Button,
   Row,
   Col,
+  FormText,
 } from "reactstrap";
 import ModalCustomHeader from "../ModalCustomHeader/ModalCustomHeader";
 
@@ -24,11 +25,30 @@ import roleApi from "../../api/roleApi";
 import staffApi from "../../api/staffApi";
 import { toastError, toastSuccess } from "../../utils/toastUtils";
 
-const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
+const REISSUE_PASSWORD_SCHEMA = {
+  newPassword: "",
+  confirmPassword: "",
+};
+
+const EditStaffModal = ({
+  show,
+  toggle,
+  staff,
+  handleEditStaff,
+  handleDeleteStaff,
+}) => {
   const [roles, setRoles] = useState([]);
+  const [activeTab, setActiveTab] = useState("1");
+
   const [editInfo, setEditInfo] = useState({});
   const [editInfoFeedback, setEditInfoFeedback] = useState({});
-  const [activeTab, setActiveTab] = useState("1");
+
+  const [reissuePassword, setReissuePassword] = useState(
+    REISSUE_PASSWORD_SCHEMA
+  );
+  const [reissuePasswordFeedback, setReissuePasswordFeedback] = useState({});
+
+  const [confirmDelete, setConfirmDelete] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -36,7 +56,7 @@ const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
         const res = await roleApi.getAll();
         setRoles(res.data);
       } catch (ex) {
-        console.log(ex);
+        toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
       }
     }
     fetchData();
@@ -64,6 +84,52 @@ const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
     } catch (ex) {
       setEditInfoFeedback(ex.response.data);
       toastError("Cập nhật thông tin thất bại, vui lòng thử lại");
+    }
+  };
+
+  const isAdmin = staff.role.code === "ADMIN";
+
+  const handleChangeReissuePassword = ({ target }) => {
+    setReissuePassword({ ...reissuePassword, [target.name]: target.value });
+  };
+
+  const handleSubmitReissuePassword = async (e) => {
+    e.preventDefault();
+    const { newPassword, confirmPassword } = reissuePassword;
+    if (confirmPassword !== newPassword || isAdmin) {
+      setReissuePasswordFeedback({
+        confirmPassword: "Mật khẩu không trùng khớp",
+      });
+      return;
+    }
+    try {
+      await staffApi.reissuePassword({
+        staffId: staff.id,
+        newPassword: reissuePassword.newPassword,
+      });
+      setReissuePassword(REISSUE_PASSWORD_SCHEMA);
+      setReissuePasswordFeedback({});
+      toastSuccess("Cấp lại mật khẩu thành công");
+    } catch (ex) {
+      setReissuePasswordFeedback(ex.response.data);
+      toastError("Cấp lại mật khẩu thất bại, vui lòng thử lại");
+    }
+  };
+
+  const handleChangeConfirmDelete = ({ target }) => {
+    setConfirmDelete(target.value);
+  };
+
+  const handleSubmitDeleteStaff = async (e) => {
+    e.preventDefault();
+    try {
+      await staffApi.softDelete(staff.id);
+      handleDeleteStaff(staff.id);
+      toastSuccess("Khóa tài khoản thành công");
+      toggle();
+    } catch (ex) {
+      console.log(ex.response.data);
+      toastError("Khóa tài khoản thất bại, Vui lòng thử lại");
     }
   };
 
@@ -97,6 +163,7 @@ const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
             </NavLink>
           </NavItem>
         </Nav>
+        {/* THONG TIN CHUNG */}
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
@@ -154,6 +221,9 @@ const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
                       ))}
                     </Input>
                     <FormFeedback>{editInfoFeedback.role}</FormFeedback>
+                    {editInfo.role === "1" && (
+                      <FormText>Chức vụ này có quyền ADMIN</FormText>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <Label for="salaryPerShift">Lương/Ca</Label>
@@ -178,19 +248,87 @@ const EditStaffModal = ({ show, toggle, staff, handleEditStaff }) => {
               </Col>
             </Row>
           </TabPane>
+
+          {/* CAP LAI MAT KHAU */}
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
-                <Form>
+                <Form onSubmit={handleSubmitReissuePassword}>
                   <h4>Cấp lại mật khẩu</h4>
+                  {isAdmin && (
+                    <p>
+                      Tính năng này không áp dụng với tài khoản có quyền ADMIN
+                    </p>
+                  )}
+
+                  <FormGroup>
+                    <Label for="newPassword">Mật khẩu mới</Label>
+                    <Input
+                      required
+                      disabled={isAdmin}
+                      onChange={handleChangeReissuePassword}
+                      name="newPassword"
+                      type="password"
+                      value={reissuePassword.newPassword}
+                      invalid={Boolean(reissuePasswordFeedback.newPassword)}
+                    />
+                    <FormFeedback>
+                      {reissuePasswordFeedback.newPassword}
+                    </FormFeedback>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="confirmPassword">Xác nhận mật khẩu</Label>
+                    <Input
+                      required
+                      disabled={isAdmin}
+                      onChange={handleChangeReissuePassword}
+                      name="confirmPassword"
+                      type="password"
+                      value={reissuePassword.confirmPassword}
+                      invalid={Boolean(reissuePasswordFeedback.confirmPassword)}
+                    />
+                    <FormFeedback>
+                      {reissuePasswordFeedback.confirmPassword}
+                    </FormFeedback>
+                  </FormGroup>
+                  <Button disabled={isAdmin} type="submit" color="danger" block>
+                    Xác nhận cấp lại mật khẩu
+                  </Button>
                 </Form>
               </Col>
             </Row>
           </TabPane>
+          {/* KHOA TAI KHOAN */}
           <TabPane tabId="3">
             <Row>
               <Col sm="12">
                 <h4>Khóa tài khoản</h4>
+                <p>
+                  Tài khoản bị khóa có thể khôi phục ở cuối phần quản lý nhân
+                  viên
+                </p>
+                <Form onSubmit={handleSubmitDeleteStaff}>
+                  <FormGroup>
+                    <Label for="confirmDelete">
+                      Nhập <strong>{staff.username}</strong> và bấm xác nhận để
+                      khóa tài khoản
+                    </Label>
+                    <Input
+                      required
+                      onChange={handleChangeConfirmDelete}
+                      name="confirmDelete"
+                      value={confirmDelete}
+                    />
+                  </FormGroup>
+                  <Button
+                    disabled={confirmDelete !== staff.username}
+                    type="submit"
+                    color="danger"
+                    block
+                  >
+                    Xác nhận
+                  </Button>
+                </Form>
               </Col>
             </Row>
           </TabPane>

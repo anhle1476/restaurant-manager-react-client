@@ -1,0 +1,6 @@
+{
+  "name": "RestoreStaffModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RestoreStaffModal.js"
+}

@@ -23,7 +23,7 @@ function GlobalFilter({
             setValue(target.value);
             onChange(target.value);
           }}
-          placeholder={`Tìm trong ${count} bản ghi...`}
+          placeholder={`Tìm trong ${count} hàng...`}
         />
       </FormGroup>
     </Form>
