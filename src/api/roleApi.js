@@ -11,8 +11,16 @@ const getAll = () => {
   return axios.get(ROLES_URL);
 };
 
+const getAllDeleted = () => {
+  return axios.get(`${ROLES_URL}?deleted=true`);
+};
+
 const getById = (id) => {
   return axios.get(`${ROLES_URL}/${id}`);
+};
+
+const getAllStaffsByRoleId = (id) => {
+  return axios.get(`${ROLES_URL}/${id}/staffs`);
 };
 
 const update = (data) => {
@@ -29,7 +37,9 @@ const restore = (id) => {
 
 export default {
   getAll,
+  getAllDeleted,
   getById,
+  getAllStaffsByRoleId,
   update,
   softDelete,
   create,

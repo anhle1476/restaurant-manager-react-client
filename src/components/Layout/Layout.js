@@ -23,6 +23,7 @@ import Icons from "../../pages/icons";
 import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 import StaffManager from "../../pages/staffManager/StaffManager";
+import RoleManager from "../../pages/roleManager/RoleManager";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -121,6 +122,10 @@ class Layout extends React.Component {
                     <Route
                       path={"/app/manager/staffs"}
                       component={StaffManager}
+                    />
+                    <Route
+                      path={"/app/manager/roles"}
+                      component={RoleManager}
                     />
                     <Route path={"/app/typography"} component={Typography} />
                     <Route path={"/app/tables"} component={Tables} />
