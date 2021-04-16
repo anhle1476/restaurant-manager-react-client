@@ -24,6 +24,7 @@ import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 import StaffManager from "../../pages/staffManager/StaffManager";
 import RoleManager from "../../pages/roleManager/RoleManager";
+import Schedule from "../../pages/schedule/Schedule";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -127,6 +128,7 @@ class Layout extends React.Component {
                       path={"/app/manager/roles"}
                       component={RoleManager}
                     />
+                    <Route path={"/app/schedule"} component={Schedule} />
                     <Route path={"/app/typography"} component={Typography} />
                     <Route path={"/app/tables"} component={Tables} />
                     <Route path={"/app/ui/maps"} component={Maps} />

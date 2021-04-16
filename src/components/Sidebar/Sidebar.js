@@ -90,6 +90,20 @@ class Sidebar extends React.Component {
                   className={s.sidebarIcon}
                 />
               </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Lịch làm việc"
+                isHeader
+                link="/app/schedule"
+                index="main"
+              >
+                <img
+                  src={lightDashboardIcon}
+                  alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
 
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
