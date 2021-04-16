@@ -34,6 +34,7 @@ const AddRoleModal = ({ show, toggle, handleAddRole }) => {
       const res = await roleApi.create(data);
       handleAddRole(res.data);
       toastSuccess("Tạo chức vụ thành công");
+      toggle();
       setData(ADD_SCHEMA);
     } catch (ex) {
       setFeedBack(ex.response.data);

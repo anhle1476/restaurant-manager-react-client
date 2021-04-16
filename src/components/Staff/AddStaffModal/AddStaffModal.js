@@ -28,17 +28,19 @@ const INITIAL_FEEDBACK = {
   salaryPerShift: "",
 };
 
+const ADD_SCHEMA = {
+  username: "",
+  password: "",
+  confirmPassword: "",
+  fullname: "",
+  phoneNumber: "",
+  role: "",
+  salaryPerShift: 0,
+};
+
 const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
   const [roles, setRoles] = useState([]);
-  const [data, setData] = useState({
-    username: "",
-    password: "",
-    confirmPassword: "",
-    fullname: "",
-    phoneNumber: "",
-    role: "",
-    salaryPerShift: 0,
-  });
+  const [data, setData] = useState(ADD_SCHEMA);
 
   const [feedBack, setFeedBack] = useState(INITIAL_FEEDBACK);
 
@@ -72,6 +74,7 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
       handleAddStaff(res.data);
       toastSuccess("Thêm nhân viên thành công");
       toggle();
+      setData(ADD_SCHEMA);
     } catch (ex) {
       setFeedBack({ ...feedBack, ...ex.response.data });
       toastError("Đã có lỗi xảy ra, vui lòng thử lại");

@@ -91,6 +91,7 @@ const EditRoleModal = ({
       handleDeleteRole(role.id);
       toastSuccess("Khóa chức vụ thành công");
       toggle();
+      setConfirmDelete("");
     } catch (ex) {
       toastError("Khóa chức vụ thất bại: " + ex?.response?.data?.message);
       console.log(ex.response.data);

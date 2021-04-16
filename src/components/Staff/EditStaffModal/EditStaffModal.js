@@ -127,6 +127,7 @@ const EditStaffModal = ({
       handleDeleteStaff(staff.id);
       toastSuccess("Khóa tài khoản thành công");
       toggle();
+      setConfirmDelete("");
     } catch (ex) {
       toastError("Khóa tài khoản thất bại: " + ex?.response?.data?.message);
       console.log(ex.response.data);
