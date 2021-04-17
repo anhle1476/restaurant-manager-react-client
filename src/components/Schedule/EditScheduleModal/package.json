@@ -1,0 +1,6 @@
+{
+  "name": "EditScheduleModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditScheduleModal.js"
+}

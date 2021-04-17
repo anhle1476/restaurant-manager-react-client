@@ -7,7 +7,9 @@ function Schedule() {
   return (
     <>
       <Row>
-        <Col>Lịch làm việc</Col>
+        <Col>
+          <h2>Lịch làm việc</h2>
+        </Col>
       </Row>
       <Row>
         <Col>

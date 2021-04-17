@@ -39,7 +39,7 @@ const CustomTable = ({ tableData, tableColumns, children }) => {
 
   return (
     <div className={s.root}>
-      <Row>
+      <Row className="mb-1">
         <Col>{children}</Col>
         <Col className="d-flex justify-content-end">
           <GlobalFilter
@@ -51,7 +51,7 @@ const CustomTable = ({ tableData, tableColumns, children }) => {
       </Row>
       <Row>
         <Col className="table-responsive">
-          <Table {...getTableProps} className="table-hover">
+          <Table {...getTableProps} bordered>
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>

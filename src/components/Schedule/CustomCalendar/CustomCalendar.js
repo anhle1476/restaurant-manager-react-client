@@ -1,137 +1,133 @@
-import React from "react";
+import React, { useState } from "react";
+
 import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import bootstrapPlugin from "@fullcalendar/bootstrap";
+import EditScheduleModal from "../EditScheduleModal/EditScheduleModal";
 
-// TEST
-let eventGuid = 0;
-let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
+import scheduleApi from "../../../api/scheduleApi";
+import { toastError } from "../../../utils/toastUtils";
 
-const INITIAL_EVENTS = [
-  {
-    id: createEventId(),
-    title: "All-day event",
-    start: todayStr,
-  },
-  {
-    id: createEventId(),
-    title: "Timed event",
-    start: todayStr,
-  },
-];
+const CustomCalendar = () => {
+  const [events, setEvents] = useState([]);
+  const [editDate, setEditDate] = useState("");
+  const [eventMap, setEventMap] = useState({});
 
-// TEST
-
-export function createEventId() {
-  return String(eventGuid++);
-}
-
-class CustomCalendar extends React.Component {
-  state = {
-    currentEvents: [],
+  const onMonthChange = async (e) => {
+    console.log(e);
+    try {
+      const res = await scheduleApi.getAllByMonth(e.start);
+      updateCalendarEvents(res.data);
+    } catch (ex) {
+      toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
+    }
   };
 
-  renderSidebar() {
+  const updateCalendarEvents = (mapData) => {
+    setEventMap(mapData);
+    setEvents(
+      Object.keys(mapData).map((day) => parseScheduleToEvent(day, mapData[day]))
+    );
+  };
+
+  const renderSidebar = () => {
     return (
       <div className="demo-app-sidebar">
         <div className="demo-app-sidebar-section">
-          <h2>Instructions</h2>
-          <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Drag, drop, and resize events</li>
-            <li>Click an event to delete it</li>
-          </ul>
-        </div>
-        <div className="demo-app-sidebar-section">
-          <label>
-            <input
-              type="checkbox"
-              checked={this.state.weekendsVisible}
-              onChange={this.handleWeekendsToggle}
-            ></input>
-            toggle weekends
-          </label>
-        </div>
-        <div className="demo-app-sidebar-section">
-          <h2>All Events ({this.state.currentEvents.length})</h2>
-          <ul>{this.state.currentEvents.map(renderSidebarEvent)}</ul>
+          <h2>All Events ({events.length})</h2>
+          <ul>{events.map(renderSidebarEvent)}</ul>
         </div>
       </div>
     );
-  }
-
-  handleWeekendsToggle = () => {
-    this.setState({
-      weekendsVisible: !this.state.weekendsVisible,
-    });
   };
 
-  handleDateSelect = (selectInfo) => {
-    let title = prompt("Please enter a new title for your event");
-    let calendarApi = selectInfo.view.calendar;
-    console.log(selectInfo);
-    calendarApi.unselect(); // clear date selection
+  const handleDateSelect = (selectInfo) => {
+    // let title = prompt("Please enter a new title for your event");
+    // let calendarApi = selectInfo.view.calendar;
+    // console.log(selectInfo);
+    // calendarApi.unselect(); // clear date selection
 
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: selectInfo.startStr,
+    //     title,
+    //     start: selectInfo.startStr,
+    //   });
+    // }
+    toggleShowEdit(selectInfo.startStr);
   };
 
-  handleEventClick = (clickInfo) => {
+  const handleEventClick = (clickInfo) => {
     console.log(clickInfo);
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-    }
+    // if (
+    //   window.confirm(
+    //     `Are you sure you want to delete the event '${clickInfo.event.title}'`
+    //   )
+    // ) {
+    //   clickInfo.event.remove();
+    // }
+    toggleShowEdit(clickInfo.startStr);
   };
 
-  handleEvents = (events) => {
-    this.setState({
-      currentEvents: events,
-    });
+  const handleEvents = (events) => {
+    setEvents(events);
   };
 
-  render() {
-    return (
-      <div className="demo-app">
-        {this.renderSidebar()}
-        <div className="demo-app-main">
+  const toggleShowEdit = (date = "") => {
+    setEditDate(date);
+  };
+
+  return (
+    <>
+      <div className="calendar">
+        <div className="calendar-main">
           <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin]}
+            plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
             headerToolbar={{
-              left: "prev,next today",
-              right: "title",
+              right: "today prev,next",
+              left: "title",
+            }}
+            themeSystem="bootstrap"
+            views={{
+              dayGridMonth: {
+                titleFormat: {
+                  year: "numeric",
+                  month: "numeric",
+                },
+                showNonCurrentDates: false,
+              },
             }}
             initialView="dayGridMonth"
-            editable={true}
+            //editable={true}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-            select={this.handleDateSelect}
+            //initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+            //events={events}
+            select={handleDateSelect}
             eventContent={renderEventContent} // custom render function
-            eventClick={this.handleEventClick}
-            eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-            /* you can update a remote database when these fire:
-            eventAdd={function(){}}
-            eventChange={function(){}}
-            eventRemove={function(){}}
-            */
+            eventClick={handleEventClick}
+            eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+            datesSet={onMonthChange}
+            // you can update a remote database when these fire:
+            // eventAdd={function (e) {}}
+            // eventChange={function (e) {}}
+            // eventRemove={function (e) {}}
           />
         </div>
       </div>
-    );
-  }
-}
+
+      {renderSidebar()}
+      <EditScheduleModal
+        show={Boolean(editDate)}
+        toggle={toggleShowEdit}
+        date={editDate}
+        schedules={eventMap[editDate]}
+      />
+    </>
+  );
+};
 
 function renderEventContent(eventInfo) {
   return (
@@ -155,6 +151,14 @@ function renderSidebarEvent(event) {
       <i>{event.title}</i>
     </li>
   );
+}
+
+function parseScheduleToEvent(date, schedules) {
+  return {
+    id: date,
+    title: schedules.map((s) => s.shift.name).join(", "),
+    start: date,
+  };
 }
 
 export default CustomCalendar;

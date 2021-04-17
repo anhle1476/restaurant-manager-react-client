@@ -61,7 +61,7 @@ const RoleManager = () => {
       </Row>
       <Row>
         <Col>
-          <Table>
+          <Table bordered>
             <thead>
               <tr>
                 <th className={s.roleName}>Tên chức vụ</th>
@@ -74,13 +74,13 @@ const RoleManager = () => {
                 .filter((r) => r.code !== "MISC")
                 .map((r) => (
                   <tr key={r.id}>
-                    <th className={s.roleName}>{r.name}</th>
-                    <th>{r.code}</th>
-                    <th className="d-flex justify-content-end">
+                    <td className={s.roleName}>{r.name}</td>
+                    <td>{r.code}</td>
+                    <td className="d-flex justify-content-end">
                       <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>
                       </Button>
-                    </th>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -104,7 +104,7 @@ const RoleManager = () => {
       </Row>
       <Row>
         <Col>
-          <Table>
+          <Table bordered>
             <thead>
               <tr>
                 <th className={s.roleName}>Tên chức vụ</th>
@@ -117,13 +117,13 @@ const RoleManager = () => {
                 .filter((r) => r.code === "MISC")
                 .map((r) => (
                   <tr key={r.id}>
-                    <th className={s.roleName}>{r.name}</th>
-                    <th>{r.code}</th>
-                    <th className="d-flex justify-content-end">
+                    <td className={s.roleName}>{r.name}</td>
+                    <td>{r.code}</td>
+                    <td className="d-flex justify-content-end">
                       <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>
                       </Button>
-                    </th>
+                    </td>
                   </tr>
                 ))}
             </tbody>

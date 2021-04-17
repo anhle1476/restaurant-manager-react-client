@@ -55,6 +55,7 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.7.1",
     "@amcharts/amcharts4-geodata": "^4.1.7",
+    "@fullcalendar/bootstrap": "^5.6.0",
     "@fullcalendar/core": "^5.6.0",
     "@fullcalendar/daygrid": "^5.6.0",
     "@fullcalendar/interaction": "^5.6.0",

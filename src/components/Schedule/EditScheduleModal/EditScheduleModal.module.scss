@@ -1,0 +1,30 @@
+@import "../../../styles/app";
+
+.detailsContainer {
+  overflow-x: hidden;
+  min-height: 80vh;
+}
+
+.detailsForm {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: white;
+  transform: translateX(110%);
+  transition: transform 0.5s ease;
+
+  &.show {
+    transform: translateX(0);
+
+    .closeBtn {
+      background-color: white;
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+  }
+}
