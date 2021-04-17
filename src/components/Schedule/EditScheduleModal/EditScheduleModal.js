@@ -77,7 +77,12 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
     console.log(editSchedule);
   };
 
+  const shiftOptionFilter = (s) =>
+    !schedules || !schedules.some((sch) => sch.shift.id === s.id);
+
   const isShowEditSchedule = Boolean(editSchedule.shift?.id);
+
+  const isHasStaff = Boolean(editSchedule?.scheduleDetails?.length);
 
   return (
     <Modal
@@ -103,7 +108,7 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                 <option value="" disabled>
                   ---Chọn ca làm---
                 </option>
-                {shifts.map((s) => (
+                {shifts.filter(shiftOptionFilter).map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>
@@ -114,6 +119,51 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
               </Button>
             </FormGroup>
           </Form>
+          <Row className="my-2">
+            <Col>
+              <Table className={s.scheduleTable} bordered>
+                <thead>
+                  <tr>
+                    <th>Ca làm</th>
+                    <th>Nhân viên</th>
+                    <th>Ghi chú</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {schedules ? (
+                    schedules.map((sch) => (
+                      <tr key={sch.id}>
+                        <td>{sch.shift.name}</td>
+                        <td>
+                          <ul>
+                            {sch.scheduleDetails.map((sd) => (
+                              <li key={sd.id}>{sd.staff.fullname}</li>
+                            ))}
+                          </ul>
+                        </td>
+                        <td>{sch.note?.length ? sch.note : "Không"}</td>
+                        <td>
+                          <Button
+                            color="warning"
+                            onClick={() => setEditSchedule(sch)}
+                          >
+                            <i className="fa fa-eye"></i>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="text-center my-2">
+                        Chưa có ca làm nào
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
           <div className={`${s.detailsForm} ${isShowEditSchedule && s.show}`}>
             {isShowEditSchedule && (
               <>
@@ -152,43 +202,70 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                           <tr>
                             <th>Tên</th>
                             <th>Chức vụ</th>
-                            <th>Số điện thoại</th>
                             <th>Vi phạm</th>
+                            <th>Giờ tăng ca</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>lorem ipsum</td>
-                            <td>ascaln</td>
-                            <td>029352395</td>
-                            <td>
-                              <Input type="select">
-                                <option value="">Không có</option>
-                                {violations.map((v) => (
-                                  <option key={v.id} value={v.id}>
-                                    {`${v.name} (${v.finesPercent}%)`}
-                                  </option>
-                                ))}
-                              </Input>
-                            </td>
-                            <td>
-                              <Button
-                                color="light"
-                                size="sm"
-                                className="bg-light"
-                              >
-                                &#10005;
-                              </Button>
-                            </td>
-                          </tr>
+                          {isHasStaff ? (
+                            editSchedule.scheduleDetails.map((sd) => (
+                              <tr key={sd.id}>
+                                <td>{sd.staff.fullname}</td>
+                                <td>{sd.staff.role.name}</td>
+                                <td>
+                                  <Input
+                                    type="select"
+                                    value={sd.violation ? sd.violation.id : ""}
+                                  >
+                                    <option value="">Không có</option>
+                                    {violations.map((v) => (
+                                      <option key={v.id} value={v.id}>
+                                        {`${v.name} (${v.finesPercent}%)`}
+                                      </option>
+                                    ))}
+                                  </Input>
+                                </td>
+
+                                <td>
+                                  <Input
+                                    type="number"
+                                    min="0"
+                                    max="8"
+                                    step="0.1"
+                                    value={sd.overtimeHours}
+                                  />
+                                </td>
+                                <td>
+                                  <Button
+                                    color="light"
+                                    size="sm"
+                                    className="bg-light"
+                                  >
+                                    &#10005;
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="5" className="text-center">
+                                Chưa có nhân viên nào
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </Table>
                       <FormGroup>
                         <Label>Ghi chú</Label>
                         <Input type="textarea" name="note" />
                       </FormGroup>
-                      <Button color="warning" type="submit" block>
+                      <Button
+                        disabled={!isHasStaff}
+                        color="warning"
+                        type="submit"
+                        block
+                      >
                         {editSchedule.id ? "Cập nhật" : "Tạo ca làm"}
                       </Button>
                     </Form>

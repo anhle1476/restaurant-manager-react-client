@@ -43,35 +43,11 @@ const CustomCalendar = () => {
   };
 
   const handleDateSelect = (selectInfo) => {
-    // let title = prompt("Please enter a new title for your event");
-    // let calendarApi = selectInfo.view.calendar;
-    // console.log(selectInfo);
-    // calendarApi.unselect(); // clear date selection
-
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     id: selectInfo.startStr,
-    //     title,
-    //     start: selectInfo.startStr,
-    //   });
-    // }
     toggleShowEdit(selectInfo.startStr);
   };
 
   const handleEventClick = (clickInfo) => {
-    console.log(clickInfo);
-    // if (
-    //   window.confirm(
-    //     `Are you sure you want to delete the event '${clickInfo.event.title}'`
-    //   )
-    // ) {
-    //   clickInfo.event.remove();
-    // }
-    toggleShowEdit(clickInfo.startStr);
-  };
-
-  const handleEvents = (events) => {
-    setEvents(events);
+    toggleShowEdit(clickInfo.event._def.publicId);
   };
 
   const toggleShowEdit = (date = "") => {
@@ -104,11 +80,11 @@ const CustomCalendar = () => {
             selectMirror={true}
             dayMaxEvents={true}
             //initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-            //events={events}
+            events={events}
             select={handleDateSelect}
             eventContent={renderEventContent} // custom render function
             eventClick={handleEventClick}
-            eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+            //eventsSet={handleEvents} // called after events are initialized/added/changed/removed
             datesSet={onMonthChange}
             // you can update a remote database when these fire:
             // eventAdd={function (e) {}}
