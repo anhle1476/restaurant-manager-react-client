@@ -12,7 +12,7 @@ import lightDashboardIcon from "../../images/light-dashboard.svg";
 import lightTables from "../../images/tables.svg";
 import lightUI from "../../images/ui-elements.svg";
 import lightTypography from "../../images/Typography.svg";
-import logo from "../../images/main-logo.svg";
+import logo from "../../images/logo.svg";
 import logoutIcon from "../../images/logout.svg";
 import accountIcon from "../../images/account.svg";
 
@@ -65,11 +65,11 @@ class Sidebar extends React.Component {
             <img
               src={logo}
               alt="logo"
-              style={{ width: 50 }}
+              style={{ width: 67 }}
               className={s.logoStyle}
             />
             <div>
-              <span>Fat Man</span>
+              <span>SuperPig</span>
               <small> Restaurant</small>
             </div>
           </header>
