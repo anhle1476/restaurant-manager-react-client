@@ -16,6 +16,7 @@ import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import shiftApi from "../../../api/shiftApi";
 import staffApi from "../../../api/staffApi";
+import scheduleApi from "../../../api/scheduleApi";
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import { formatDateStr } from "../../../utils/dateUtils";
@@ -30,16 +31,31 @@ const SCHEDULE_SCHEMA = {
 };
 const SCHEDULE_DETAIL_SCHEMA = {
   staff: {},
-  violation: {},
+  violation: undefined,
   overtimeHours: 0,
 };
 
-const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
+const ViolationOption = ({ violation }) => (
+  <option value={violation.id}>
+    {`${violation.name} (${violation.finesPercent}%)${
+      violation.deleted ? " - Đã khóa" : ""
+    }`}
+  </option>
+);
+
+const EditScheduleModal = ({
+  show,
+  toggle,
+  date,
+  schedules = [],
+  handleEditSchedule,
+}) => {
   const [shifts, setShifts] = useState([]);
   const [staffs, setStaffs] = useState([]);
   const [violations, setViolations] = useState([]);
   const [editSchedule, setEditSchedule] = useState(SCHEDULE_SCHEMA);
   const [addShift, setAddShift] = useState("");
+  const [selectStaff, setSelectStaff] = useState("");
 
   const displayDate = formatDateStr(date);
 
@@ -64,6 +80,7 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
     e.preventDefault();
     setEditSchedule({
       ...SCHEDULE_SCHEMA,
+      date: date,
       shift: shifts.find((sh) => sh.id === Number(addShift)),
     });
   };
@@ -72,25 +89,89 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
     setEditSchedule(SCHEDULE_SCHEMA);
   };
 
-  const handleSubmitEditSchedule = (e) => {
-    e.preventDefault();
-    console.log(editSchedule);
+  const doToggle = () => {
+    toggle();
+    closeEditSchedule();
   };
 
-  const shiftOptionFilter = (s) =>
-    !schedules || !schedules.some((sch) => sch.shift.id === s.id);
+  const handleSubmitEditSchedule = async (e) => {
+    e.preventDefault();
+    console.log(editSchedule);
+    try {
+      const res = editSchedule.id
+        ? await scheduleApi.update(editSchedule)
+        : await scheduleApi.create(editSchedule);
+      handleEditSchedule(res.data);
+      toastSuccess("Thêm ca làm thành công");
+    } catch (ex) {
+      toastError("Thêm ca làm thất bại: " + ex?.response?.data?.message);
+      console.log(ex);
+    }
+  };
+
+  const handleAddStaffToSchedule = () => {
+    if (!selectStaff) return;
+    const selected = staffs.find((st) => st.id === Number(selectStaff));
+    const newScheduleDetail = { ...SCHEDULE_DETAIL_SCHEMA, staff: selected };
+    setEditSchedule({
+      ...editSchedule,
+      scheduleDetails: [...editSchedule.scheduleDetails, newScheduleDetail],
+    });
+    setSelectStaff("");
+  };
+
+  const handleSetViolation = ({ target }, staffId) => {
+    const selected = violations.find((v) => v.id === Number(target.value));
+    setEditSchedule({
+      ...editSchedule,
+      scheduleDetails: editSchedule.scheduleDetails.map((sd) =>
+        sd.staff.id !== staffId ? sd : { ...sd, violation: selected }
+      ),
+    });
+  };
+
+  const handleSetOvertime = ({ target }, staffId) => {
+    setEditSchedule({
+      ...editSchedule,
+      scheduleDetails: editSchedule.scheduleDetails.map((sd) =>
+        sd.staff.id !== staffId
+          ? sd
+          : { ...sd, overtimeHours: Number(target.value) }
+      ),
+    });
+  };
+
+  const handleRemoveStaff = (staffId) => {
+    setEditSchedule({
+      ...editSchedule,
+      scheduleDetails: editSchedule.scheduleDetails.filter(
+        (sd) => sd.staff.id !== staffId
+      ),
+    });
+  };
+
+  const handleEditNote = ({ target }) => {
+    setEditSchedule({ ...editSchedule, note: target.value });
+  };
+
+  const shiftOptionFilter = (sh) =>
+    !schedules?.length || !schedules.some((sch) => sch.shift.id === sh.id);
 
   const isShowEditSchedule = Boolean(editSchedule.shift?.id);
 
   const isHasStaff = Boolean(editSchedule?.scheduleDetails?.length);
 
+  const staffOptionFilter = (st) =>
+    !isHasStaff ||
+    !editSchedule.scheduleDetails.some((sch) => sch.staff.id === st.id);
+
   return (
     <Modal
       isOpen={show}
       className="modal-lg modal-dialog-scrollable"
-      toggle={() => toggle()}
+      toggle={doToggle}
     >
-      <ModalCustomHeader toggle={() => toggle()}>
+      <ModalCustomHeader toggle={doToggle}>
         Ngày {displayDate}
       </ModalCustomHeader>
       {show && (
@@ -131,7 +212,7 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {schedules ? (
+                  {schedules.length ? (
                     schedules.map((sch) => (
                       <tr key={sch.id}>
                         <td>{sch.shift.name}</td>
@@ -155,7 +236,7 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3" className="text-center my-2">
+                      <td colSpan="4" className="text-center my-2">
                         Chưa có ca làm nào
                       </td>
                     </tr>
@@ -186,15 +267,24 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                       <FormGroup>
                         <Label>Thêm nhân viên</Label>
                         <div className="d-flex">
-                          <Input type="select">
+                          <Input
+                            type="select"
+                            value={selectStaff}
+                            onChange={(e) => setSelectStaff(e.target.value)}
+                          >
                             <option value="">---Chọn nhân viên---</option>
-                            {staffs.map((st) => (
+                            {staffs.filter(staffOptionFilter).map((st) => (
                               <option key={st.id} value={st.id}>
                                 {`${st.fullname} (${st.role.name})`}
                               </option>
                             ))}
                           </Input>
-                          <Button color="warning">Thêm</Button>
+                          <Button
+                            color="warning"
+                            onClick={handleAddStaffToSchedule}
+                          >
+                            Thêm
+                          </Button>
                         </div>
                       </FormGroup>
                       <Table bordered>
@@ -209,21 +299,32 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                         </thead>
                         <tbody>
                           {isHasStaff ? (
-                            editSchedule.scheduleDetails.map((sd) => (
-                              <tr key={sd.id}>
+                            editSchedule.scheduleDetails.map((sd, i) => (
+                              <tr key={i}>
                                 <td>{sd.staff.fullname}</td>
                                 <td>{sd.staff.role.name}</td>
                                 <td>
                                   <Input
                                     type="select"
-                                    value={sd.violation ? sd.violation.id : ""}
+                                    value={
+                                      sd.violation?.id ? sd.violation.id : ""
+                                    }
+                                    onChange={(e) =>
+                                      handleSetViolation(e, sd.staff.id)
+                                    }
                                   >
                                     <option value="">Không có</option>
                                     {violations.map((v) => (
-                                      <option key={v.id} value={v.id}>
-                                        {`${v.name} (${v.finesPercent}%)`}
-                                      </option>
+                                      <ViolationOption
+                                        key={v.id}
+                                        violation={v}
+                                      />
                                     ))}
+                                    {sd.violation?.deleted && (
+                                      <ViolationOption
+                                        violation={sd.violation}
+                                      />
+                                    )}
                                   </Input>
                                 </td>
 
@@ -234,6 +335,9 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                                     max="8"
                                     step="0.1"
                                     value={sd.overtimeHours}
+                                    onChange={(e) =>
+                                      handleSetOvertime(e, sd.staff.id)
+                                    }
                                   />
                                 </td>
                                 <td>
@@ -241,6 +345,9 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                                     color="light"
                                     size="sm"
                                     className="bg-light"
+                                    onClick={() =>
+                                      handleRemoveStaff(sd.staff.id)
+                                    }
                                   >
                                     &#10005;
                                   </Button>
@@ -258,12 +365,18 @@ const EditScheduleModal = ({ show, toggle, date, schedules, addSchedule }) => {
                       </Table>
                       <FormGroup>
                         <Label>Ghi chú</Label>
-                        <Input type="textarea" name="note" />
+                        <Input
+                          type="textarea"
+                          name="note"
+                          value={editSchedule.note ? editSchedule.note : ""}
+                          onChange={handleEditNote}
+                        />
                       </FormGroup>
                       <Button
                         disabled={!isHasStaff}
                         color="warning"
                         type="submit"
+                        className="mb-3"
                         block
                       >
                         {editSchedule.id ? "Cập nhật" : "Tạo ca làm"}

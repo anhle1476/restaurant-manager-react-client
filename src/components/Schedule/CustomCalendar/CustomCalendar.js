@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import FullCalendar, { formatDate } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import bootstrapPlugin from "@fullcalendar/bootstrap";
@@ -31,17 +31,6 @@ const CustomCalendar = () => {
     );
   };
 
-  const renderSidebar = () => {
-    return (
-      <div className="demo-app-sidebar">
-        <div className="demo-app-sidebar-section">
-          <h2>All Events ({events.length})</h2>
-          <ul>{events.map(renderSidebarEvent)}</ul>
-        </div>
-      </div>
-    );
-  };
-
   const handleDateSelect = (selectInfo) => {
     toggleShowEdit(selectInfo.startStr);
   };
@@ -52,6 +41,24 @@ const CustomCalendar = () => {
 
   const toggleShowEdit = (date = "") => {
     setEditDate(date);
+  };
+
+  const handleEditSchedule = (schedule) => {
+    const scheduleDate = schedule.date;
+    const oldScheduleArr = eventMap[scheduleDate];
+    let newEventMap = { ...eventMap };
+    if (!oldScheduleArr) {
+      newEventMap[scheduleDate] = [schedule];
+    } else if (
+      eventMap[scheduleDate].some((oldSch) => oldSch.id === schedule.id)
+    ) {
+      newEventMap[scheduleDate] = oldScheduleArr.map((oldSch) =>
+        oldSch.id === schedule.id ? schedule : oldSch
+      );
+    } else {
+      newEventMap[scheduleDate] = [...oldScheduleArr, schedule];
+    }
+    updateCalendarEvents(newEventMap);
   };
 
   return (
@@ -75,37 +82,31 @@ const CustomCalendar = () => {
               },
             }}
             initialView="dayGridMonth"
-            //editable={true}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            //initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
             events={events}
             select={handleDateSelect}
             eventContent={renderEventContent} // custom render function
             eventClick={handleEventClick}
-            //eventsSet={handleEvents} // called after events are initialized/added/changed/removed
             datesSet={onMonthChange}
-            // you can update a remote database when these fire:
-            // eventAdd={function (e) {}}
-            // eventChange={function (e) {}}
-            // eventRemove={function (e) {}}
           />
         </div>
       </div>
 
-      {renderSidebar()}
       <EditScheduleModal
         show={Boolean(editDate)}
         toggle={toggleShowEdit}
         date={editDate}
         schedules={eventMap[editDate]}
+        handleEditSchedule={handleEditSchedule}
       />
     </>
   );
 };
 
 function renderEventContent(eventInfo) {
+  console.log(eventInfo);
   return (
     <>
       <b>{eventInfo.timeText}</b>
@@ -114,22 +115,7 @@ function renderEventContent(eventInfo) {
   );
 }
 
-function renderSidebarEvent(event) {
-  return (
-    <li key={event.id}>
-      <b>
-        {formatDate(event.start, {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-        })}
-      </b>
-      <i>{event.title}</i>
-    </li>
-  );
-}
-
-function parseScheduleToEvent(date, schedules) {
+function parseScheduleToEvent(date, schedules = []) {
   return {
     id: date,
     title: schedules.map((s) => s.shift.name).join(", "),
