@@ -61,6 +61,22 @@ const CustomCalendar = () => {
     updateCalendarEvents(newEventMap);
   };
 
+  const handleDeleteSchedule = (schedule) => {
+    const scheduleDate = schedule.date;
+    let newEventMap = {
+      ...eventMap,
+    };
+    const deleteResult = eventMap[scheduleDate].filter(
+      (oldSch) => oldSch.id !== schedule.id
+    );
+    if (!deleteResult.length) {
+      delete newEventMap[scheduleDate];
+    } else {
+      newEventMap[scheduleDate] = deleteResult;
+    }
+    updateCalendarEvents(newEventMap);
+  };
+
   return (
     <>
       <div className="calendar">
@@ -100,19 +116,14 @@ const CustomCalendar = () => {
         date={editDate}
         schedules={eventMap[editDate]}
         handleEditSchedule={handleEditSchedule}
+        handleDeleteSchedule={handleDeleteSchedule}
       />
     </>
   );
 };
 
 function renderEventContent(eventInfo) {
-  console.log(eventInfo);
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  );
+  return <p>{eventInfo.event.title}</p>;
 }
 
 function parseScheduleToEvent(date, schedules = []) {

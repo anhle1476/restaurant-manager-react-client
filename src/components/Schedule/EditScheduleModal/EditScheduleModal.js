@@ -11,6 +11,11 @@ import {
   Row,
   Col,
   Table,
+  Collapse,
+  CardBody,
+  Card,
+  CardText,
+  CardTitle,
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
@@ -49,6 +54,7 @@ const EditScheduleModal = ({
   date,
   schedules = [],
   handleEditSchedule,
+  handleDeleteSchedule,
 }) => {
   const [shifts, setShifts] = useState([]);
   const [staffs, setStaffs] = useState([]);
@@ -56,6 +62,7 @@ const EditScheduleModal = ({
   const [editSchedule, setEditSchedule] = useState(SCHEDULE_SCHEMA);
   const [addShift, setAddShift] = useState("");
   const [selectStaff, setSelectStaff] = useState("");
+  const [showDelete, setShowDelete] = useState(false);
 
   const displayDate = formatDateStr(date);
 
@@ -96,7 +103,6 @@ const EditScheduleModal = ({
 
   const handleSubmitEditSchedule = async (e) => {
     e.preventDefault();
-    console.log(editSchedule);
     try {
       const res = editSchedule.id
         ? await scheduleApi.update(editSchedule)
@@ -164,6 +170,23 @@ const EditScheduleModal = ({
   const staffOptionFilter = (st) =>
     !isHasStaff ||
     !editSchedule.scheduleDetails.some((sch) => sch.staff.id === st.id);
+
+  const toggleShowDelete = () => {
+    setShowDelete(!showDelete);
+  };
+
+  const handleSubmitDelete = async () => {
+    try {
+      toggleShowDelete();
+      handleDeleteSchedule(editSchedule);
+      closeEditSchedule();
+      await scheduleApi.deleteSchedule(editSchedule.id);
+      toastSuccess("Xóa ca làm thành công");
+    } catch (ex) {
+      console.log(ex);
+      toastError("Xóa ca làm thất bại, vui lòng thử lại sau");
+    }
+  };
 
   return (
     <Modal
@@ -245,10 +268,11 @@ const EditScheduleModal = ({
               </Table>
             </Col>
           </Row>
+          {/* SCHEDULE DETAILS EDITOR */}
           <div className={`${s.detailsForm} ${isShowEditSchedule && s.show}`}>
             {isShowEditSchedule && (
               <>
-                <Row>
+                <Row className="my-2">
                   <Col className="d-flex align-items-center">
                     <Button
                       color="light"
@@ -259,7 +283,35 @@ const EditScheduleModal = ({
                     </Button>
                     <h5 className="mb-0 mx-3">{editSchedule.shift.name}</h5>
                   </Col>
+                  <Col className="d-flex justify-content-end mr-2">
+                    {editSchedule.id && (
+                      <Button onClick={toggleShowDelete} color="warning">
+                        <i className="fa fa-trash"></i>
+                      </Button>
+                    )}
+                  </Col>
                 </Row>
+                <Collapse isOpen={showDelete}>
+                  <Card>
+                    <CardBody>
+                      <CardTitle tag="h5">Xóa ca làm</CardTitle>
+                      <CardText>
+                        Hành động này không thể khôi phục, bạn có chắc chắn xóa{" "}
+                        {editSchedule.shift?.name} ngày {date} không?
+                      </CardText>
+                      <Button
+                        onClick={handleSubmitDelete}
+                        color="danger"
+                        className="mr-2"
+                      >
+                        Xóa
+                      </Button>
+                      <Button onClick={toggleShowDelete} color="light">
+                        Hủy
+                      </Button>
+                    </CardBody>
+                  </Card>
+                </Collapse>
                 <br />
                 <Row>
                   <Col>

@@ -25,12 +25,8 @@ const update = (data) => {
   return axios.put(`${SCHEDULE_URL}/${data.id}`, data);
 };
 
-const softDelete = (id) => {
+const deleteSchedule = (id) => {
   return axios.delete(`${SCHEDULE_URL}/${id}`);
-};
-
-const restore = (id) => {
-  return axios.post(`${SCHEDULE_URL}/${id}/restore`);
 };
 
 export default {
@@ -38,7 +34,6 @@ export default {
   getById,
   getAllByMonth,
   update,
-  softDelete,
+  deleteSchedule,
   create,
-  restore,
 };
