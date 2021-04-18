@@ -8,14 +8,16 @@ import EditScheduleModal from "../EditScheduleModal/EditScheduleModal";
 
 import scheduleApi from "../../../api/scheduleApi";
 import { toastError } from "../../../utils/toastUtils";
+import { isBeforeThisMonth } from "../../../utils/dateUtils";
 
 const CustomCalendar = () => {
   const [events, setEvents] = useState([]);
   const [editDate, setEditDate] = useState("");
   const [eventMap, setEventMap] = useState({});
+  const [disabledEdit, setDisabledEdit] = useState(true);
 
   const onMonthChange = async (e) => {
-    console.log(e);
+    setDisabledEdit(isBeforeThisMonth(e.start));
     try {
       const res = await scheduleApi.getAllByMonth(e.start);
       updateCalendarEvents(res.data);
@@ -114,6 +116,7 @@ const CustomCalendar = () => {
         show={Boolean(editDate)}
         toggle={toggleShowEdit}
         date={editDate}
+        disabledEdit={disabledEdit}
         schedules={eventMap[editDate]}
         handleEditSchedule={handleEditSchedule}
         handleDeleteSchedule={handleDeleteSchedule}
