@@ -53,6 +53,7 @@ const RoleManager = () => {
           <h2>Quản lý chức vụ</h2>
         </Col>
       </Row>
+      <br />
       <Row>
         <Col>
           <h4>Chức vụ chính</h4>

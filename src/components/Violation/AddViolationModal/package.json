@@ -1,0 +1,6 @@
+{
+  "name": "AddViolationModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AddViolationModal.js"
+}

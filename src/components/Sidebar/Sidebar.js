@@ -122,6 +122,10 @@ class Sidebar extends React.Component {
                     header: "Chức vụ",
                     link: "/app/manager/roles",
                   },
+                  {
+                    header: "Vi phạm",
+                    link: "/app/manager/violations",
+                  },
                 ]}
               >
                 <img

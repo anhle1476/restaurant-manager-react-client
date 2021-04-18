@@ -1,0 +1,6 @@
+{
+  "name": "EditViolationModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditViolationModal.js"
+}

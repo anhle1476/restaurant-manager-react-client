@@ -95,6 +95,7 @@ const EditScheduleModal = ({
   };
 
   const closeEditSchedule = () => {
+    setAddShift("");
     setEditSchedule(SCHEDULE_SCHEMA);
   };
 
@@ -109,10 +110,11 @@ const EditScheduleModal = ({
       const res = editSchedule.id
         ? await scheduleApi.update(editSchedule)
         : await scheduleApi.create(editSchedule);
+      setEditSchedule(res.data);
       handleEditSchedule(res.data);
-      toastSuccess("Thêm ca làm thành công");
+      toastSuccess("Lưu ca làm thành công");
     } catch (ex) {
-      toastError("Thêm ca làm thất bại: " + ex?.response?.data?.message);
+      toastError("Lưu ca làm thất bại: " + ex?.response?.data?.message);
       console.log(ex);
     }
   };
