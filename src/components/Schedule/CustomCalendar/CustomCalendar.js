@@ -10,6 +10,8 @@ import scheduleApi from "../../../api/scheduleApi";
 import { toastError } from "../../../utils/toastUtils";
 import { isBeforeThisMonth } from "../../../utils/dateUtils";
 
+import "./CustomCalendar.scss";
+
 const CustomCalendar = () => {
   const [events, setEvents] = useState([]);
   const [editDate, setEditDate] = useState("");
@@ -86,7 +88,7 @@ const CustomCalendar = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
             headerToolbar={{
-              right: "today prev,next",
+              right: "prevYear,prev,today,next,nextYear",
               left: "title",
             }}
             themeSystem="bootstrap"
@@ -108,6 +110,10 @@ const CustomCalendar = () => {
             eventContent={renderEventContent} // custom render function
             eventClick={handleEventClick}
             datesSet={onMonthChange}
+            eventColor="#5eef3b"
+            eventTextColor="#000000"
+            eventDisplay="auto"
+            //dayCellClassNames={s.dateCell}
           />
         </div>
       </div>
@@ -126,7 +132,13 @@ const CustomCalendar = () => {
 };
 
 function renderEventContent(eventInfo) {
-  return <p>{eventInfo.event.title}</p>;
+  return (
+    <ul className="text-center mb-0">
+      {eventInfo.event.title.split(", ").map((t) => (
+        <li>{t}</li>
+      ))}
+    </ul>
+  );
 }
 
 function parseScheduleToEvent(date, schedules = []) {

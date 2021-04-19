@@ -1,0 +1,21 @@
+@import "../../../styles/app";
+
+td.fc-daygrid-day.fc-day {
+  vertical-align: baseline !important;
+
+  &.fc-day-past {
+    background-color: hsla(63, 86%, 81%, 0.2);
+  }
+
+  &.fc-day-future {
+    background-color: hsla(110, 86%, 81%, 0.2);
+  }
+
+  &.fc-day-today {
+    background-color: hsla(200, 86%, 81%, 0.6);
+  }
+
+  a.fc-daygrid-day-number {
+    font-weight: bold;
+  }
+}
