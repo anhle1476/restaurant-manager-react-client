@@ -62,6 +62,7 @@ const AddViolationModal = ({ show, toggle, handleAddViolation }) => {
             <FormFeedback>{feedBack.name}</FormFeedback>
           </FormGroup>
           <FormGroup>
+            <Label for="finesPercent">Mức phạt theo ca (%)</Label>
             <Input
               required
               onChange={handleChange}

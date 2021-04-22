@@ -16,7 +16,7 @@ const CustomCalendar = () => {
   const [events, setEvents] = useState([]);
   const [editDate, setEditDate] = useState("");
   const [eventMap, setEventMap] = useState({});
-  const [disabledEdit, setDisabledEdit] = useState(true);
+  const [disabledEdit, setDisabledEdit] = useState(false);
 
   const onMonthChange = async (e) => {
     setDisabledEdit(isBeforeThisMonth(e.start));
@@ -134,8 +134,8 @@ const CustomCalendar = () => {
 function renderEventContent(eventInfo) {
   return (
     <ul className="text-center mb-0">
-      {eventInfo.event.title.split(", ").map((t) => (
-        <li>{t}</li>
+      {eventInfo.event.title.split(", ").map((t, i) => (
+        <li key={i}>{t}</li>
       ))}
     </ul>
   );

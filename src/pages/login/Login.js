@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter, Redirect, Link } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Alert, Button, Label, Input, FormGroup } from "reactstrap";
 import Widget from "../../components/Widget";
@@ -71,21 +71,19 @@ class Login extends React.Component {
                 {this.props.errorMessage}
               </Alert>
             )}
-            <div className="form-group">
+            <FormGroup>
               <Label for="search-input1">Tài khoản</Label>
-              <input
-                className="form-control"
+              <Input
                 defaultValue={"admin"}
                 onChange={this.handleChange}
                 required
                 name="username"
                 placeholder="Nhập tài khoản"
               />
-            </div>
-            <div className="form-group mb-2">
+            </FormGroup>
+            <FormGroup className="mb-2">
               <Label for="search-input1">Mật khẩu</Label>
-              <input
-                className="form-control"
+              <Input
                 defaultValue={"123123"}
                 onChange={this.handleChange}
                 type="password"
@@ -93,7 +91,7 @@ class Login extends React.Component {
                 name="password"
                 placeholder="Nhập mật khẩu"
               />
-            </div>
+            </FormGroup>
             <Button
               type="submit"
               color="warning"
