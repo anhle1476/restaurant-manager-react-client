@@ -5,12 +5,8 @@ import { connect } from "react-redux";
 import { Alert, Button, Label, Input, FormGroup } from "reactstrap";
 import Widget from "../../components/Widget";
 import { loginUser } from "../../actions/user";
-import s from './Login.module.scss';
-import signinImg from "../../images/signinImg.svg";
-import img1 from "../../images/Vector-1.svg";
-import img2 from "../../images/Vector-2.svg";
-import img3 from "../../images/Vector-3.svg";
-import img4 from "../../images/Vector-4.svg";
+import s from "./Login.module.scss";
+import logo from "../../images/logo.svg";
 
 class Login extends React.Component {
   static propTypes = {
@@ -25,67 +21,49 @@ class Login extends React.Component {
     super(props);
 
     this.state = {
-      email: "admin@flatlogic.com",
+      username: "admin@flatlogic.com",
       password: "password",
     };
-
-    this.doLogin = this.doLogin.bind(this);
-    this.googleLogin = this.googleLogin.bind(this);
-    this.microsoftLogin = this.microsoftLogin.bind(this);
-    this.changeEmail = this.changeEmail.bind(this);
-    this.changePassword = this.changePassword.bind(this);
-    this.signUp = this.signUp.bind(this);
   }
 
-  changeEmail(event) {
-    this.setState({ email: event.target.value });
-  }
-
-  changePassword(event) {
-    this.setState({ password: event.target.value });
-  }
-
-  doLogin(e) {
+  doLogin = (e) => {
     e.preventDefault();
     this.props.dispatch(
-      loginUser({ email: this.state.email, password: this.state.password })
+      loginUser({ email: this.state.username, password: this.state.password })
     );
-  }
+  };
 
-  googleLogin() {
-    this.props.dispatch(loginUser({ social: "google" }));
-  }
-
-  microsoftLogin() {
-    this.props.dispatch(loginUser({ social: "microsoft" }));
-  }
-
-  signUp() {
-    this.props.history.push("/register");
-  }
+  handleChange = ({ target }) => {
+    this.setState({ [target.name]: target.value });
+  };
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/app' } }; // eslint-disable-line
+    const { from } = this.props.location.state || {
+      from: { pathname: "/app" },
+    }; // eslint-disable-line
 
     // cant access login page while logged in
-    if (Login.isAuthenticated(JSON.parse(localStorage.getItem('authenticated')))) {
-      return (
-          <Redirect to={from} />
-      );
+    if (
+      Login.isAuthenticated(JSON.parse(localStorage.getItem("authenticated")))
+    ) {
+      return <Redirect to={from} />;
     }
 
     return (
       <div className="auth-page">
+        <div className={s.bgLogo}>
+          <img src={logo} alt="signin" className="login-logo" />
+        </div>
         <Widget
-          className="widget-auth my-auto"
+          className={`widget-auth my-auto ${s.authForm}`}
           title={
             <h3 className="mt-0 mb-2" style={{ fontSize: 40 }}>
-              Login
+              Đăng nhập
             </h3>
           }
         >
           <p className="widget-auth-info">
-            Welcome Back! Please login to your account
+            Nhập tài khoản và mật khẩu để đăng nhập vào hệ thống
           </p>
           <form className="mt" onSubmit={this.doLogin}>
             {this.props.errorMessage && (
@@ -94,72 +72,50 @@ class Login extends React.Component {
               </Alert>
             )}
             <div className="form-group">
-              <Label for="search-input1">Username</Label>
+              <Label for="search-input1">Tài khoản</Label>
               <input
                 className="form-control"
                 defaultValue={"admin"}
-                onChange={this.changeEmail}
+                onChange={this.handleChange}
                 required
-                name="email"
-                placeholder="Enter your username"
+                name="username"
+                placeholder="Nhập tài khoản"
               />
             </div>
             <div className="form-group mb-2">
-              <Label for="search-input1">Password</Label>
+              <Label for="search-input1">Mật khẩu</Label>
               <input
                 className="form-control"
                 defaultValue={"123123"}
-                onChange={this.changePassword}
+                onChange={this.handleChange}
                 type="password"
                 required
                 name="password"
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu"
               />
             </div>
-            <FormGroup className="checkbox abc-checkbox mb-4 d-flex" check>
-              <Input
-                id="checkbox1"
-                type="checkbox"
-              />
-              <Label for="checkbox1" check className={"mr-auto"}>
-                Remember me
-              </Label>
-              <a href="/">Forgot password?</a>
-            </FormGroup>
             <Button
               type="submit"
               color="warning"
-              className="auth-btn mb-3"
+              className="auth-btn my-3"
               size="sm"
             >
-              {this.props.isFetching ? "Loading..." : "Login"}
+              {this.props.isFetching ? "Đang tải..." : "Đang nhập"}
             </Button>
-            <p className="widget-auth-info text-center">Or</p>
-            <div className={"d-flex mb-4 mt-3"}>
-              <p className={"mb-0"}>Login with</p>
-              <a href={"/"}>
-                <img src={img1} alt="facebook" className={"ml-3"} />
+
+            <footer className={s.footer}>
+              {new Date().getFullYear()} © One React - React Admin Dashboard
+              Template Made by &nbsp;
+              <a
+                href="https://flatlogic.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Flatlogic LLC
               </a>
-              <a href={"/"}>
-                <img src={img2} alt="github" className={"ml-3"} />
-              </a>
-              <a href={"/"}>
-                <img src={img3} alt="linkedin" className={"ml-3"} />
-              </a>
-              <a href={"/"}>
-                <img src={img4} alt="google_plus" className={"ml-3"} />
-              </a>
-            </div>
-            <div className={"d-flex align-items-center"}>
-              Don’t have an account?{" "}
-              <Link to="register" className={"ml-1"}>
-                Sign Up here
-              </Link>
-            </div>
-            <footer className={s.footer}>{new Date().getFullYear()} © One React - React Admin Dashboard Template Made by &nbsp;<a href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Flatlogic LLC</a></footer>
+            </footer>
           </form>
         </Widget>
-        <img src={signinImg} alt="signin" className={"backImg"} />
       </div>
     );
   }

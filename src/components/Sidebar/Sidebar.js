@@ -12,6 +12,11 @@ import lightDashboardIcon from "../../images/light-dashboard.svg";
 import lightTables from "../../images/tables.svg";
 import lightUI from "../../images/ui-elements.svg";
 import lightTypography from "../../images/Typography.svg";
+import eccomerceLight from "../../images/icons/E-commerce_outlined.svg";
+import documentationLight from "../../images/icons/Documentation_outlined.svg";
+import formsLight from "../../images/icons/Forms_outlined.svg";
+import gridLight from "../../images/icons/Grid_outlined.svg";
+import packLight from "../../images/icons/Package_outlined.svg";
 import logo from "../../images/logo.svg";
 import logoutIcon from "../../images/logout.svg";
 import accountIcon from "../../images/account.svg";
@@ -74,7 +79,6 @@ class Sidebar extends React.Component {
             </div>
           </header>
           <div className={s.navItems}>
-            <h5 className={s.navTitle}>QUẢN LÝ NHÀ HÀNG</h5>
             <ul className={s.nav}>
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
@@ -99,38 +103,138 @@ class Sidebar extends React.Component {
                 index="main"
               >
                 <img
-                  src={lightDashboardIcon}
-                  alt="lightDashboard"
+                  src={lightTables}
+                  alt="lightTables"
                   className={s.sidebarIcon}
                 />
               </LinksGroup>
-
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Tiền lương"
+                isHeader
+                link="/app/salaries"
+                index="main"
+              >
+                <img
+                  src={formsLight}
+                  alt="formsLight"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+            <h5 className={s.navTitle}>QUẢN LÝ NHÀ HÀNG</h5>
+            <ul className={s.nav}>
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
                 activeItem={this.props.activeItem}
                 header="Nhân sự"
                 isHeader
-                link="/app/manager"
-                index="manager"
+                link="/app/hr"
+                index="hr"
                 exact={false}
                 childrenLinks={[
                   {
                     header: "Nhân viên",
-                    link: "/app/manager/staffs",
+                    link: "/app/hr/staffs",
                   },
                   {
                     header: "Chức vụ",
-                    link: "/app/manager/roles",
+                    link: "/app/hr/roles",
                   },
                   {
                     header: "Vi phạm",
-                    link: "/app/manager/violations",
+                    link: "/app/hr/violations",
                   },
                 ]}
               >
                 <img
                   src={lightUI}
                   alt="lightDashboard"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Menu"
+                isHeader
+                link="/app/menu"
+                index="menu"
+                exact={false}
+                childrenLinks={[
+                  {
+                    header: "Loại món",
+                    link: "/app/menu/food-types",
+                  },
+                  {
+                    header: "Món ăn",
+                    link: "/app/menu/foods",
+                  },
+                ]}
+              >
+                <img
+                  src={packLight}
+                  alt="packLight"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+            <h5 className={s.navTitle}>THU NGÂN</h5>
+            <ul className={s.nav}>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Màn hình thu ngân"
+                isHeader
+                link="/app/typography"
+                index="main"
+              >
+                <img
+                  src={eccomerceLight}
+                  alt="eccomerceLight"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Hóa đơn"
+                isHeader
+                link="/app/bills"
+                index="bills"
+                exact={false}
+                childrenLinks={[
+                  {
+                    header: "Lịch sử hóa đơn",
+                    link: "/app/bills/history",
+                  },
+                  {
+                    header: "Tìm kiếm",
+                    link: "/app/bills/search",
+                  },
+                ]}
+              >
+                <img
+                  src={documentationLight}
+                  alt="documentationLight"
+                  className={s.sidebarIcon}
+                />
+              </LinksGroup>
+            </ul>
+            <h5 className={s.navTitle}>ĐẦU BẾP</h5>
+            <ul className={s.nav}>
+              <LinksGroup
+                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
+                activeItem={this.props.activeItem}
+                header="Màn hình bếp"
+                isHeader
+                link="/app/typography"
+                index="main"
+              >
+                <img
+                  src={gridLight}
+                  alt="gridLight"
                   className={s.sidebarIcon}
                 />
               </LinksGroup>
@@ -185,10 +289,6 @@ class Sidebar extends React.Component {
                   {
                     header: "Icons",
                     link: "/app/ui/icons",
-                  },
-                  {
-                    header: "Maps",
-                    link: "/app/ui/maps",
                   },
                 ]}
               >

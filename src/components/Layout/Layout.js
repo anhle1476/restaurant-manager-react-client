@@ -17,7 +17,6 @@ import s from "./Layout.module.scss";
 
 // pages
 import Typography from "../../pages/typography";
-import Maps from "../../pages/maps";
 import Notifications from "../../pages/notifications/Notifications";
 import Icons from "../../pages/icons";
 import Tables from "../../pages/tables";
@@ -121,22 +120,15 @@ class Layout extends React.Component {
                       exact
                       component={Dashboard}
                     />
+                    <Route path={"/app/hr/staffs"} component={StaffManager} />
+                    <Route path={"/app/hr/roles"} component={RoleManager} />
                     <Route
-                      path={"/app/manager/staffs"}
-                      component={StaffManager}
-                    />
-                    <Route
-                      path={"/app/manager/roles"}
-                      component={RoleManager}
-                    />
-                    <Route
-                      path={"/app/manager/violations"}
+                      path={"/app/hr/violations"}
                       component={ViolationManager}
                     />
                     <Route path={"/app/schedule"} component={Schedule} />
                     <Route path={"/app/typography"} component={Typography} />
                     <Route path={"/app/tables"} component={Tables} />
-                    <Route path={"/app/ui/maps"} component={Maps} />
                     <Route
                       path={"/app/ui/notifications"}
                       component={Notifications}
