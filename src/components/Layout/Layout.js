@@ -25,6 +25,7 @@ import StaffManager from "../../pages/staffManager/StaffManager";
 import RoleManager from "../../pages/roleManager/RoleManager";
 import Schedule from "../../pages/schedule/Schedule";
 import ViolationManager from "../../pages/violationManager/ViolationManager";
+import Salary from "../../pages/salary/Salary";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -120,6 +121,7 @@ class Layout extends React.Component {
                       exact
                       component={Dashboard}
                     />
+                    <Route path="/app/salaries" exact component={Salary} />
                     <Route path={"/app/hr/staffs"} component={StaffManager} />
                     <Route path={"/app/hr/roles"} component={RoleManager} />
                     <Route

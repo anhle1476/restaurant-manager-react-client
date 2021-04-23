@@ -1,0 +1,6 @@
+{
+  "name": "SalaryDetailModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SalaryDetailModal.js"
+}

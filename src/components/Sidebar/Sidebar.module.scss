@@ -14,6 +14,19 @@
   display: flex;
   flex-direction: column;
   @include scroll-bar($sidebar-scrollbar-bg);
+
+  .logo {
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      small {
+        margin: 0;
+      }
+    }
+  }
 }
 
 .logoStyle {
@@ -53,10 +66,10 @@
 
 .logo {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 66px;
-  background-color: #feb049;
+  background-color: $sidebar-scrollbar-bg;
+  padding-left: 27px;
   font-size: 30px;
   width: 100%;
   font-weight: $font-weight-light;

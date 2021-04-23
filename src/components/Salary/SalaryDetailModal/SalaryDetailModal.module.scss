@@ -1,0 +1,25 @@
+@import "../../../styles/app";
+
+.modalTable {
+  th {
+    text-align: center;
+  }
+
+  .tableRow {
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+
+  .tableRowRight {
+    margin-bottom: 0;
+    margin-top: 5px;
+    text-align: right;
+  }
+}
+
+.modalInfo {
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -74,8 +74,8 @@ class Sidebar extends React.Component {
               className={s.logoStyle}
             />
             <div>
-              <span>SuperPig</span>
-              <small> Restaurant</small>
+              <small>Nhà hàng</small>
+              <span>Super Pig</span>
             </div>
           </header>
           <div className={s.navItems}>
@@ -141,6 +141,10 @@ class Sidebar extends React.Component {
                   {
                     header: "Chức vụ",
                     link: "/app/hr/roles",
+                  },
+                  {
+                    header: "Ca làm",
+                    link: "/app/hr/shifts",
                   },
                   {
                     header: "Vi phạm",
