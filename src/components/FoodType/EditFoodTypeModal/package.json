@@ -1,0 +1,6 @@
+{
+  "name": "EditFoodTypeModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditFoodTypeModal.js"
+}

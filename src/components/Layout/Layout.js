@@ -26,6 +26,7 @@ import RoleManager from "../../pages/roleManager/RoleManager";
 import Schedule from "../../pages/schedule/Schedule";
 import ViolationManager from "../../pages/violationManager/ViolationManager";
 import Salary from "../../pages/salary/Salary";
+import FoodTypeManager from "../../pages/foodTypeManager/FoodTypeManager";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -113,20 +114,19 @@ class Layout extends React.Component {
                   <Switch>
                     <Route
                       path="/app/main"
-                      exact
                       render={() => <Redirect to="/app/main/dashboard" />}
                     />
-                    <Route
-                      path="/app/main/dashboard"
-                      exact
-                      component={Dashboard}
-                    />
-                    <Route path="/app/salaries" exact component={Salary} />
+                    <Route path="/app/main/dashboard" component={Dashboard} />
+                    <Route path="/app/salaries" component={Salary} />
                     <Route path={"/app/hr/staffs"} component={StaffManager} />
                     <Route path={"/app/hr/roles"} component={RoleManager} />
                     <Route
                       path={"/app/hr/violations"}
                       component={ViolationManager}
+                    />
+                    <Route
+                      path={"/app/menu/food-types"}
+                      component={FoodTypeManager}
                     />
                     <Route path={"/app/schedule"} component={Schedule} />
                     <Route path={"/app/typography"} component={Typography} />

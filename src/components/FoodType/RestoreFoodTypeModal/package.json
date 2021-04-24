@@ -1,0 +1,6 @@
+{
+  "name": "RestoreFoodTypeModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RestoreFoodTypeModal.js"
+}

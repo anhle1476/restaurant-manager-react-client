@@ -21,19 +21,19 @@ import {
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
-import roleApi from "../../../api/roleApi";
+import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 
-const EDIT_INFO_SCHEMA = { id: 0, name: "", code: "" };
+const EDIT_INFO_SCHEMA = { id: 0, name: "", refundable: false };
 
-const EditRoleModal = ({
+const EditFoodTypeModal = ({
   show,
   toggle,
-  role,
-  handleUpdateRole,
-  handleDeleteRole,
+  foodType,
+  handleUpdateFoodType,
+  handleDeleteFoodType,
 }) => {
-  const [staffs, setStaffs] = useState([]);
+  const [foods, setFoods] = useState([]);
   const [activeTab, setActiveTab] = useState("1");
   const [search, setSearch] = useState("");
 
@@ -43,18 +43,18 @@ const EditRoleModal = ({
   const [confirmDelete, setConfirmDelete] = useState("");
 
   useEffect(() => {
-    if (!role.id || role.id === editInfo.id) return;
-    setEditInfo(role?.id ? role : EDIT_INFO_SCHEMA);
+    if (!foodType.id || foodType.id === editInfo.id) return;
+    setEditInfo(foodType?.id ? foodType : EDIT_INFO_SCHEMA);
     const fetchData = async () => {
       try {
-        const res = await roleApi.getAllStaffsByRoleId(role.id);
-        setStaffs(res.data);
+        const res = await foodTypeApi.getAllFoodsByFoodTypeId(foodType.id);
+        setFoods(res.data);
       } catch (ex) {
         toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
       }
     };
     fetchData();
-  }, [role, editInfo.id]);
+  }, [foodType, editInfo.id]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -65,14 +65,18 @@ const EditRoleModal = ({
   };
 
   const handleChangeEditInfo = ({ target }) => {
-    setEditInfo({ ...editInfo, name: target.value });
+    setEditInfo({ ...editInfo, [target.name]: target.value });
+  };
+
+  const handleToggleEditInfo = ({ target }) => {
+    setEditInfo({ ...editInfo, [target.name]: !editInfo[target.name] });
   };
 
   const handleSubmitEditInfo = async (e) => {
     e.preventDefault();
     try {
-      const res = await roleApi.update(editInfo);
-      handleUpdateRole(res.data);
+      const res = await foodTypeApi.update(editInfo);
+      handleUpdateFoodType(res.data);
       toastSuccess("Thay đổi thông tin thành công");
     } catch (ex) {
       setEditInfoFeedback(ex.response.data);
@@ -87,28 +91,21 @@ const EditRoleModal = ({
   const handleSubmitDelete = async (e) => {
     e.preventDefault();
     try {
-      await roleApi.softDelete(role.id);
-      handleDeleteRole(role.id);
-      toastSuccess("Khóa chức vụ thành công");
+      await foodTypeApi.softDelete(foodType.id);
+      handleDeleteFoodType(foodType.id);
+      toastSuccess("Khóa loại món thành công");
       toggle();
       setConfirmDelete("");
     } catch (ex) {
-      toastError("Khóa chức vụ thất bại: " + ex?.response?.data?.message);
+      toastError("Khóa loại món thất bại: " + ex?.response?.data?.message);
       console.log(ex.response.data);
     }
   };
 
-  const searchFilter = ({ username, fullname, phoneNumber }) => {
-    const keyword = search.toLowerCase();
-    return (
-      username.toLowerCase().indexOf(keyword) !== -1 ||
-      fullname.toLowerCase().indexOf(keyword) !== -1 ||
-      phoneNumber.toLowerCase().indexOf(keyword) !== -1
-    );
-  };
+  const searchFilter = ({ name }) =>
+    name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
 
-  const isMainRole = role?.code !== "MISC";
-  const isNoStaff = staffs.length === 0;
+  const isNoFood = foods.length === 0;
 
   return (
     <Modal
@@ -116,7 +113,7 @@ const EditRoleModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chi tiết chức vụ</ModalCustomHeader>
+      <ModalCustomHeader toggle={toggle}>Chi tiết loại món</ModalCustomHeader>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>
@@ -132,7 +129,7 @@ const EditRoleModal = ({
               className={classnames({ active: activeTab === "2" })}
               onClick={() => toggleTab("2")}
             >
-              Danh sách nhân viên
+              Danh sách món
             </NavLink>
           </NavItem>
           <NavItem>
@@ -140,7 +137,7 @@ const EditRoleModal = ({
               className={classnames({ active: activeTab === "3" })}
               onClick={() => toggleTab("3")}
             >
-              Khóa chức vụ
+              Khóa loại món
             </NavLink>
           </NavItem>
         </Nav>
@@ -152,7 +149,7 @@ const EditRoleModal = ({
                 <Form onSubmit={handleSubmitEditInfo}>
                   <h4>Thông tin chung</h4>
                   <FormGroup>
-                    <Label for="name">Tên chức vụ</Label>
+                    <Label for="name">Tên loại món</Label>
                     <Input
                       required
                       name="name"
@@ -162,9 +159,14 @@ const EditRoleModal = ({
                     />
                     <FormFeedback>{editInfoFeedback.name}</FormFeedback>
                   </FormGroup>
-                  <FormGroup>
-                    <Label for="code">Mã</Label>
-                    <Input disabled name="code" value={editInfo.code} />
+                  <FormGroup check>
+                    <Input
+                      onChange={handleToggleEditInfo}
+                      type="checkbox"
+                      name="refundable"
+                      checked={editInfo.refundable}
+                    />
+                    <Label for="refundable">Được hoàn trả món đã ra</Label>
                   </FormGroup>
                   <Button type="submit" color="warning" block>
                     Cập nhật
@@ -174,11 +176,11 @@ const EditRoleModal = ({
             </Row>
           </TabPane>
 
-          {/* DANH SACH NHAN VIEN CUA CHUC VU */}
+          {/* DANH SACH CAC MON CUA LOAI MON */}
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
-                <h4>Danh sách nhân viên</h4>
+                <h4>Danh sách món</h4>
 
                 <Form onSubmit={(e) => e.preventDefault()}>
                   <FormGroup>
@@ -193,77 +195,65 @@ const EditRoleModal = ({
                 <Table>
                   <thead>
                     <tr>
-                      <th>Tài khoản</th>
-                      <th>Họ và tên</th>
-                      <th>Số điện thoại</th>
-                      <th>Lương/Ca (VND)</th>
+                      <th></th>
+                      <th>Tên món</th>
+                      <th>Giá</th>
+                      <th>Đơn vị</th>
+                      <th>Đang có</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {staffs
+                    {foods
                       .filter(searchFilter)
-                      .map(
-                        ({
-                          id,
-                          username,
-                          fullname,
-                          phoneNumber,
-                          salaryPerShift,
-                        }) => (
-                          <tr key={id}>
-                            <th>{username}</th>
-                            <th>{fullname}</th>
-                            <th>{phoneNumber}</th>
-                            <th>{salaryPerShift}</th>
-                          </tr>
-                        )
-                      )}
+                      .map(({ id, name, price, unit, imageUrl, available }) => (
+                        <tr key={id}>
+                          <th>
+                            <img src={imageUrl} alt="food" height="50" />
+                          </th>
+                          <th>{name}</th>
+                          <th>{price}₫</th>
+                          <th>{unit}</th>
+                          <th>{available ? "Có" : "Hết"}</th>
+                        </tr>
+                      ))}
                   </tbody>
                 </Table>
-                {isNoStaff && (
+                {isNoFood && (
                   <p className="text-center">
-                    Chức vụ hiện chưa có nhân viên nào
+                    Loại món này hiện chưa có món nào
                   </p>
                 )}
               </Col>
             </Row>
           </TabPane>
-          {/* KHOA TAI KHOAN */}
+          {/* KHOA LOAI MON */}
           <TabPane tabId="3">
             <Row>
               <Col sm="12">
-                <h4>Khóa chức vụ</h4>
-                <p>
-                  Chức vụ bị khóa có thể khôi phục ở cuối phần quản lý chức vụ
-                </p>
-                {isMainRole ? (
+                <h4>Khóa loại món</h4>
+                <p>Loại món bị khóa có thể khôi phục ở cuối phần quản lý</p>
+                {!isNoFood && (
                   <p className="text-danger">
-                    Tính năng không áp dụng với các chức vụ chính
+                    Đang tồn tại món ăn trong loại món này, không thể xóa
                   </p>
-                ) : (
-                  !isNoStaff && (
-                    <p className="text-danger">
-                      Đang tồn tại tài khoản với chức vụ này, không thể xóa
-                    </p>
-                  )
                 )}
                 <Form onSubmit={handleSubmitDelete}>
                   <FormGroup>
                     <Label for="confirmDelete">
-                      Nhập <strong>{role.name}</strong> và bấm xác nhận để khóa
-                      chức vụ
+                      Nhập <strong>{foodType.name}</strong> và bấm xác nhận để
+                      khóa
                     </Label>
                     <Input
                       required
-                      disabled={!isNoStaff}
+                      disabled={!isNoFood}
                       onChange={handleChangeConfirmDelete}
                       name="confirmDelete"
                       value={confirmDelete}
-                      placeholder={role.name}
+                      placeholder={foodType.name}
                     />
                   </FormGroup>
                   <Button
-                    disabled={confirmDelete !== role.name || !isNoStaff}
+                    disabled={confirmDelete !== foodType.name || !isNoFood}
                     type="submit"
                     color="danger"
                     block
@@ -280,4 +270,4 @@ const EditRoleModal = ({
   );
 };
 
-export default EditRoleModal;
+export default EditFoodTypeModal;

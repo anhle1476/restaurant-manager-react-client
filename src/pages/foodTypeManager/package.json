@@ -1,0 +1,7 @@
+{
+  "name": "FoodTypeManager",
+  "version": "0.0.0",
+  "private": true,
+  "main": "FoodTypeManager.js",
+  "license": "MIT"
+}
