@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -12,27 +12,24 @@ import { isBeforeThisMonth } from "../../../utils/dateUtils";
 
 import "./CustomCalendar.scss";
 
-const CustomCalendar = () => {
-  const [events, setEvents] = useState([]);
+const CustomCalendar = ({ shifts }) => {
   const [editDate, setEditDate] = useState("");
   const [eventMap, setEventMap] = useState({});
   const [disabledEdit, setDisabledEdit] = useState(false);
+
+  useEffect(() => {
+    if (!shifts.length) return;
+    setEventMap((prevMap) => updateEventMapWithNewShiftsData(prevMap, shifts));
+  }, [shifts]);
 
   const onMonthChange = async (e) => {
     setDisabledEdit(isBeforeThisMonth(e.start));
     try {
       const res = await scheduleApi.getAllByMonth(e.start);
-      updateCalendarEvents(res.data);
+      setEventMap(res.data);
     } catch (ex) {
       toastError("Lấy dữ liệu thất bại, vui lòng thử lại");
     }
-  };
-
-  const updateCalendarEvents = (mapData) => {
-    setEventMap(mapData);
-    setEvents(
-      Object.keys(mapData).map((day) => parseScheduleToEvent(day, mapData[day]))
-    );
   };
 
   const handleDateSelect = (selectInfo) => {
@@ -62,7 +59,7 @@ const CustomCalendar = () => {
     } else {
       newEventMap[scheduleDate] = [...oldScheduleArr, schedule];
     }
-    updateCalendarEvents(newEventMap);
+    setEventMap(newEventMap);
   };
 
   const handleDeleteSchedule = (schedule) => {
@@ -78,8 +75,14 @@ const CustomCalendar = () => {
     } else {
       newEventMap[scheduleDate] = deleteResult;
     }
-    updateCalendarEvents(newEventMap);
+    setEventMap(newEventMap);
   };
+
+  const availableShifts = shifts.filter((shift) => !shift.deleted);
+
+  const events = Object.keys(eventMap).map((day) =>
+    parseScheduleToEvent(day, eventMap[day])
+  );
 
   return (
     <>
@@ -113,7 +116,6 @@ const CustomCalendar = () => {
             eventColor="#5eef3b"
             eventTextColor="#000000"
             eventDisplay="auto"
-            //dayCellClassNames={s.dateCell}
           />
         </div>
       </div>
@@ -123,6 +125,7 @@ const CustomCalendar = () => {
         toggle={toggleShowEdit}
         date={editDate}
         disabledEdit={disabledEdit}
+        shifts={availableShifts}
         schedules={eventMap[editDate]}
         handleEditSchedule={handleEditSchedule}
         handleDeleteSchedule={handleDeleteSchedule}
@@ -147,6 +150,24 @@ function parseScheduleToEvent(date, schedules = []) {
     title: schedules.map((s) => s.shift.name).join(", "),
     start: date,
   };
+}
+
+function updateEventMapWithNewShiftsData(eventMap, shifts) {
+  console.log("update");
+  if (!Object.keys(eventMap).length) return eventMap;
+
+  const shiftLookupMap = {};
+  shifts.forEach((shift) => (shiftLookupMap[shift.id] = shift));
+
+  const updatedEventMap = {};
+  for (let day of Object.keys(eventMap)) {
+    const dayEvents = eventMap[day].map((event) => {
+      const updatedShift = shiftLookupMap[event.shift.id];
+      return updatedShift ? { ...event, shift: updatedShift } : event;
+    });
+    updatedEventMap[day] = dayEvents;
+  }
+  return updatedEventMap;
 }
 
 export default CustomCalendar;

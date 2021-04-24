@@ -19,7 +19,6 @@ import {
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
-import shiftApi from "../../../api/shiftApi";
 import staffApi from "../../../api/staffApi";
 import scheduleApi from "../../../api/scheduleApi";
 import violationApi from "../../../api/violationApi";
@@ -54,48 +53,47 @@ const EditScheduleModal = ({
   toggle,
   date,
   disabledEdit,
+  shifts,
   schedules = [],
   handleEditSchedule,
   handleDeleteSchedule,
 }) => {
-  const [shifts, setShifts] = useState([]);
   const [staffs, setStaffs] = useState([]);
   const [violations, setViolations] = useState([]);
   const [editSchedule, setEditSchedule] = useState(SCHEDULE_SCHEMA);
-  const [addShift, setAddShift] = useState("");
+  const [addScheduleShift, setAddScheduleShift] = useState("");
   const [selectStaff, setSelectStaff] = useState("");
   const [showDelete, setShowDelete] = useState(false);
 
   const displayDate = formatDateStr(date);
 
   useEffect(() => {
-    Promise.all([staffApi.getAll(), shiftApi.getAll(), violationApi.getAll()])
-      .then(([staffsRes, shiftsRes, violationsRes]) => {
+    Promise.all([staffApi.getAll(), violationApi.getAll()])
+      .then(([staffsRes, violationsRes]) => {
         setStaffs(staffsRes.data);
-        setShifts(shiftsRes.data);
         setViolations(violationsRes.data);
       })
       .catch((ex) => {
         toastError("Lấy thông tin thất bại, vui lòng thử lại sau");
-        console.log(ex.response.data);
+        console.log(ex);
       });
   }, []);
 
-  const handleAddShiftChange = ({ target }) => {
-    setAddShift(target.value);
+  const handleAddScheduleShiftChange = ({ target }) => {
+    setAddScheduleShift(target.value);
   };
 
-  const handleShowAddShiftModal = (e) => {
+  const handleShowAddScheduleShiftModal = (e) => {
     e.preventDefault();
     setEditSchedule({
       ...SCHEDULE_SCHEMA,
       date: date,
-      shift: shifts.find((sh) => sh.id === Number(addShift)),
+      shift: shifts.find((sh) => sh.id === Number(addScheduleShift)),
     });
   };
 
   const closeEditSchedule = () => {
-    setAddShift("");
+    setAddScheduleShift("");
     setEditSchedule(SCHEDULE_SCHEMA);
   };
 
@@ -206,13 +204,13 @@ const EditScheduleModal = ({
           className={`bg-white position-relative ${s.detailsContainer}`}
         >
           {!disabledEdit && (
-            <Form inline onSubmit={handleShowAddShiftModal}>
+            <Form inline onSubmit={handleShowAddScheduleShiftModal}>
               <FormGroup>
                 <Input
                   required
                   type="select"
-                  value={addShift}
-                  onChange={handleAddShiftChange}
+                  value={addScheduleShift}
+                  onChange={handleAddScheduleShiftChange}
                 >
                   <option value="" disabled>
                     ---Chọn ca làm---

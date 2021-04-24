@@ -66,7 +66,7 @@ const RoleManager = () => {
             <thead>
               <tr>
                 <th className={s.roleName}>Tên chức vụ</th>
-                <th>Mã</th>
+                <th className={s.roleCode}>Mã</th>
                 <th></th>
               </tr>
             </thead>
@@ -76,7 +76,7 @@ const RoleManager = () => {
                 .map((r) => (
                   <tr key={r.id}>
                     <td className={s.roleName}>{r.name}</td>
-                    <td>{r.code}</td>
+                    <td className={s.roleCode}>{r.code}</td>
                     <td className="d-flex justify-content-end">
                       <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>
@@ -109,7 +109,7 @@ const RoleManager = () => {
             <thead>
               <tr>
                 <th className={s.roleName}>Tên chức vụ</th>
-                <th>Mã</th>
+                <th className={s.roleCode}>Mã</th>
                 <th></th>
               </tr>
             </thead>
@@ -119,7 +119,7 @@ const RoleManager = () => {
                 .map((r) => (
                   <tr key={r.id}>
                     <td className={s.roleName}>{r.name}</td>
-                    <td>{r.code}</td>
+                    <td className={s.roleCode}>{r.code}</td>
                     <td className="d-flex justify-content-end">
                       <Button color="warning" onClick={() => toggleEditRole(r)}>
                         <i className="fa fa-eye"></i>

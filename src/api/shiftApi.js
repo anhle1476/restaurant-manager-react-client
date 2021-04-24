@@ -1,39 +1,44 @@
 import { BASE_URL } from "./constant";
 import axios from "axios";
 
-const ROLES_URL = `${BASE_URL}/shifts`;
+const SHIFTS_URL = `${BASE_URL}/shifts`;
 
 const create = (data) => {
-  return axios.post(ROLES_URL, data);
+  return axios.post(SHIFTS_URL, data);
 };
 
 const getAll = () => {
-  return axios.get(ROLES_URL);
+  return axios.get(SHIFTS_URL);
 };
 
 const getAllDeleted = () => {
-  return axios.get(`${ROLES_URL}?deleted=true`);
+  return axios.get(`${SHIFTS_URL}?deleted=true`);
+};
+
+const getAllWithBothDeletedStatus = () => {
+  return axios.get(`${SHIFTS_URL}?deleted=both`);
 };
 
 const getById = (id) => {
-  return axios.get(`${ROLES_URL}/${id}`);
+  return axios.get(`${SHIFTS_URL}/${id}`);
 };
 
 const update = (data) => {
-  return axios.put(`${ROLES_URL}/${data.id}`, data);
+  return axios.put(`${SHIFTS_URL}/${data.id}`, data);
 };
 
 const softDelete = (id) => {
-  return axios.delete(`${ROLES_URL}/${id}`);
+  return axios.delete(`${SHIFTS_URL}/${id}`);
 };
 
 const restore = (id) => {
-  return axios.post(`${ROLES_URL}/${id}/restore`);
+  return axios.post(`${SHIFTS_URL}/${id}/restore`);
 };
 
 export default {
   getAll,
   getAllDeleted,
+  getAllWithBothDeletedStatus,
   getById,
   update,
   softDelete,

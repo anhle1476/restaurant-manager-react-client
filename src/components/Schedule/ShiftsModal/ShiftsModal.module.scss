@@ -1,0 +1,11 @@
+@import "../../../styles/app";
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    width: 40px;
+    margin-left: 5px;
+  }
+}

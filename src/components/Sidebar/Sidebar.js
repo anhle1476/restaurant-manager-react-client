@@ -143,10 +143,6 @@ class Sidebar extends React.Component {
                     link: "/app/hr/roles",
                   },
                   {
-                    header: "Ca làm",
-                    link: "/app/hr/shifts",
-                  },
-                  {
                     header: "Vi phạm",
                     link: "/app/hr/violations",
                   },
