@@ -20,6 +20,7 @@ import {
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
+import FoodStatusBadge from "../../Food/FoodStatusBadge/FoodStatusBadge";
 
 import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
@@ -195,7 +196,7 @@ const EditFoodTypeModal = ({
                     <tr>
                       <th></th>
                       <th>Tên món</th>
-                      <th>Giá</th>
+                      <th>Giá (₫)</th>
                       <th>Đơn vị</th>
                       <th>Trạng thái</th>
                     </tr>
@@ -209,9 +210,11 @@ const EditFoodTypeModal = ({
                             <img src={imageUrl} alt="food" height="50" />
                           </th>
                           <th>{name}</th>
-                          <th>{price}₫</th>
+                          <th>{price}</th>
                           <th>{unit}</th>
-                          <th>{available ? "Có" : "Hết"}</th>
+                          <th>
+                            <FoodStatusBadge status={available} />
+                          </th>
                         </tr>
                       ))}
                   </tbody>

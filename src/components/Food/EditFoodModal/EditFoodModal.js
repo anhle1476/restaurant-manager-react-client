@@ -18,11 +18,11 @@ import {
   Col,
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import foodTypeApi from "../../../api/foodTypeApi";
 import foodApi from "../../../api/foodApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const EditFoodModal = ({
   show,
@@ -155,7 +155,7 @@ const EditFoodModal = ({
                     required
                     onChange={handleChangeEditInfo}
                     type="number"
-                    label="Giá"
+                    label="Giá (₫)"
                     name="price"
                     value={editInfo.price}
                     feedback={editInfoFeedback.price}

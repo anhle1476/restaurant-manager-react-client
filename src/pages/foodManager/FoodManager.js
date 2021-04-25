@@ -5,6 +5,7 @@ import foodApi from "../../api/foodApi";
 import AddFoodModal from "../../components/Food/AddFoodModal/AddFoodModal";
 import EditFoodModal from "../../components/Food/EditFoodModal/EditFoodModal";
 import RestoreFoodModal from "../../components/Food/RestoreFoodModal/RestoreFoodModal";
+import FoodStatusBadge from "../../components/Food/FoodStatusBadge/FoodStatusBadge";
 
 import CustomTable from "../../components/Table/CustomTable/CustomTable";
 
@@ -58,7 +59,7 @@ const FoodManager = () => {
       accessor: "foodTypeName",
     },
     {
-      Header: "Giá",
+      Header: "Giá (₫)",
       accessor: "price",
     },
     {
@@ -68,7 +69,7 @@ const FoodManager = () => {
     {
       Header: "Trạng thái",
       accessor: "available",
-      Cell: ({ value }) => (value ? "Có" : "Hết"),
+      Cell: ({ value }) => <FoodStatusBadge status={value} />,
     },
     {
       Header: "",

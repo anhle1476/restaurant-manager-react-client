@@ -84,7 +84,7 @@ const RestoreFoodModal = ({ show, toggle, handleRestoreFood }) => {
               <th></th>
               <th>Tên</th>
               <th>Loại món</th>
-              <th>Giá</th>
+              <th>Giá (₫)</th>
               <th>Đơn vị</th>
               <th></th>
             </tr>

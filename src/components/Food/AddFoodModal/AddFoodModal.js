@@ -105,7 +105,7 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
             required
             onChange={handleChange}
             type="number"
-            label="Giá"
+            label="Giá (₫)"
             name="price"
             value={data.price}
             feedback={feedback.price}
