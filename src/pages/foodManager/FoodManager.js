@@ -3,6 +3,8 @@ import { Row, Col, Button } from "reactstrap";
 
 import foodApi from "../../api/foodApi";
 import AddFoodModal from "../../components/Food/AddFoodModal/AddFoodModal";
+import EditFoodModal from "../../components/Food/EditFoodModal/EditFoodModal";
+import RestoreFoodModal from "../../components/Food/RestoreFoodModal/RestoreFoodModal";
 
 import CustomTable from "../../components/Table/CustomTable/CustomTable";
 
@@ -133,18 +135,18 @@ const FoodManager = () => {
         toggle={toggleAddModal}
         handleAddFood={handleAddFood}
       />
-      {/* <EditStaffFood
+      <EditFoodModal
         show={Boolean(editFood.id)}
         toggle={toggleEditModal}
-        staff={editFood}
+        food={editFood}
         handleEditFood={handleEditFood}
         handleDeleteFood={handleDeleteFood}
       />
-      <RestoreStaffModal
+      <RestoreFoodModal
         show={showRestoreModal}
         toggle={toggleRestoreModal}
         handleRestoreFood={handleRestoreFood}
-      ></RestoreStaffModal> */}
+      ></RestoreFoodModal>
     </>
   );
 };

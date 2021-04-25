@@ -197,7 +197,7 @@ const EditFoodTypeModal = ({
                       <th>Tên món</th>
                       <th>Giá</th>
                       <th>Đơn vị</th>
-                      <th>Đang có</th>
+                      <th>Trạng thái</th>
                     </tr>
                   </thead>
                   <tbody>

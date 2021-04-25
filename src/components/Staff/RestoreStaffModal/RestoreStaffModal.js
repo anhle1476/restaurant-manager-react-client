@@ -103,10 +103,13 @@ const RestoreStaffModal = ({ show, toggle, handleRestoreStaff }) => {
                   <p className={s.tableRow}>{d.phoneNumber}</p>
                 </th>
                 <th>
-                  <p className={s.tableRow}>{d.role.name}</p>
+                  <p className={s.tableRow}>
+                    {d.role.name} {d.role.deleted && <i>(Đã khóa)</i>}
+                  </p>
                 </th>
                 <th>
                   <Button
+                    disabled={d.role.deleted}
                     size="sm"
                     color="warning"
                     title="Khôi phục"

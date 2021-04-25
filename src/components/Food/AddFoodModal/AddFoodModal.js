@@ -27,6 +27,7 @@ const ADD_SCHEMA = {
 const AddFoodModal = ({ show, toggle, handleAddFood }) => {
   const [foodTypes, setFoodTypes] = useState([]);
   const [data, setData] = useState(ADD_SCHEMA);
+  const [loading, setLoading] = useState(false);
 
   const [feedback, setFeedback] = useState(INITIAL_FEEDBACK);
 
@@ -42,13 +43,18 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
     fetchData();
   }, []);
 
+  const resetAndDoToggle = () => {
+    setFeedback(INITIAL_FEEDBACK);
+    toggle();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFeedback(INITIAL_FEEDBACK);
+    setLoading(true);
 
-    const foodData = mapFoodData(data);
     try {
-      const res = await foodApi.create(foodData);
+      const res = await foodApi.create(data);
       handleAddFood(res.data);
       toastSuccess("Thêm món thành công");
       toggle();
@@ -56,6 +62,8 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
     } catch (ex) {
       setFeedback({ ...feedback, ...ex.response.data });
       toastError("Đã có lỗi xảy ra, vui lòng thử lại");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,13 +72,26 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
   };
 
   const handleFileChange = ({ target }) => {
-    setData({ ...data, [target.name]: target.files[0] });
+    const file = target.files[0];
+    const name = target.name;
+    if (file.size >= 10485760) {
+      setFeedback({
+        ...feedback,
+        [name]:
+          "Kích thước hình ảnh không được quá 10MB, vui lòng chọn file khác",
+      });
+    } else {
+      setData({ ...data, [name]: file });
+      setFeedback({ ...feedback, [name]: "" });
+    }
   };
 
   return (
-    <Modal isOpen={show} toggle={toggle}>
+    <Modal isOpen={show} toggle={resetAndDoToggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm món ăn</ModalCustomHeader>
+        <ModalCustomHeader toggle={resetAndDoToggle}>
+          Thêm món ăn
+        </ModalCustomHeader>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required
@@ -122,29 +143,24 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
             label="Hình ảnh"
             name="image"
             feedback={feedback.image}
+            accept="image/*"
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="light" onClick={toggle}>
+          <Button disabled={loading} color="light" onClick={resetAndDoToggle}>
             Hủy
           </Button>{" "}
-          <Button color="warning" type="submit">
-            Lưu
+          <Button
+            disabled={loading || Boolean(feedback.image)}
+            color="warning"
+            type="submit"
+          >
+            {loading ? "Đang lưu..." : "Lưu"}
           </Button>
         </ModalFooter>
       </Form>
     </Modal>
   );
-};
-
-const mapFoodData = ({ name, price, unit, foodTypeId, image }) => {
-  const form = new FormData();
-  form.append("name", name);
-  form.append("price", price);
-  form.append("unit", unit);
-  form.append("foodTypeId", foodTypeId);
-  form.append("image", image);
-  return form;
 };
 
 export default AddFoodModal;

@@ -1,6 +1,6 @@
 {
-  "name": "RestoreStaffModal",
+  "name": "RestoreFoodModal",
   "version": "0.0.0",
   "private": true,
-  "main": "./RestoreStaffModal.js"
+  "main": "./RestoreFoodModal.js"
 }

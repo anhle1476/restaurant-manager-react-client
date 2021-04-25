@@ -1,6 +1,6 @@
 {
-  "name": "EditStaffModal",
+  "name": "EditFoodModal",
   "version": "0.0.0",
   "private": true,
-  "main": "./EditStaffModal.js"
+  "main": "./EditFoodModal.js"
 }

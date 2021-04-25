@@ -3,8 +3,18 @@ import axios from "axios";
 
 const FOODS_URL = `${BASE_URL}/foods`;
 
+const mapToFormData = ({ name, price, unit, foodTypeId, image }) => {
+  const form = new FormData();
+  form.append("name", name);
+  form.append("price", price);
+  form.append("unit", unit);
+  form.append("foodTypeId", foodTypeId);
+  if (image) form.append("image", image);
+  return form;
+};
+
 const create = (data) => {
-  return axios.post(FOODS_URL, data);
+  return axios.post(FOODS_URL, mapToFormData(data));
 };
 
 const getAll = () => {
@@ -19,7 +29,7 @@ const getById = (id) => {
 };
 
 const update = (data) => {
-  return axios.put(`${FOODS_URL}/${data.id}`, data);
+  return axios.put(`${FOODS_URL}/${data.id}`, mapToFormData(data));
 };
 
 const softDelete = (id) => {
