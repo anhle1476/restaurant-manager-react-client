@@ -8,7 +8,6 @@ import {
   FormGroup,
   Label,
   Input,
-  FormFeedback,
   Nav,
   NavItem,
   NavLink,
@@ -20,6 +19,7 @@ import {
   Table,
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
@@ -148,17 +148,15 @@ const EditFoodTypeModal = ({
               <Col sm="12">
                 <Form onSubmit={handleSubmitEditInfo}>
                   <h4>Thông tin chung</h4>
-                  <FormGroup>
-                    <Label for="name">Tên loại món</Label>
-                    <Input
-                      required
-                      name="name"
-                      value={editInfo.name}
-                      onChange={handleChangeEditInfo}
-                      invalid={Boolean(editInfoFeedback.name)}
-                    />
-                    <FormFeedback>{editInfoFeedback.name}</FormFeedback>
-                  </FormGroup>
+                  <CustomInputGroup
+                    required
+                    onChange={handleChangeEditInfo}
+                    label="Tên loại món"
+                    name="name"
+                    value={editInfo.name}
+                    feedback={editInfoFeedback.name}
+                  />
+
                   <FormGroup check>
                     <Input
                       onChange={handleToggleEditInfo}

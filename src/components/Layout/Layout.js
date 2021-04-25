@@ -27,6 +27,7 @@ import Schedule from "../../pages/schedule/Schedule";
 import ViolationManager from "../../pages/violationManager/ViolationManager";
 import Salary from "../../pages/salary/Salary";
 import FoodTypeManager from "../../pages/foodTypeManager/FoodTypeManager";
+import FoodManager from "../../pages/foodManager/FoodManager";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -128,6 +129,7 @@ class Layout extends React.Component {
                       path={"/app/menu/food-types"}
                       component={FoodTypeManager}
                     />
+                    <Route path={"/app/menu/foods"} component={FoodManager} />
                     <Route path={"/app/schedule"} component={Schedule} />
                     <Route path={"/app/typography"} component={Typography} />
                     <Route path={"/app/tables"} component={Tables} />

@@ -8,7 +8,6 @@ import {
   FormGroup,
   Label,
   Input,
-  FormFeedback,
   Nav,
   NavItem,
   NavLink,
@@ -20,6 +19,7 @@ import {
   Table,
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import roleApi from "../../../api/roleApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
@@ -151,17 +151,14 @@ const EditRoleModal = ({
               <Col sm="12">
                 <Form onSubmit={handleSubmitEditInfo}>
                   <h4>Thông tin chung</h4>
-                  <FormGroup>
-                    <Label for="name">Tên chức vụ</Label>
-                    <Input
-                      required
-                      name="name"
-                      value={editInfo.name}
-                      onChange={handleChangeEditInfo}
-                      invalid={Boolean(editInfoFeedback.name)}
-                    />
-                    <FormFeedback>{editInfoFeedback.name}</FormFeedback>
-                  </FormGroup>
+                  <CustomInputGroup
+                    required
+                    name="name"
+                    label="Tên chức vụ"
+                    value={editInfo.name}
+                    onChange={handleChangeEditInfo}
+                    feedback={editInfoFeedback.name}
+                  />
                   <FormGroup>
                     <Label for="code">Mã</Label>
                     <Input disabled name="code" value={editInfo.code} />

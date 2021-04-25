@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  Button,
-  FormText,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Form, Button } from "reactstrap";
 
 import roleApi from "../../../api/roleApi";
 import staffApi from "../../../api/staffApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const INITIAL_FEEDBACK = {
   username: "",
@@ -42,7 +32,7 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
   const [roles, setRoles] = useState([]);
   const [data, setData] = useState(ADD_SCHEMA);
 
-  const [feedBack, setFeedBack] = useState(INITIAL_FEEDBACK);
+  const [feedback, setFeedback] = useState(INITIAL_FEEDBACK);
 
   useEffect(() => {
     async function fetchData() {
@@ -59,13 +49,13 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.password !== data.confirmPassword) {
-      setFeedBack({
-        ...feedBack,
+      setFeedback({
+        ...feedback,
         confirmPassword: "Mật khẩu xác nhận không khớp",
       });
       return;
     }
-    setFeedBack(INITIAL_FEEDBACK);
+    setFeedback(INITIAL_FEEDBACK);
 
     const staffData = mapStaffData(data, roles);
     console.log(staffData);
@@ -76,7 +66,7 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
       toggle();
       setData(ADD_SCHEMA);
     } catch (ex) {
-      setFeedBack({ ...feedBack, ...ex.response.data });
+      setFeedback({ ...feedback, ...ex.response.data });
       toastError("Đã có lỗi xảy ra, vui lòng thử lại");
     }
   };
@@ -90,101 +80,80 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
       <Form onSubmit={handleSubmit}>
         <ModalCustomHeader toggle={toggle}>Thêm nhân viên</ModalCustomHeader>
         <ModalBody className="bg-white">
-          <FormGroup>
-            <Label for="username">Tên tài khoản</Label>
-            <Input
-              required
-              onChange={handleChange}
-              name="username"
-              value={data.username}
-              invalid={feedBack.username !== ""}
-            />
-            <FormFeedback>{feedBack.username}</FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="password">Mật khẩu</Label>
-            <Input
-              required
-              onChange={handleChange}
-              name="password"
-              type="password"
-              value={data.password}
-              invalid={feedBack.password !== ""}
-            />
-            <FormFeedback>{feedBack.password}</FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="confirmPassword">Xác nhận mật khẩu</Label>
-            <Input
-              required
-              onChange={handleChange}
-              name="confirmPassword"
-              type="password"
-              value={data.confirmPassword}
-              invalid={feedBack.confirmPassword !== ""}
-            />
-            <FormFeedback>{feedBack.confirmPassword}</FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="fullname">Họ và tên</Label>
-            <Input
-              required
-              onChange={handleChange}
-              name="fullname"
-              value={data.fullname}
-              invalid={feedBack.fullname !== ""}
-            />
-            <FormFeedback>{feedBack.fullname}</FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="phoneNumber">Số điện thoại</Label>
-            <Input
-              required
-              onChange={handleChange}
-              name="phoneNumber"
-              value={data.phoneNumber}
-              invalid={feedBack.phoneNumber !== ""}
-            />
-            <FormFeedback>{feedBack.phoneNumber}</FormFeedback>
-          </FormGroup>
-          <FormGroup>
-            <Label for="role">Chức vụ</Label>
-            <Input
-              required
-              type="select"
-              onChange={handleChange}
-              name="role"
-              value={data.role}
-              invalid={feedBack.role !== ""}
-            >
-              <option disabled value="">
-                --- Chọn chức vụ ---
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Tên tài khoản"
+            name="username"
+            value={data.username}
+            feedback={feedback.username}
+          />
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Mật khẩu"
+            type="password"
+            name="password"
+            value={data.password}
+            feedback={feedback.password}
+          />
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Xác nhận mật khẩu"
+            type="password"
+            name="confirmPassword"
+            value={data.confirmPassword}
+            feedback={feedback.confirmPassword}
+          />
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Họ và tên"
+            name="fullname"
+            value={data.fullname}
+            feedback={feedback.fullname}
+          />
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Số điện thoại"
+            name="phoneNumber"
+            value={data.phoneNumber}
+            feedback={feedback.phoneNumber}
+          />
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            label="Chức vụ"
+            type="select"
+            name="role"
+            value={data.role}
+            feedback={feedback.role}
+          >
+            <option disabled value="">
+              --- Chọn chức vụ ---
+            </option>
+            {roles.map((role) => (
+              <option key={role.id} value={role.id}>
+                {role.name}
               </option>
-              {roles.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.name}
-                </option>
-              ))}
-            </Input>
-            <FormFeedback>{feedBack.role}</FormFeedback>
-            {data.role === "1" && (
-              <FormText>Chức vụ này có quyền ADMIN</FormText>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label for="salaryPerShift">Lương/Ca</Label>
-            <Input
-              required
-              onChange={handleChange}
-              type="number"
-              name="salaryPerShift"
-              min="0"
-              max="20000000"
-              value={data.salaryPerShift}
-              invalid={feedBack.salaryPerShift !== ""}
-            />
-            <FormFeedback>{feedBack.salaryPerShift}</FormFeedback>
-          </FormGroup>
+            ))}
+          </CustomInputGroup>
+          {data.role === "1" && (
+            <p className="text-danger">* Chức vụ này có quyền ADMIN</p>
+          )}
+          <CustomInputGroup
+            required
+            onChange={handleChange}
+            type="number"
+            label="Lương/Ca"
+            name="salaryPerShift"
+            min="0"
+            max="20000000"
+            value={data.salaryPerShift}
+            feedback={feedback.salaryPerShift}
+          />
         </ModalBody>
         <ModalFooter>
           <Button color="light" onClick={toggle}>

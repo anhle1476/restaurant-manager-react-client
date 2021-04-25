@@ -1,0 +1,6 @@
+{
+  "name": "AddFoodModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AddFoodModal.js"
+}

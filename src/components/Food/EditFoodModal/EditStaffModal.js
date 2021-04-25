@@ -8,6 +8,7 @@ import {
   FormGroup,
   Label,
   Input,
+  FormFeedback,
   Nav,
   NavItem,
   NavLink,
@@ -16,13 +17,13 @@ import {
   Button,
   Row,
   Col,
+  FormText,
 } from "reactstrap";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import roleApi from "../../../api/roleApi";
 import staffApi from "../../../api/staffApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const REISSUE_PASSWORD_SCHEMA = {
   newPassword: "",
@@ -170,65 +171,77 @@ const EditStaffModal = ({
               <Col sm="12">
                 <Form onSubmit={handleSubmitEditInfo}>
                   <h4>Thông tin chung</h4>
-
-                  <CustomInputGroup
-                    required
-                    disabled
-                    onChange={handleChangeEditInfo}
-                    label="Tên tài khoản"
-                    name="username"
-                    value={editInfo.username}
-                    feedback={editInfoFeedback.username}
-                  />
-                  <CustomInputGroup
-                    required
-                    onChange={handleChangeEditInfo}
-                    label="Họ và tên"
-                    name="fullname"
-                    value={editInfo.fullname}
-                    feedback={editInfoFeedback.fullname}
-                  />
-                  <CustomInputGroup
-                    required
-                    onChange={handleChangeEditInfo}
-                    label="Số điện thoại"
-                    name="phoneNumber"
-                    value={editInfo.phoneNumber}
-                    feedback={editInfoFeedback.phoneNumber}
-                  />
-                  <CustomInputGroup
-                    required
-                    onChange={handleChangeEditInfo}
-                    label="Chức vụ"
-                    type="select"
-                    name="role"
-                    value={editInfo.role}
-                    feedback={editInfoFeedback.role}
-                  >
-                    <option disabled value="">
-                      --- Chọn chức vụ ---
-                    </option>
-                    {roles.map((role) => (
-                      <option key={role.id} value={role.id}>
-                        {role.name}
+                  <FormGroup>
+                    <Label for="username">Tên tài khoản</Label>
+                    <Input
+                      disabled
+                      required
+                      name="username"
+                      value={editInfo.username}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="fullname">Họ và tên</Label>
+                    <Input
+                      required
+                      onChange={handleChangeEditInfo}
+                      name="fullname"
+                      value={editInfo.fullname}
+                      invalid={Boolean(editInfoFeedback.fullname)}
+                    />
+                    <FormFeedback>{editInfoFeedback.fullname}</FormFeedback>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="phoneNumber">Số điện thoại</Label>
+                    <Input
+                      required
+                      onChange={handleChangeEditInfo}
+                      name="phoneNumber"
+                      value={editInfo.phoneNumber}
+                      invalid={Boolean(editInfoFeedback.phoneNumber)}
+                    />
+                    <FormFeedback>{editInfoFeedback.phoneNumber}</FormFeedback>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="role">Chức vụ</Label>
+                    <Input
+                      required
+                      type="select"
+                      onChange={handleChangeEditInfo}
+                      name="role"
+                      value={editInfo.role}
+                      invalid={Boolean(editInfoFeedback.role)}
+                    >
+                      <option disabled value="">
+                        --- Chọn chức vụ ---
                       </option>
-                    ))}
-                  </CustomInputGroup>
-                  {editInfo.role === "1" && (
-                    <p className="text-danger">* Chức vụ này có quyền ADMIN</p>
-                  )}
-                  <CustomInputGroup
-                    required
-                    onChange={handleChangeEditInfo}
-                    type="number"
-                    label="Lương/Ca"
-                    name="salaryPerShift"
-                    min="0"
-                    max="20000000"
-                    value={editInfo.salaryPerShift}
-                    feedback={editInfoFeedback.salaryPerShift}
-                  />
-
+                      {roles.map((role) => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </Input>
+                    <FormFeedback>{editInfoFeedback.role}</FormFeedback>
+                    {editInfo.role === "1" && (
+                      <FormText>Chức vụ này có quyền ADMIN</FormText>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="salaryPerShift">Lương/Ca</Label>
+                    <Input
+                      required
+                      onChange={handleChangeEditInfo}
+                      type="number"
+                      name="salaryPerShift"
+                      min="0"
+                      max="20000000"
+                      value={editInfo.salaryPerShift}
+                      invalid={Boolean(editInfoFeedback.salaryPerShift)}
+                    />
+                    <FormFeedback>
+                      {editInfoFeedback.salaryPerShift}
+                    </FormFeedback>
+                  </FormGroup>
                   <Button type="submit" color="warning" block>
                     Cập nhật
                   </Button>
@@ -249,28 +262,36 @@ const EditStaffModal = ({
                     </p>
                   )}
 
-                  <CustomInputGroup
-                    required
-                    disabled={isAdmin}
-                    onChange={handleChangeReissuePassword}
-                    label="Mật khẩu mới"
-                    name="newPassword"
-                    type="password"
-                    value={reissuePassword.newPassword}
-                    feedback={reissuePasswordFeedback.newPassword}
-                  />
-
-                  <CustomInputGroup
-                    required
-                    disabled={isAdmin}
-                    onChange={handleChangeReissuePassword}
-                    label="Xác nhận mật khẩu"
-                    name="confirmPassword"
-                    type="password"
-                    value={reissuePassword.confirmPassword}
-                    feedback={reissuePasswordFeedback.confirmPassword}
-                  />
-
+                  <FormGroup>
+                    <Label for="newPassword">Mật khẩu mới</Label>
+                    <Input
+                      required
+                      disabled={isAdmin}
+                      onChange={handleChangeReissuePassword}
+                      name="newPassword"
+                      type="password"
+                      value={reissuePassword.newPassword}
+                      invalid={Boolean(reissuePasswordFeedback.newPassword)}
+                    />
+                    <FormFeedback>
+                      {reissuePasswordFeedback.newPassword}
+                    </FormFeedback>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="confirmPassword">Xác nhận mật khẩu</Label>
+                    <Input
+                      required
+                      disabled={isAdmin}
+                      onChange={handleChangeReissuePassword}
+                      name="confirmPassword"
+                      type="password"
+                      value={reissuePassword.confirmPassword}
+                      invalid={Boolean(reissuePasswordFeedback.confirmPassword)}
+                    />
+                    <FormFeedback>
+                      {reissuePasswordFeedback.confirmPassword}
+                    </FormFeedback>
+                  </FormGroup>
                   <Button disabled={isAdmin} type="submit" color="danger" block>
                     Xác nhận cấp lại mật khẩu
                   </Button>

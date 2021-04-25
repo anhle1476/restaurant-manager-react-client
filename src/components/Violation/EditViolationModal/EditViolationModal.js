@@ -8,7 +8,6 @@ import {
   FormGroup,
   Label,
   Input,
-  FormFeedback,
   Nav,
   NavItem,
   NavLink,
@@ -22,6 +21,7 @@ import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const EDIT_INFO_SCHEMA = { id: 0, name: "", finesPercent: 0 };
 const EDIT_INFO_FEEDBACK_SCHEMA = { name: "", finesPercent: "" };
@@ -121,32 +121,27 @@ const EditViolationModal = ({
               <Col sm="12">
                 <Form onSubmit={handleSubmitEditInfo}>
                   <h4>Thông tin chung</h4>
-                  <FormGroup>
-                    <Label for="name">Tên chức vụ</Label>
-                    <Input
-                      required
-                      name="name"
-                      value={editInfo.name}
-                      onChange={handleChangeEditInfo}
-                      invalid={Boolean(editInfoFeedback.name)}
-                    />
-                    <FormFeedback>{editInfoFeedback.name}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="finesPercent">Mức phạt theo ca (%)</Label>
-                    <Input
-                      required
-                      type="number"
-                      min="0"
-                      max="100"
-                      step="1"
-                      name="finesPercent"
-                      value={editInfo.finesPercent}
-                      onChange={handleChangeEditInfo}
-                      invalid={Boolean(editInfoFeedback.finesPercent)}
-                    />
-                    <FormFeedback>{editInfoFeedback.finesPercent}</FormFeedback>
-                  </FormGroup>
+                  <CustomInputGroup
+                    required
+                    onChange={handleChangeEditInfo}
+                    label="Tên vi phạm"
+                    name="name"
+                    value={editInfo.name}
+                    feedback={editInfoFeedback.name}
+                  />
+                  <CustomInputGroup
+                    required
+                    onChange={handleChangeEditInfo}
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    label="Mức phạt theo ca (%)"
+                    name="finesPercent"
+                    value={editInfo.finesPercent}
+                    feedback={editInfoFeedback.finesPercent}
+                  />
+
                   <Button type="submit" color="warning" block>
                     Cập nhật
                   </Button>

@@ -3,8 +3,6 @@ import { Row, Col, Button } from "reactstrap";
 
 import staffApi from "../../api/staffApi";
 
-//import s from "./StaffManager.module.scss";
-
 import CustomTable from "../../components/Table/CustomTable/CustomTable";
 import AddStaffModal from "../../components/Staff/AddStaffModal/AddStaffModal";
 import EditStaffModal from "../../components/Staff/EditStaffModal/EditStaffModal";
