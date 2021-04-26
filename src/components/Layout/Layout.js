@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Switch, Route, withRouter, Redirect } from "react-router";
+import { Switch, Route, withRouter } from "react-router";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Hammer from "rc-hammerjs";
 
@@ -28,6 +28,8 @@ import ViolationManager from "../../pages/violationManager/ViolationManager";
 import Salary from "../../pages/salary/Salary";
 import FoodTypeManager from "../../pages/foodTypeManager/FoodTypeManager";
 import FoodManager from "../../pages/foodManager/FoodManager";
+import CashierView from "../../pages/cashierView/CashierView";
+import ChefView from "../../pages/chefView/ChefView";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -90,6 +92,9 @@ class Layout extends React.Component {
   }
 
   render() {
+    const pathname = this.props.location.pathname;
+    if (pathname === "/app/cashier-view") return <CashierView />;
+    if (pathname === "/app/chef-view") return <ChefView />;
     return (
       <div
         className={[
@@ -113,11 +118,7 @@ class Layout extends React.Component {
                   timeout={200}
                 >
                   <Switch>
-                    <Route
-                      path="/app/main"
-                      render={() => <Redirect to="/app/main/dashboard" />}
-                    />
-                    <Route path="/app/main/dashboard" component={Dashboard} />
+                    <Route path="/app/dashboard" component={Dashboard} />
                     <Route path="/app/salaries" component={Salary} />
                     <Route path={"/app/hr/staffs"} component={StaffManager} />
                     <Route path={"/app/hr/roles"} component={RoleManager} />

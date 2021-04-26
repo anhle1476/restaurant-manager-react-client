@@ -1,0 +1,20 @@
+@import "../../styles/app";
+
+.view-container {
+  display: flex;
+  flex-direction: column;
+  height: 95vh;
+
+  .main-view {
+    flex-grow: 1;
+
+    > div,
+    .tab-content {
+      height: 100%;
+    }
+  }
+}
+
+.order-container {
+  height: 100%;
+}

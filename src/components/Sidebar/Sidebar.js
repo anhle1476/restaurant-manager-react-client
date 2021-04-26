@@ -85,7 +85,7 @@ class Sidebar extends React.Component {
                 activeItem={this.props.activeItem}
                 header="Dashboard"
                 isHeader
-                link="/app/main/dashboard"
+                link="/app/dashboard"
                 index="main"
               >
                 <img
@@ -187,7 +187,7 @@ class Sidebar extends React.Component {
                 activeItem={this.props.activeItem}
                 header="Màn hình thu ngân"
                 isHeader
-                link="/app/typography"
+                link="/app/cashier-view"
                 index="main"
               >
                 <img
@@ -229,7 +229,7 @@ class Sidebar extends React.Component {
                 activeItem={this.props.activeItem}
                 header="Màn hình bếp"
                 isHeader
-                link="/app/typography"
+                link="/app/chef-view"
                 index="main"
               >
                 <img

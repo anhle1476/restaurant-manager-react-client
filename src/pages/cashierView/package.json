@@ -1,0 +1,7 @@
+{
+  "name": "CashierView",
+  "version": "0.0.0",
+  "private": true,
+  "main": "CashierView.js",
+  "license": "MIT"
+}
