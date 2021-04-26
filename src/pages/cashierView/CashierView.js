@@ -13,18 +13,33 @@ import {
 } from "reactstrap";
 
 import "./CashierView.scss";
+import tableApi from "../../api/tableApi";
+import foodApi from "../../api/foodApi";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
+import MenuView from "../../components/Cashier/MenuView/MenuView";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
+
+  const [tables, setTables] = useState([]);
+  const [foods, setFoods] = useState([]);
+
+  useEffect(() => {
+    Promise.all([tableApi.getAll(), foodApi.getAll()]).then(
+      ([tableRes, foodRes]) => {
+        setTables(tableRes.data);
+        setFoods(foodRes.data);
+      }
+    );
+  }, []);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   return (
-    <div className="p-3 view-container">
-      <Row>
+    <div className="px-3 view-container">
+      <Row className="py-2">
         <Col className="d-flex justify-content-between">
           <Link to="/app/dashboard">❮ Trở về</Link>
           <h4>Màn hình thu ngân</h4>
@@ -70,8 +85,8 @@ const CashierView = () => {
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
               <Row>
-                <Col sm="12">
-                  <TableAndArea />
+                <Col>
+                  <TableAndArea tables={tables} />
                 </Col>
               </Row>
             </TabPane>
@@ -79,15 +94,15 @@ const CashierView = () => {
             {/* MENU */}
             <TabPane tabId="2">
               <Row>
-                <Col sm="12">
-                  <h2>Menu</h2>
+                <Col>
+                  <MenuView foods={foods} />
                 </Col>
               </Row>
             </TabPane>
             {/* RESERVING ORDERS */}
             <TabPane tabId="3">
               <Row>
-                <Col sm="12">
+                <Col>
                   <h2>reserving</h2>
                 </Col>
               </Row>
@@ -95,7 +110,7 @@ const CashierView = () => {
             {/* BILLS */}
             <TabPane tabId="4">
               <Row>
-                <Col sm="12">
+                <Col>
                   <h2>bills</h2>
                 </Col>
               </Row>

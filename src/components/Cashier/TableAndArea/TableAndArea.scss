@@ -1,17 +1,5 @@
 @import "../../../styles/app";
 
-.area-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .area-scrollable {
-    flex-grow: 1;
-    overflow-x: hidden;
-    overflow-y: scroll;
-  }
-}
-
 .table-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

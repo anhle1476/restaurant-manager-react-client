@@ -1,0 +1,45 @@
+@import "../../../styles/app";
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+
+  .menu-search-form {
+    > div {
+      padding: 0;
+    }
+
+    .form-group {
+      width: 100%;
+      display: flex;
+      justify-content: end;
+      .form-control {
+        max-width: 140px;
+      }
+
+      @media (max-width: 700px) {
+        .form-control {
+          max-width: 100px;
+        }
+      }
+    }
+  }
+}
+
+.food-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+
+  .food-display {
+    border-radius: 5px;
+    background-color: gray;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: multiply;
+    height: 100px;
+    color: white;
+    font-weight: bold;
+  }
+}
