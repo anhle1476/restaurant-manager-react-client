@@ -1,0 +1,6 @@
+{
+  "name": "AddTableModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./AddTableModal.js"
+}

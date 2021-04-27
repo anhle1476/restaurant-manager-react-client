@@ -3,9 +3,13 @@ import { Badge } from "reactstrap";
 
 const FoodStatusBadge = ({ status }) => {
   return status ? (
-    <Badge color="success"> Có sẵn </Badge>
+    <Badge className="food-status" color="success">
+      Có sẵn
+    </Badge>
   ) : (
-    <Badge color="danger"> Hết hàng </Badge>
+    <Badge className="food-status" color="danger">
+      Hết hàng
+    </Badge>
   );
 };
 

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Input, Row, Col } from "reactstrap";
 
+import FoodDisplay from "./FoodDisplay/FoodDisplay";
+
 import foodTypeApi from "../../../api/foodTypeApi";
 
 import "./MenuView.scss";
 
 const MenuView = ({ foods }) => {
   const [foodTypes, setFoodTypes] = useState([]);
+  const [foodSearch, setFoodSearch] = useState({ name: "", type: "" });
 
   useEffect(() => {
     const doFetch = async () => {
@@ -15,6 +18,17 @@ const MenuView = ({ foods }) => {
     };
     doFetch();
   }, []);
+
+  const handleFoodSearch = ({ target }) => {
+    setFoodSearch({ ...foodSearch, [target.name]: target.value });
+  };
+
+  const foodSearchFilter = (food) => {
+    return (
+      food.name.toLowerCase().indexOf(foodSearch.name.toLowerCase()) !== -1 &&
+      (!foodSearch.type || food.foodType.id === Number(foodSearch.type))
+    );
+  };
 
   return (
     <div className="flex-container">
@@ -30,9 +44,19 @@ const MenuView = ({ foods }) => {
               onSubmit={(e) => e.preventDefault()}
             >
               <FormGroup>
-                <Input placeholder="Tên món..." />
-                <Input type="select">
-                  <option value="">Tất cả loại món</option>
+                <Input
+                  name="name"
+                  onChange={handleFoodSearch}
+                  value={foodSearch.name}
+                  placeholder="Tên món..."
+                />
+                <Input
+                  name="type"
+                  onChange={handleFoodSearch}
+                  value={foodSearch.type}
+                  type="select"
+                >
+                  <option value="">Tất cả</option>
                   {foodTypes.map(({ id, name }) => (
                     <option key={id} value={id}>
                       {name}
@@ -45,17 +69,9 @@ const MenuView = ({ foods }) => {
         </Row>
       </div>
       <div className="flex-scrollable food-container">
-        {/* <div className="food-container"> */}
-        {foods.map((food, i) => (
-          <div
-            className="food-display"
-            key={i}
-            style={{ backgroundImage: `url("${food.imageUrl}")` }}
-          >
-            {food.name}
-          </div>
+        {foods.filter(foodSearchFilter).map((food) => (
+          <FoodDisplay key={food.id} food={food} />
         ))}
-        {/* </div> */}
       </div>
     </div>
   );

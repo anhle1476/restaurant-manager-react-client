@@ -1,0 +1,6 @@
+{
+  "name": "FoodDisplay",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./FoodDisplay.js"
+}

@@ -29,6 +29,30 @@
     height: calc(100vh - 200px);
     overflow-x: hidden;
     overflow-y: auto;
+    position: relative;
+    padding-bottom: 50px;
+
+    .bottom-options {
+      position: absolute;
+      bottom: 3px;
+      left: 3px;
+      right: 3px;
+      padding: 5px;
+      background-color: rgba(255, 255, 255, 0.76);
+      opacity: 0.9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      .btn {
+        box-shadow: 0 2.6px 5.3px rgba(0, 0, 0, 0.028),
+          0 8.7px 17.9px rgba(0, 0, 0, 0.042), 0 39px 80px rgba(0, 0, 0, 0.07);
+      }
+    }
   }
 }
 

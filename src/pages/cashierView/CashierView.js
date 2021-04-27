@@ -37,6 +37,10 @@ const CashierView = () => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const handleAddTable = (newTable) => {
+    setTables([...tables, newTable]);
+  };
+
   return (
     <div className="px-3 view-container">
       <Row className="py-2">
@@ -86,7 +90,10 @@ const CashierView = () => {
             <TabPane tabId="1">
               <Row>
                 <Col>
-                  <TableAndArea tables={tables} />
+                  <TableAndArea
+                    handleAddTable={handleAddTable}
+                    tables={tables}
+                  />
                 </Col>
               </Row>
             </TabPane>

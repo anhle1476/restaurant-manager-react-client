@@ -1,0 +1,46 @@
+@import "../../../../styles/app";
+
+.food-display {
+  border-radius: 5px;
+  border: 2px solid $success;
+  height: 130px;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+
+  .food-image {
+    height: 100px;
+    border-radius: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    .food-status {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+    }
+
+    .food-price {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(128, 128, 128, 0.808);
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  .food-name {
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.food-disabled {
+    opacity: 0.8;
+    cursor: default;
+    border: 2px solid $danger;
+  }
+}
