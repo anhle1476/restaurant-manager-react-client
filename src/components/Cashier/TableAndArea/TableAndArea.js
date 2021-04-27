@@ -32,7 +32,7 @@ const TableAndArea = ({
   const [areas, setAreas] = useState([]);
   const [currentArea, setCurrentArea] = useState({});
   const [showModal, setShowModal] = useState(MODAL_SCHEMA);
-  const [areaSearch, setAreaSearch] = useState("");
+  const [search, setSearch] = useState({ area: "", table: "" });
 
   useEffect(() => {
     const doFetch = async () => {
@@ -51,8 +51,8 @@ const TableAndArea = ({
     setCurrentArea(area);
   };
 
-  const handleAreaSearch = (e) => {
-    setAreaSearch(e.target.value);
+  const handleSearch = ({ target }) => {
+    setSearch({ ...search, [target.name]: target.value });
   };
 
   const toggleModal = (modal) => {
@@ -76,9 +76,11 @@ const TableAndArea = ({
   };
 
   const areaSearchFilter = (area) =>
-    area.name.toLowerCase().indexOf(areaSearch.toLowerCase()) !== -1;
+    area.name.toLowerCase().indexOf(search.area.toLowerCase()) !== -1;
 
-  const tableInCurrentAreaFilter = (table) => table.area.id === currentArea.id;
+  const tableFilter = ({ area, name }) =>
+    area.id === currentArea.id &&
+    name.toLowerCase().indexOf(search.table.toLowerCase()) !== -1;
 
   const hasTablesInCurrentArea =
     currentArea.id && tables.some((table) => table.area.id === currentArea.id);
@@ -95,9 +97,10 @@ const TableAndArea = ({
             <Form onSubmit={(e) => e.preventDefault()}>
               <FormGroup>
                 <Input
-                  value={areaSearch}
-                  onChange={handleAreaSearch}
+                  value={search.area}
+                  onChange={handleSearch}
                   type="search"
+                  name="area"
                   placeholder="Tìm khu vực..."
                 />
               </FormGroup>
@@ -131,24 +134,42 @@ const TableAndArea = ({
               color="info"
               onClick={() => toggleModal("RESTORE_AREA")}
             >
-              Đã khóa
+              Khu vực đã khóa
             </Button>
           </div>
         </Col>
         {/* TABLE LIST */}
         <Col className="px-3 flex-container" xs="9">
           <div className="flex-header">
-            <h4>{currentArea.name}</h4>
-            <Button color="warning" onClick={() => toggleModal("EDIT_AREA")}>
-              <i className="fa fa-pencil"></i>
-            </Button>
+            <div className="d-flex align-items-center">
+              <h4 className="mb-0 mr-2">{currentArea.name}</h4>
+              <Button
+                size="sm"
+                color="warning"
+                onClick={() => toggleModal("EDIT_AREA")}
+              >
+                <i className="fa fa-pencil"></i>
+              </Button>
+            </div>
+            <Form className="mw-50" onSubmit={(e) => e.preventDefault()}>
+              <FormGroup>
+                <Input
+                  value={search.table}
+                  onChange={handleSearch}
+                  type="search"
+                  name="table"
+                  placeholder="Tìm bàn..."
+                />
+              </FormGroup>
+            </Form>
           </div>
           <div className="flex-body">
             <div className="flex-scrollable table-container">
-              {tables.filter(tableInCurrentAreaFilter).map((table, i) => (
+              {tables.filter(tableFilter).map((table, i) => (
                 <TableDisplay
                   onClick={() => handleSelectTable(table)}
                   key={i}
+                  current={table.id === currentTable.id}
                   table={table}
                 />
               ))}
