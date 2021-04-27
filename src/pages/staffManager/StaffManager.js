@@ -9,6 +9,7 @@ import EditStaffModal from "../../components/Staff/EditStaffModal/EditStaffModal
 import RestoreStaffModal from "../../components/Staff/RestoreStaffModal/RestoreStaffModal";
 
 import { toastError } from "../../utils/toastUtils";
+import { formatVnd } from "../../utils/moneyUtils";
 
 const STAFF_SCHEMA = {
   id: 0,
@@ -63,6 +64,7 @@ const StaffManager = () => {
     {
       Header: "Lương/Ca",
       accessor: "salaryPerShift",
+      Cell: ({ value }) => formatVnd(value),
     },
     {
       Header: "",

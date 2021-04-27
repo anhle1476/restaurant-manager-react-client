@@ -29,6 +29,12 @@
   }
 }
 
+@media screen and (max-width: 750px) {
+  .view-container {
+    overflow: auto;
+  }
+}
+
 .flex-container {
   height: 100%;
   display: flex;
@@ -47,15 +53,15 @@
     overflow: hidden;
     .flex-scrollable {
       min-height: 20px;
-      max-height: calc(100vh - 200px);
+      max-height: calc(100vh - 270px);
       overflow-x: hidden;
       overflow-y: auto;
     }
   }
 
   .flex-footer {
-    max-height: 100px;
     height: 50px;
+    padding-bottom: 10px;
     background-color: rgba(255, 255, 255, 0.76);
     opacity: 0.9;
     display: flex;

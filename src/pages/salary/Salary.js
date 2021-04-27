@@ -7,6 +7,7 @@ import salaryApi from "../../api/salaryApi";
 
 import { toastError } from "../../utils/toastUtils";
 import SalaryDetailModal from "../../components/Salary/SalaryDetailModal/SalaryDetailModal";
+import { formatVnd } from "../../utils/moneyUtils";
 
 const CURRENT_YEAR_MONTH = {
   year: String(new Date().getFullYear()),
@@ -55,8 +56,9 @@ const Salary = () => {
       accessor: "numberOfViolations",
     },
     {
-      Header: "Lương (₫)",
+      Header: "Lương",
       accessor: "salary",
+      Cell: ({ value }) => formatVnd(value),
     },
     {
       Header: "",

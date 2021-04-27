@@ -7,6 +7,7 @@ import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 import s from "./SalaryDetailModal.module.scss";
 
 import { formatMonthStr } from "../../../utils/dateUtils";
+import { formatVnd } from "../../../utils/moneyUtils";
 
 const SalaryDetailModal = ({ show, toggle, details }) => {
   const {
@@ -20,6 +21,13 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
   } = details;
 
   const hasViolations = Boolean(violationDetails) && violationDetails?.length;
+
+  const totalFinesAmount = hasViolations
+    ? violationDetails.reduce(
+        (acc, v) => acc + violationMoneyCalc(v, currentSalaryPerShift),
+        0
+      )
+    : 0;
 
   return (
     <Modal isOpen={show} toggle={toggle}>
@@ -53,7 +61,7 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
               <h5>Chi tiết lương</h5>
               <div>
                 <span>Lương mỗi ca:</span>
-                <span>{currentSalaryPerShift}₫</span>
+                <span>{formatVnd(currentSalaryPerShift)}</span>
               </div>
               <div>
                 <span>Số ca:</span>
@@ -90,7 +98,9 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
                         </td>
                         <td>
                           <p className={s.tableRowRight}>
-                            {violationMoneyCalc(d, currentSalaryPerShift)}₫
+                            {formatVnd(
+                              violationMoneyCalc(d, currentSalaryPerShift)
+                            )}
                           </p>
                         </td>
                       </tr>
@@ -111,20 +121,11 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
             <Col className={s.modalInfo}>
               <div>
                 <span>Lương tháng:</span>
-                <span>{numberOfShift * currentSalaryPerShift}₫</span>
+                <span>{formatVnd(numberOfShift * currentSalaryPerShift)}</span>
               </div>
               <div>
                 <span>Tiền phạt:</span>
-                <span>
-                  {hasViolations
-                    ? violationDetails.reduce(
-                        (acc, v) =>
-                          acc + violationMoneyCalc(v, currentSalaryPerShift),
-                        0
-                      )
-                    : 0}
-                  ₫
-                </span>
+                <span>{formatVnd(totalFinesAmount)}</span>
               </div>
             </Col>
           </Row>
@@ -133,7 +134,7 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
             <Col className={s.modalInfo}>
               <div>
                 <strong>Tổng lương:</strong>
-                <span>{salary}₫</span>
+                <span>{formatVnd(salary)}</span>
               </div>
               <br />
               <div>

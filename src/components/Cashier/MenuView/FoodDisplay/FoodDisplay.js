@@ -3,21 +3,26 @@ import React from "react";
 import FoodStatusBadge from "../../../Food/FoodStatusBadge/FoodStatusBadge";
 
 import "./FoodDisplay.scss";
+import { formatVnd } from "../../../../utils/moneyUtils";
 
 const FoodDisplay = ({ food: { name, imageUrl, available, price } }) => {
   const displayName = name.length > 15 ? name.slice(0, 15) + "..." : name;
 
+  const priceDisplay = formatVnd(price);
+
+  const title = `${name} (${priceDisplay})`;
+
   return (
-    <div className="food-display">
+    <div className="food-display" title={title}>
       <div
         className="food-image"
         style={{ backgroundImage: `url("${imageUrl}")` }}
       >
-        <span className="food-price">{price}₫</span>
+        <span className="food-price">{priceDisplay}</span>
         <FoodStatusBadge status={available} />
       </div>
       <div className="food-name">
-        <p title={name}>{displayName}</p>
+        <p>{displayName}</p>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import FoodStatusBadge from "../../components/Food/FoodStatusBadge/FoodStatusBad
 import CustomTable from "../../components/Table/CustomTable/CustomTable";
 
 import { toastError } from "../../utils/toastUtils";
+import { formatVnd } from "../../utils/moneyUtils";
 
 const FOOD_SCHEMA = {
   id: 0,
@@ -59,8 +60,9 @@ const FoodManager = () => {
       accessor: "foodTypeName",
     },
     {
-      Header: "Giá (₫)",
+      Header: "Giá",
       accessor: "price",
+      Cell: ({ value }) => formatVnd(value),
     },
     {
       Header: "Đơn vị",
