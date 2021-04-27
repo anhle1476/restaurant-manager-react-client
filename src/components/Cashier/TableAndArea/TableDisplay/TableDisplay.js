@@ -17,7 +17,7 @@ const TableDisplay = ({ table, disabled, current, onClick }) => {
       onClick={onClick}
     >
       {table.name}
-      {isGrouping && <span>(Gộp {table.parent.name})</span>}
+      {isGrouping && <small>(Ghép {table.parent.name})</small>}
     </div>
   );
 };

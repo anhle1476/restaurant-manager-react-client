@@ -26,7 +26,7 @@ const CashierView = () => {
 
   const [tables, setTables] = useState([]);
   const [foods, setFoods] = useState([]);
-  const [bills, setBills] = useState([]);
+  const [billsByTable, setBillsByTable] = useState({});
 
   const handleSelectTable = (table) => {
     setCurrentTable(!table.parent ? table : table.parent);
@@ -36,7 +36,7 @@ const CashierView = () => {
     Promise.all([
       tableApi.getAll(),
       foodApi.getAll(),
-      billApi.getCurrentBills(),
+      billApi.getCurrentBillsByTable(),
     ]).then(([tableRes, foodRes, billRes]) => {
       const tableData = tableRes.data;
       if (tableData.length) {
@@ -45,7 +45,7 @@ const CashierView = () => {
         handleSelectTable(tableData[0]);
       }
       setFoods(foodRes.data);
-      setBills(billRes.data);
+      setBillsByTable(billRes.data);
     });
   }, []);
 
@@ -67,22 +67,20 @@ const CashierView = () => {
 
   const handleDeleteTable = (id) => {
     setTables(tables.filter((table) => table.id !== id));
+    handleSelectTable(tables.length ? tables[0] : {});
   };
-
-  const billByTable = bills.reduce(
-    (billMap, bill) => ({ ...billMap, [bill.appTable.id]: bill }),
-    {}
-  );
 
   return (
     <div className="px-3 view-container">
-      <Row className="py-2">
-        <Col className="d-flex justify-content-between">
-          <Link to="/app/dashboard">❮ Trở về</Link>
-          <h4>Màn hình thu ngân</h4>
+      <Row className="view-header py-2">
+        <Col className="d-flex justify-content-between align-items-center">
+          <Link to="/app/dashboard">
+            ❮ <strong> Trở về</strong>
+          </Link>
+          <h4 className="mb-0">Màn hình thu ngân</h4>
         </Col>
       </Row>
-      <Row className="main-view">
+      <Row className="view-content">
         <Col md="7">
           <Nav tabs className="bg-light">
             <NavItem>
@@ -129,7 +127,7 @@ const CashierView = () => {
                 handleDeleteTable={handleDeleteTable}
                 handleRestoreTable={handlePushTable}
                 tables={tables}
-                billMap={billByTable}
+                billMap={billsByTable}
               />
             </TabPane>
 
@@ -158,7 +156,10 @@ const CashierView = () => {
 
         {/* ORDER DETAILS */}
         <Col md="5">
-          <OrderView table={currentTable} bill={billByTable[currentTable.id]} />
+          <OrderView
+            table={currentTable}
+            bill={billsByTable[currentTable.id]}
+          />
         </Col>
       </Row>
     </div>

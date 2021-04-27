@@ -3,7 +3,7 @@
 .table-display {
   position: relative;
   border-radius: 5px;
-  background-color: $primary;
+  background-color: $info;
   color: $white;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
   }
 
   &.table-busy {
-    background-color: $warning;
+    background-color: var(--success);
   }
 
   &.table-add {
@@ -36,7 +36,8 @@
   }
 
   &.table-current {
-    border: 4px solid $dark;
+    border: 4px solid darken($warning, 10);
+    background-color: var(--warning);
     font-weight: bold;
   }
 }

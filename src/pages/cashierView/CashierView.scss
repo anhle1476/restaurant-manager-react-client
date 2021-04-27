@@ -3,10 +3,15 @@
 .view-container {
   display: flex;
   flex-direction: column;
-  height: 98vh;
+  height: 100vh;
   box-sizing: border-box;
   overflow: hidden;
-  .main-view {
+
+  .view-header {
+    height: 7vh;
+  }
+
+  .view-content {
     flex-grow: 1;
 
     > div,
@@ -63,14 +68,9 @@
     height: 50px;
     padding-bottom: 10px;
     background-color: rgba(255, 255, 255, 0.76);
-    opacity: 0.9;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    &:hover {
-      opacity: 1;
-    }
 
     .btn {
       box-shadow: 0 2.6px 5.3px rgba(0, 0, 0, 0.028),

@@ -11,6 +11,10 @@ const getCurrentBills = () => {
   return axios.get(BILLS_URL);
 };
 
+const getCurrentBillsByTable = () => {
+  return axios.get(`${BILLS_URL}/by-table`);
+};
+
 const getById = (id) => {
   return axios.get(`${BILLS_URL}/${id}`);
 };
@@ -30,6 +34,7 @@ const doPayment = (data) => {
 export default {
   create,
   getCurrentBills,
+  getCurrentBillsByTable,
   getById,
   update,
   hardDelete,

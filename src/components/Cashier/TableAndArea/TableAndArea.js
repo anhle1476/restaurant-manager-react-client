@@ -107,7 +107,7 @@ const TableAndArea = ({
               {areas.filter(areaSearchFilter).map((area, i) => (
                 <Button
                   key={i}
-                  color={area.id === currentArea.id ? "primary" : "light"}
+                  color={area.id === currentArea.id ? "warning" : "light"}
                   onClick={() => toggleCurrentArea(area)}
                   block
                 >
