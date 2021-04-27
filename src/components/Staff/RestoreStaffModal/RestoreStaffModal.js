@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import staffApi from "../../../api/staffApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import s from "./RestoreStaffModal.module.scss";
@@ -70,16 +62,11 @@ const RestoreStaffModal = ({ show, toggle, handleRestoreStaff }) => {
     >
       <ModalCustomHeader toggle={toggle}>Nhân viên đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FormGroup>
-            <Input
-              type="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Tìm kiếm..."
-            />
-          </FormGroup>
-        </Form>
+        <InlineSearch
+          value={search}
+          onChange={handleSearch}
+          placeholder="Tìm nhân viên..."
+        />
         <Table className={s.restoreTable}>
           <thead>
             <tr>

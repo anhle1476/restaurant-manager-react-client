@@ -24,6 +24,7 @@ import FoodStatusBadge from "../../Food/FoodStatusBadge/FoodStatusBadge";
 
 import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 
 const EDIT_INFO_SCHEMA = { id: 0, name: "", refundable: false };
 
@@ -180,17 +181,11 @@ const EditFoodTypeModal = ({
             <Row>
               <Col sm="12">
                 <h4>Danh sách món</h4>
-
-                <Form onSubmit={(e) => e.preventDefault()}>
-                  <FormGroup>
-                    <Input
-                      type="search"
-                      value={search}
-                      placeholder="Tìm kiếm..."
-                      onChange={handleSearch}
-                    ></Input>
-                  </FormGroup>
-                </Form>
+                <InlineSearch
+                  value={search}
+                  placeholder="Tìm món..."
+                  onChange={handleSearch}
+                />
                 <Table>
                   <thead>
                     <tr>

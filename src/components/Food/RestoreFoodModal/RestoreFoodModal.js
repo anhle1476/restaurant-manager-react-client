@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import foodApi from "../../../api/foodApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import s from "./RestoreFoodModal.module.scss";
@@ -68,16 +60,11 @@ const RestoreFoodModal = ({ show, toggle, handleRestoreFood }) => {
     >
       <ModalCustomHeader toggle={toggle}>Món ăn đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FormGroup>
-            <Input
-              type="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Tìm kiếm..."
-            />
-          </FormGroup>
-        </Form>
+        <InlineSearch
+          value={search}
+          onChange={handleSearch}
+          placeholder="Tìm kiếm..."
+        />
         <Table className={s.restoreTable}>
           <thead>
             <tr>

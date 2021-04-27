@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import areaApi from "../../../../api/areaApi";
 import { toastError, toastSuccess } from "../../../../utils/toastUtils";
 import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import InlineSearch from "../../../InlineSearch/InlineSearch";
 
 import s from "./RestoreAreaModal.module.scss";
 
@@ -58,16 +50,11 @@ const RestoreAreaModal = ({ show, toggle, handleRestoreArea }) => {
     <Modal className="modal-dialog-scrollable" isOpen={show} toggle={toggle}>
       <ModalCustomHeader toggle={toggle}>Khu vực đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FormGroup>
-            <Input
-              type="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Tìm kiếm..."
-            />
-          </FormGroup>
-        </Form>
+        <InlineSearch
+          value={search}
+          onChange={handleSearch}
+          placeholder="Tìm khu vực..."
+        />
         <Table className={s.restoreTable}>
           <thead>
             <tr>

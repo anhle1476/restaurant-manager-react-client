@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import roleApi from "../../../api/roleApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import s from "./RestoreRoleModal.module.scss";
@@ -68,16 +60,11 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
     >
       <ModalCustomHeader toggle={toggle}>Chức vụ đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FormGroup>
-            <Input
-              type="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Tìm kiếm..."
-            />
-          </FormGroup>
-        </Form>
+        <InlineSearch
+          value={search}
+          onChange={handleSearch}
+          placeholder="Tìm chức vụ..."
+        />
         <Table className={s.restoreTable}>
           <thead>
             <tr>

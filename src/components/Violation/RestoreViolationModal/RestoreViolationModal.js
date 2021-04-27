@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import {
-  Modal,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Button,
-  Table,
-} from "reactstrap";
+import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
 
 import s from "./RestoreViolationModal.module.scss";
@@ -63,20 +55,15 @@ const RestoreViolationModal = ({ show, toggle, handleRestoreViolation }) => {
     >
       <ModalCustomHeader toggle={toggle}>Vi phạm đã khóa</ModalCustomHeader>
       <ModalBody className="bg-white">
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FormGroup>
-            <Input
-              type="search"
-              value={search}
-              onChange={handleSearch}
-              placeholder="Tìm kiếm..."
-            />
-          </FormGroup>
-        </Form>
+        <InlineSearch
+          value={search}
+          onChange={handleSearch}
+          placeholder="Tìm vi phạm..."
+        />
         <Table className={s.restoreTable}>
           <thead>
             <tr>
-              <th>Tên chức vụ</th>
+              <th>Tên vi phạm</th>
               <th>Mức phạt theo ca</th>
               <th></th>
             </tr>

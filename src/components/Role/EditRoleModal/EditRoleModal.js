@@ -23,6 +23,7 @@ import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import roleApi from "../../../api/roleApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 
 const EDIT_INFO_SCHEMA = { id: 0, name: "", code: "" };
 
@@ -177,16 +178,11 @@ const EditRoleModal = ({
               <Col sm="12">
                 <h4>Danh sách nhân viên</h4>
 
-                <Form onSubmit={(e) => e.preventDefault()}>
-                  <FormGroup>
-                    <Input
-                      type="search"
-                      value={search}
-                      placeholder="Tìm kiếm..."
-                      onChange={handleSearch}
-                    ></Input>
-                  </FormGroup>
-                </Form>
+                <InlineSearch
+                  value={search}
+                  placeholder="Tìm nhân viên..."
+                  onChange={handleSearch}
+                />
                 <Table>
                   <thead>
                     <tr>

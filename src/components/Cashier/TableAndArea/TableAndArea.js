@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Form, FormGroup, Input, Row, Button } from "reactstrap";
+import { Col, Row, Button } from "reactstrap";
 import TableDisplay from "./TableDisplay/TableDisplay";
 import AddAreaModal from "./AddAreaModal/AddAreaModal";
 import AddTableModal from "./AddTableModal/AddTableModal";
@@ -10,6 +10,7 @@ import "./TableAndArea.scss";
 import EditTableModal from "./EditTableModal/EditTableModal";
 import EditAreaModal from "./EditAreaModal/EditAreaModal";
 import RestoreAreaModal from "./RestoreAreaModal/RestoreAreaModal";
+import InlineSearch from "../../InlineSearch/InlineSearch";
 
 const MODAL_SCHEMA = {
   ADD_AREA: false,
@@ -94,17 +95,12 @@ const TableAndArea = ({
         {/* AREA LIST */}
         <Col className="px-1 flex-container" xs="3">
           <div className="flex-header">
-            <Form onSubmit={(e) => e.preventDefault()}>
-              <FormGroup>
-                <Input
-                  value={search.area}
-                  onChange={handleSearch}
-                  type="search"
-                  name="area"
-                  placeholder="Tìm khu vực..."
-                />
-              </FormGroup>
-            </Form>
+            <InlineSearch
+              value={search.area}
+              onChange={handleSearch}
+              name="area"
+              placeholder="Tìm khu vực..."
+            />
           </div>
           <div className="flex-body">
             <div className="flex-scrollable">
@@ -151,17 +147,13 @@ const TableAndArea = ({
                 <i className="fa fa-pencil"></i>
               </Button>
             </div>
-            <Form className="mw-50" onSubmit={(e) => e.preventDefault()}>
-              <FormGroup>
-                <Input
-                  value={search.table}
-                  onChange={handleSearch}
-                  type="search"
-                  name="table"
-                  placeholder="Tìm bàn..."
-                />
-              </FormGroup>
-            </Form>
+            <InlineSearch
+              formClassName="mw-40"
+              value={search.table}
+              onChange={handleSearch}
+              name="table"
+              placeholder="Tìm bàn..."
+            />
           </div>
           <div className="flex-body">
             <div className="flex-scrollable table-container">
