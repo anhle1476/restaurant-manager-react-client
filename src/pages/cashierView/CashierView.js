@@ -15,31 +15,65 @@ import {
 import "./CashierView.scss";
 import tableApi from "../../api/tableApi";
 import foodApi from "../../api/foodApi";
+import billApi from "../../api/billApi";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
+import OrderView from "../../components/Cashier/OrderView/OrderView";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
+  const [currentTable, setCurrentTable] = useState({});
 
   const [tables, setTables] = useState([]);
   const [foods, setFoods] = useState([]);
+  const [bills, setBills] = useState([]);
+
+  const handleSelectTable = (table) => {
+    setCurrentTable(!table.parent ? table : table.parent);
+  };
 
   useEffect(() => {
-    Promise.all([tableApi.getAll(), foodApi.getAll()]).then(
-      ([tableRes, foodRes]) => {
-        setTables(tableRes.data);
-        setFoods(foodRes.data);
+    Promise.all([
+      tableApi.getAll(),
+      foodApi.getAll(),
+      billApi.getCurrentBills(),
+    ]).then(([tableRes, foodRes, billRes]) => {
+      const tableData = tableRes.data;
+      if (tableData.length) {
+        setTables(tableData);
+        handleSelectTable(tableData[0]);
       }
-    );
+      setFoods(foodRes.data);
+      setBills(billRes.data);
+    });
   }, []);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const handleAddTable = (newTable) => {
-    setTables([...tables, newTable]);
+  const handlePushTable = (newTable) => {
+    const newData = [...tables, newTable].sort((t1, t2) =>
+      t1.name.localeCompare(t2.name)
+    );
+    setTables(newData);
   };
+
+  const handleUpdateTable = (updated) => {
+    setTables(
+      tables.map((table) => (table.id === updated.id ? updated : table))
+    );
+    setCurrentTable(updated);
+  };
+
+  const handleDeleteTable = (id) => {
+    setTables(tables.filter((table) => table.id !== id));
+  };
+
+  const billByTable = bills.reduce(
+    (billMap, bill) => ({ ...billMap, [bill.appTable.id]: bill }),
+    {}
+  );
 
   return (
     <div className="px-3 view-container">
@@ -57,7 +91,7 @@ const CashierView = () => {
                 className={classnames({ active: activeTab === "1" })}
                 onClick={() => toggleTab("1")}
               >
-                table
+                Bàn ({currentTable.name})
               </NavLink>
             </NavItem>
             <NavItem>
@@ -65,7 +99,7 @@ const CashierView = () => {
                 className={classnames({ active: activeTab === "2" })}
                 onClick={() => toggleTab("2")}
               >
-                menu
+                Menu
               </NavLink>
             </NavItem>
             <NavItem>
@@ -73,7 +107,7 @@ const CashierView = () => {
                 className={classnames({ active: activeTab === "3" })}
                 onClick={() => toggleTab("3")}
               >
-                reserving
+                Đặt bàn
               </NavLink>
             </NavItem>
             <NavItem>
@@ -81,30 +115,28 @@ const CashierView = () => {
                 className={classnames({ active: activeTab === "4" })}
                 onClick={() => toggleTab("4")}
               >
-                bills
+                Hóa đơn
               </NavLink>
             </NavItem>
           </Nav>
           {/* TABLE */}
           <TabContent activeTab={activeTab}>
             <TabPane tabId="1">
-              <Row>
-                <Col>
-                  <TableAndArea
-                    handleAddTable={handleAddTable}
-                    tables={tables}
-                  />
-                </Col>
-              </Row>
+              <TableAndArea
+                currentTable={currentTable}
+                handleSelectTable={handleSelectTable}
+                handleAddTable={handlePushTable}
+                handleUpdateTable={handleUpdateTable}
+                handleDeleteTable={handleDeleteTable}
+                handleRestoreTable={handlePushTable}
+                tables={tables}
+                billMap={billByTable}
+              />
             </TabPane>
 
             {/* MENU */}
             <TabPane tabId="2">
-              <Row>
-                <Col>
-                  <MenuView foods={foods} />
-                </Col>
-              </Row>
+              <MenuView foods={foods} />
             </TabPane>
             {/* RESERVING ORDERS */}
             <TabPane tabId="3">
@@ -127,7 +159,7 @@ const CashierView = () => {
 
         {/* ORDER DETAILS */}
         <Col md="5">
-          <div className="bg-white order-container">order details</div>
+          <OrderView table={currentTable} bill={billByTable[currentTable.id]} />
         </Col>
       </Row>
     </div>

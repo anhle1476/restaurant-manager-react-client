@@ -1,0 +1,6 @@
+{
+  "name": "EditTableModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditTableModal.js"
+}

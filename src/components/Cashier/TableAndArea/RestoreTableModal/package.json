@@ -1,0 +1,6 @@
+{
+  "name": "RestoreTableModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RestoreTableModal.js"
+}

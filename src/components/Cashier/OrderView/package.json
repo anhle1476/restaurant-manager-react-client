@@ -1,0 +1,6 @@
+{
+  "name": "OrderView",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./OrderView.js"
+}

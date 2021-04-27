@@ -1,8 +1,20 @@
 @import "../../../styles/app";
 
+.area-and-table-container {
+  height: 100%;
+
+  > div {
+    height: 100%;
+  }
+}
+
 .table-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
   position: relative;
+
+  > div {
+    min-height: 0;
+  }
 }
