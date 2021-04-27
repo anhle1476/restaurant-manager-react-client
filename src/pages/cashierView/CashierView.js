@@ -40,6 +40,7 @@ const CashierView = () => {
     ]).then(([tableRes, foodRes, billRes]) => {
       const tableData = tableRes.data;
       if (tableData.length) {
+        sortTables(tableData);
         setTables(tableData);
         handleSelectTable(tableData[0]);
       }
@@ -53,9 +54,7 @@ const CashierView = () => {
   };
 
   const handlePushTable = (newTable) => {
-    const newData = [...tables, newTable].sort((t1, t2) =>
-      t1.name.localeCompare(t2.name)
-    );
+    const newData = sortTables([...tables, newTable]);
     setTables(newData);
   };
 
@@ -165,5 +164,9 @@ const CashierView = () => {
     </div>
   );
 };
+
+function sortTables(tables) {
+  return tables.sort((t1, t2) => t1.name.localeCompare(t2.name));
+}
 
 export default withRouter(CashierView);

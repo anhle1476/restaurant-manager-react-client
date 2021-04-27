@@ -9,6 +9,7 @@ import areaApi from "../../../api/areaApi";
 import "./TableAndArea.scss";
 import EditTableModal from "./EditTableModal/EditTableModal";
 import EditAreaModal from "./EditAreaModal/EditAreaModal";
+import RestoreAreaModal from "./RestoreAreaModal/RestoreAreaModal";
 
 const MODAL_SCHEMA = {
   ADD_AREA: false,
@@ -16,6 +17,7 @@ const MODAL_SCHEMA = {
   EDIT_TABLE: false,
   EDIT_AREA: false,
   RESTORE_TABLE: false,
+  RESTORE_AREA: false,
 };
 
 const TableAndArea = ({
@@ -37,6 +39,7 @@ const TableAndArea = ({
       const res = await areaApi.getAll();
       const areaData = res.data;
       if (areaData.length) {
+        sortAreas(areaData);
         setAreas(areaData);
         setCurrentArea(areaData[0]);
       }
@@ -56,8 +59,9 @@ const TableAndArea = ({
     setShowModal({ ...showModal, [modal]: !showModal[modal] });
   };
 
-  const handleAddArea = (newArea) => {
-    setAreas([...areas, newArea]);
+  const handlePushArea = (newArea) => {
+    const newData = sortAreas([...areas, newArea]);
+    setAreas(newData);
   };
 
   const handleUpdateArea = (updated) => {
@@ -67,12 +71,17 @@ const TableAndArea = ({
 
   const handleDeleteArea = (id) => {
     setAreas(areas.filter((area) => area.id !== id));
+    const selectNewArea = areas.find((area) => area.id !== id);
+    setCurrentArea(selectNewArea ? selectNewArea : {});
   };
 
   const areaSearchFilter = (area) =>
     area.name.toLowerCase().indexOf(areaSearch.toLowerCase()) !== -1;
 
   const tableInCurrentAreaFilter = (table) => table.area.id === currentArea.id;
+
+  const hasTablesInCurrentArea =
+    currentArea.id && tables.some((table) => table.area.id === currentArea.id);
 
   const isCurrentTableInGroup =
     currentTable.parent ||
@@ -117,7 +126,11 @@ const TableAndArea = ({
             </div>
           </div>
           <div className="flex-footer">
-            <Button block color="info">
+            <Button
+              block
+              color="info"
+              onClick={() => toggleModal("RESTORE_AREA")}
+            >
               Đã khóa
             </Button>
           </div>
@@ -152,7 +165,7 @@ const TableAndArea = ({
               Sửa bàn hiện tại ({currentTable.name})
             </Button>
             <Button onClick={() => toggleModal("RESTORE_TABLE")} color="info">
-              Bàn đã xóa
+              Bàn đã khóa
             </Button>
           </div>
         </Col>
@@ -160,14 +173,20 @@ const TableAndArea = ({
       <AddAreaModal
         show={showModal.ADD_AREA}
         toggle={() => toggleModal("ADD_AREA")}
-        handleAddArea={handleAddArea}
+        handleAddArea={handlePushArea}
       />
       <EditAreaModal
         show={showModal.EDIT_AREA}
         toggle={() => toggleModal("EDIT_AREA")}
         area={currentArea}
+        hasTables={hasTablesInCurrentArea}
         handleUpdateArea={handleUpdateArea}
         handleDeleteArea={handleDeleteArea}
+      />
+      <RestoreAreaModal
+        show={showModal.RESTORE_AREA}
+        toggle={() => toggleModal("RESTORE_AREA")}
+        handleRestoreArea={handlePushArea}
       />
       <AddTableModal
         show={showModal.ADD_TABLE}
@@ -192,5 +211,9 @@ const TableAndArea = ({
     </div>
   );
 };
+
+function sortAreas(areas) {
+  return areas.sort((a1, a2) => a1.name.localeCompare(a2.name));
+}
 
 export default TableAndArea;
