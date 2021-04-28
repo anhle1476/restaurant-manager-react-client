@@ -17,7 +17,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../../CustomInputGroup/CustomInputGroup";
 
 import areaApi from "../../../../api/areaApi";
@@ -89,7 +89,9 @@ const EditAreaModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chỉnh sửa khu vực</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chỉnh sửa khu vực
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

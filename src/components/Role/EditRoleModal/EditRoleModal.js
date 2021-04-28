@@ -18,7 +18,7 @@ import {
   Col,
   Table,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import roleApi from "../../../api/roleApi";
@@ -117,7 +117,9 @@ const EditRoleModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chi tiết chức vụ</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chi tiết chức vụ
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

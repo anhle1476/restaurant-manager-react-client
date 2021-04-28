@@ -17,7 +17,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
@@ -94,7 +94,9 @@ const EditViolationModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chi tiết vi phạm</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chi tiết vi phạm
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

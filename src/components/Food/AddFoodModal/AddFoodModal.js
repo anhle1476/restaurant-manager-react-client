@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Form, Button } from "reactstrap";
 import foodTypeApi from "../../../api/foodTypeApi";
 import foodApi from "../../../api/foodApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const INITIAL_FEEDBACK = {
@@ -89,9 +89,9 @@ const AddFoodModal = ({ show, toggle, handleAddFood }) => {
   return (
     <Modal isOpen={show} toggle={resetAndDoToggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={resetAndDoToggle}>
+        <ModalHeaderWithCloseBtn toggle={resetAndDoToggle}>
           Thêm món ăn
-        </ModalCustomHeader>
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

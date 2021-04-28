@@ -17,7 +17,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import roleApi from "../../../api/roleApi";
 import staffApi from "../../../api/staffApi";
@@ -135,7 +135,9 @@ const EditStaffModal = ({
 
   return (
     <Modal isOpen={show} className="modal-lg modal-dialog" toggle={toggle}>
-      <ModalCustomHeader toggle={toggle}>Chi tiết nhân viên</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chi tiết nhân viên
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

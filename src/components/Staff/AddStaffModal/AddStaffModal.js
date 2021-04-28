@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Form, Button } from "reactstrap";
 import roleApi from "../../../api/roleApi";
 import staffApi from "../../../api/staffApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const INITIAL_FEEDBACK = {
@@ -78,7 +78,9 @@ const AddStaffModal = ({ show, toggle, handleAddStaff }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm nhân viên</ModalCustomHeader>
+        <ModalHeaderWithCloseBtn toggle={toggle}>
+          Thêm nhân viên
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

@@ -1,7 +1,5 @@
 import React from "react";
-// import NotificationsDemo from "./notifications-demo/Notifications";
-//import ProgressDemo from "./notifications-demo/Progress";
-import AccountDemo from "./notifications-demo/Account";
+import AccountNotification from "./notifications-demo/Account";
 
 import s from "./Notifications.module.scss";
 
@@ -32,7 +30,7 @@ class Notifications extends React.Component {
       <section
         className={`${s.notificationsAccount} card navbar-notifications`}
       >
-        {this.state.newNotifications || <AccountDemo />}
+        {this.state.newNotifications || <AccountNotification />}
       </section>
     );
   }

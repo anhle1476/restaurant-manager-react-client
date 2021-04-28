@@ -2,7 +2,7 @@ import React from "react";
 
 import { Modal, ModalBody, Table, Row, Col } from "reactstrap";
 
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./SalaryDetailModal.module.scss";
 
@@ -31,9 +31,9 @@ const SalaryDetailModal = ({ show, toggle, details }) => {
 
   return (
     <Modal isOpen={show} toggle={toggle}>
-      <ModalCustomHeader toggle={toggle}>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
         Bảng lương tháng {formatMonthStr(firstDateOfMonth)}
-      </ModalCustomHeader>
+      </ModalHeaderWithCloseBtn>
       {show && (
         <ModalBody className="bg-white">
           <Row>

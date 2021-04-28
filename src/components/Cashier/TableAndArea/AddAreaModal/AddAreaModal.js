@@ -4,7 +4,7 @@ import { Modal, ModalBody, ModalFooter, Form, Button } from "reactstrap";
 
 import areaApi from "../../../../api/areaApi";
 import { toastError, toastSuccess } from "../../../../utils/toastUtils";
-import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../../CustomInputGroup/CustomInputGroup";
 
 const ADD_SCHEMA = { name: "" };
@@ -36,7 +36,9 @@ const AddAreaModal = ({ show, toggle, handleAddArea }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm khu vực</ModalCustomHeader>
+        <ModalHeaderWithCloseBtn toggle={toggle}>
+          Thêm khu vực
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

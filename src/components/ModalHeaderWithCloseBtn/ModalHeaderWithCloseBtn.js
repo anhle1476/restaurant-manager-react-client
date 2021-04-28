@@ -1,7 +1,7 @@
 import React from "react";
 import { ModalHeader } from "reactstrap";
 
-function ModalCustomHeader({ children, toggle, ...otherProps }) {
+function ModalHeaderWithCloseBtn({ children, toggle, ...otherProps }) {
   const closeBtn = (
     <button className="close" onClick={toggle}>
       &times;
@@ -15,4 +15,4 @@ function ModalCustomHeader({ children, toggle, ...otherProps }) {
   );
 }
 
-export default ModalCustomHeader;
+export default ModalHeaderWithCloseBtn;

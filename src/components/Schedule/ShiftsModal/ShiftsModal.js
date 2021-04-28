@@ -20,7 +20,7 @@ import {
 
 import shiftApi from "../../../api/shiftApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./ShiftsModal.module.scss";
 
@@ -130,7 +130,9 @@ const ShiftsModal = ({
       isOpen={show}
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Quản lý ca làm</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Quản lý ca làm
+      </ModalHeaderWithCloseBtn>
       {/* edit */}
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">

@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 import tableApi from "../../../../api/tableApi";
 import { toastError, toastSuccess } from "../../../../utils/toastUtils";
 import InlineSearch from "../../../InlineSearch/InlineSearch";
-import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./RestoreTableModal.module.scss";
 
@@ -53,7 +53,9 @@ const RestoreTableModal = ({ show, toggle, handleRestoreTable }) => {
 
   return (
     <Modal className="modal-dialog-scrollable" isOpen={show} toggle={toggle}>
-      <ModalCustomHeader toggle={toggle}>Bàn đã khóa</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Bàn đã khóa
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <InlineSearch
           value={search}

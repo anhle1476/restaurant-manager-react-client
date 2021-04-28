@@ -4,7 +4,7 @@ import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 
 import areaApi from "../../../../api/areaApi";
 import { toastError, toastSuccess } from "../../../../utils/toastUtils";
-import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import InlineSearch from "../../../InlineSearch/InlineSearch";
 
 import s from "./RestoreAreaModal.module.scss";
@@ -48,7 +48,9 @@ const RestoreAreaModal = ({ show, toggle, handleRestoreArea }) => {
 
   return (
     <Modal className="modal-dialog-scrollable" isOpen={show} toggle={toggle}>
-      <ModalCustomHeader toggle={toggle}>Khu vực đã khóa</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Khu vực đã khóa
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <InlineSearch
           value={search}

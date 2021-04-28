@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Form, Button } from "reactstrap";
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 const ADD_SCHEMA = { name: "", finesPercent: 0 };
 const FEEDBACK_SCHEMA = { name: "", finesPercent: "" };
@@ -39,7 +39,9 @@ const AddViolationModal = ({ show, toggle, handleAddViolation }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm vi phạm</ModalCustomHeader>
+        <ModalHeaderWithCloseBtn toggle={toggle}>
+          Thêm vi phạm
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

@@ -18,7 +18,7 @@ import {
   Col,
   Table,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 import FoodStatusBadge from "../../Food/FoodStatusBadge/FoodStatusBadge";
 
@@ -115,7 +115,9 @@ const EditFoodTypeModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chi tiết loại món</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chi tiết loại món
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

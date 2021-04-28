@@ -17,7 +17,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ModalCustomHeader from "../../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../../CustomInputGroup/CustomInputGroup";
 
 import tableApi from "../../../../api/tableApi";
@@ -98,7 +98,9 @@ const EditTableModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chỉnh sửa bàn</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chỉnh sửa bàn
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

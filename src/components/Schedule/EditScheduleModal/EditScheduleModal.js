@@ -17,7 +17,7 @@ import {
   CardText,
   CardTitle,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import staffApi from "../../../api/staffApi";
 import scheduleApi from "../../../api/scheduleApi";
@@ -196,9 +196,9 @@ const EditScheduleModal = ({
       className="modal-lg modal-dialog-scrollable"
       toggle={doToggle}
     >
-      <ModalCustomHeader toggle={doToggle}>
+      <ModalHeaderWithCloseBtn toggle={doToggle}>
         Ngày {displayDate}
-      </ModalCustomHeader>
+      </ModalHeaderWithCloseBtn>
       {show && (
         <ModalBody
           className={`bg-white position-relative ${s.detailsContainer}`}

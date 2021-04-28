@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import InlineSearch from "../../InlineSearch/InlineSearch";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./RestoreFoodTypeModal.module.scss";
 
@@ -53,7 +53,9 @@ const RestoreFoodTypeModal = ({ show, toggle, handleRestoreFoodType }) => {
       isOpen={show}
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Loại món đã khóa</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Loại món đã khóa
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <InlineSearch
           value={search}

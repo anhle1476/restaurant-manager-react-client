@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 import roleApi from "../../../api/roleApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import InlineSearch from "../../InlineSearch/InlineSearch";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./RestoreRoleModal.module.scss";
 
@@ -58,7 +58,9 @@ const RestoreRoleModal = ({ show, toggle, handleRestoreRole }) => {
       isOpen={show}
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Chức vụ đã khóa</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chức vụ đã khóa
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <InlineSearch
           value={search}

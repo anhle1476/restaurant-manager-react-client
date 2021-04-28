@@ -17,7 +17,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 import foodTypeApi from "../../../api/foodTypeApi";
@@ -116,7 +116,9 @@ const EditFoodModal = ({
 
   return (
     <Modal isOpen={show} className="modal-lg modal-dialog" toggle={toggle}>
-      <ModalCustomHeader toggle={toggle}>Chi tiết món ăn</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Chi tiết món ăn
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <Nav tabs className="bg-light">
           <NavItem>

@@ -13,7 +13,7 @@ import {
 
 import roleApi from "../../../api/roleApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
 
 const ADD_SCHEMA = { name: "", code: "MISC" };
@@ -45,7 +45,9 @@ const AddRoleModal = ({ show, toggle, handleAddRole }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm chức vụ</ModalCustomHeader>
+        <ModalHeaderWithCloseBtn toggle={toggle}>
+          Thêm chức vụ
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

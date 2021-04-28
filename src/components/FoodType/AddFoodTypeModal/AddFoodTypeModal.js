@@ -14,7 +14,7 @@ import {
 import foodTypeApi from "../../../api/foodTypeApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import CustomInputGroup from "../../CustomInputGroup/CustomInputGroup";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 const ADD_SCHEMA = { name: "", refundable: false };
 const FEEDBACK_SCHEMA = { name: "" };
@@ -48,7 +48,9 @@ const AddFoodTypeModal = ({ show, toggle, handleAddFoodType }) => {
   return (
     <Modal isOpen={show} toggle={toggle}>
       <Form onSubmit={handleSubmit}>
-        <ModalCustomHeader toggle={toggle}>Thêm loại món</ModalCustomHeader>
+        <ModalHeaderWithCloseBtn toggle={toggle}>
+          Thêm loại món
+        </ModalHeaderWithCloseBtn>
         <ModalBody className="bg-white">
           <CustomInputGroup
             required

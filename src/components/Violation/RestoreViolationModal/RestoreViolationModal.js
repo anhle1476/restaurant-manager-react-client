@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter, Button, Table } from "reactstrap";
 import violationApi from "../../../api/violationApi";
 import { toastError, toastSuccess } from "../../../utils/toastUtils";
 import InlineSearch from "../../InlineSearch/InlineSearch";
-import ModalCustomHeader from "../../ModalCustomHeader/ModalCustomHeader";
+import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
 import s from "./RestoreViolationModal.module.scss";
 
@@ -53,7 +53,9 @@ const RestoreViolationModal = ({ show, toggle, handleRestoreViolation }) => {
       isOpen={show}
       toggle={toggle}
     >
-      <ModalCustomHeader toggle={toggle}>Vi phạm đã khóa</ModalCustomHeader>
+      <ModalHeaderWithCloseBtn toggle={toggle}>
+        Vi phạm đã khóa
+      </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <InlineSearch
           value={search}
