@@ -5,7 +5,9 @@ import FoodStatusBadge from "../../../Food/FoodStatusBadge/FoodStatusBadge";
 import "./FoodDisplay.scss";
 import { formatVnd } from "../../../../utils/moneyUtils";
 
-const FoodDisplay = ({ food: { name, imageUrl, available, price } }) => {
+const FoodDisplay = ({ food, handleSelectFood }) => {
+  const { name, imageUrl, available, price } = food;
+
   const displayName = name.length > 15 ? name.slice(0, 15) + "..." : name;
 
   const priceDisplay = formatVnd(price);
@@ -13,7 +15,11 @@ const FoodDisplay = ({ food: { name, imageUrl, available, price } }) => {
   const title = `${name} (${priceDisplay})`;
 
   return (
-    <div className="food-display" title={title}>
+    <div
+      className="food-display"
+      title={title}
+      onClick={() => handleSelectFood(food)}
+    >
       <div
         className="food-image"
         style={{ backgroundImage: `url("${imageUrl}")` }}

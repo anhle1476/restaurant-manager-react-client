@@ -7,7 +7,7 @@ import foodTypeApi from "../../../api/foodTypeApi";
 
 import "./MenuView.scss";
 
-const MenuView = ({ foods }) => {
+const MenuView = ({ foods, handleSelectFood }) => {
   const [foodTypes, setFoodTypes] = useState([]);
   const [foodSearch, setFoodSearch] = useState({ name: "", type: "" });
 
@@ -49,7 +49,7 @@ const MenuView = ({ foods }) => {
             <Input
               name="type"
               onChange={handleFoodSearch}
-              value={foodSearch.type}
+              defaultValue={foodSearch.type}
               type="select"
             >
               <option value="">Tất cả</option>
@@ -65,7 +65,11 @@ const MenuView = ({ foods }) => {
       <div className="flex-body">
         <div className="flex-scrollable food-container">
           {foods.filter(foodSearchFilter).map((food) => (
-            <FoodDisplay key={food.id} food={food} />
+            <FoodDisplay
+              handleSelectFood={handleSelectFood}
+              key={food.id}
+              food={food}
+            />
           ))}
         </div>
       </div>

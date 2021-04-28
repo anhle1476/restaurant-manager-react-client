@@ -20,6 +20,22 @@ import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
 import OrderView from "../../components/Cashier/OrderView/OrderView";
 
+const BILL_SCHEMA = {
+  startTime: undefined,
+  appTable: {},
+  billDetails: [],
+  surcharge: 0,
+  discount: 0,
+  discountDescription: "",
+  lastPrice: 0,
+};
+
+const BILL_DETAILS_SCHEMA = {
+  food: {},
+  quantity: 0,
+  doneQuantity: 0,
+};
+
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
   const [currentTable, setCurrentTable] = useState({});
@@ -53,13 +69,16 @@ const CashierView = () => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
+  const sortAndSetTables = (data) => {
+    setTables(sortTables(data));
+  };
+
   const handlePushTable = (newTable) => {
-    const newData = sortTables([...tables, newTable]);
-    setTables(newData);
+    sortAndSetTables([...tables, newTable]);
   };
 
   const handleUpdateTable = (updated) => {
-    setTables(
+    sortAndSetTables(
       tables.map((table) => (table.id === updated.id ? updated : table))
     );
     setCurrentTable(updated);
@@ -68,6 +87,12 @@ const CashierView = () => {
   const handleDeleteTable = (id) => {
     setTables(tables.filter((table) => table.id !== id));
     handleSelectTable(tables.length ? tables[0] : {});
+  };
+
+  const handleSelectFood = (food, amount = 1) => {
+    const billOfTable = billsByTable[currentTable.id];
+    const updatedBill = changeBillDetails(billOfTable, food, amount);
+    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
   return (
@@ -133,7 +158,7 @@ const CashierView = () => {
 
             {/* MENU */}
             <TabPane tabId="2">
-              <MenuView foods={foods} />
+              <MenuView foods={foods} handleSelectFood={handleSelectFood} />
             </TabPane>
             {/* RESERVING ORDERS */}
             <TabPane tabId="3">
@@ -168,6 +193,28 @@ const CashierView = () => {
 
 function sortTables(tables) {
   return tables.sort((t1, t2) => t1.name.localeCompare(t2.name));
+}
+
+function createNewBillDetail(food, amount) {
+  return { ...BILL_DETAILS_SCHEMA, food: food, quantity: amount };
+}
+
+function changeBillDetails(bill = { ...BILL_SCHEMA }, food, amount) {
+  // if bill is a new bill or don't have any food -> add food and return
+  if (bill.billDetails.length === 0)
+    return {
+      ...bill,
+      billDetails: [createNewBillDetail(food, amount)],
+    };
+  let foodNotExist = true;
+  const billDetailsLength = bill.billDetails.length;
+  for (let i = 0; i < billDetailsLength; i++) {
+    if (bill.billDetails[i].food.id !== food.id) continue;
+    bill.billDetails[i].quantity += amount;
+    foodNotExist = false;
+  }
+  if (foodNotExist) bill.billDetails.push(createNewBillDetail(food, amount));
+  return bill;
 }
 
 export default withRouter(CashierView);
