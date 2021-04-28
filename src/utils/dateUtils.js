@@ -13,3 +13,11 @@ export const formatMonthStr = (str) => {
   const [year, month] = str.split("-");
   return month + "/" + year;
 };
+
+export const formatDateTime = (str) =>
+  moment(new Date(str)).format("DD/MM hh:mm");
+
+export const getMinuteDifference = (str) => {
+  let diff = (new Date().getTime() - new Date(str).getTime()) / 1000;
+  return Math.abs(Math.round(diff / 60));
+};

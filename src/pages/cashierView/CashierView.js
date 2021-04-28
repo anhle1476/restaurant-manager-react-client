@@ -91,7 +91,18 @@ const CashierView = () => {
 
   const handleSelectFood = (food, amount = 1) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBillDetails(billOfTable, food, amount);
+    const updatedBill = changeBillDetailsPlusAmount(
+      billOfTable,
+      food,
+      amount,
+      currentTable
+    );
+    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+  };
+
+  const handleTypeOrderAmount = (food, amount) => {
+    const billOfTable = billsByTable[currentTable.id];
+    const updatedBill = changeBillDetailsToAmount(billOfTable, food, amount);
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
@@ -184,6 +195,8 @@ const CashierView = () => {
           <OrderView
             table={currentTable}
             bill={billsByTable[currentTable.id]}
+            handleSelectFood={handleSelectFood}
+            handleTypeOrderAmount={handleTypeOrderAmount}
           />
         </Col>
       </Row>
@@ -199,22 +212,53 @@ function createNewBillDetail(food, amount) {
   return { ...BILL_DETAILS_SCHEMA, food: food, quantity: amount };
 }
 
-function changeBillDetails(bill = { ...BILL_SCHEMA }, food, amount) {
+function changeBillDetailsPlusAmount(
+  bill = { ...BILL_SCHEMA },
+  food,
+  amount,
+  table
+) {
   // if bill is a new bill or don't have any food -> add food and return
   if (bill.billDetails.length === 0)
     return {
       ...bill,
+      appTable: table,
       billDetails: [createNewBillDetail(food, amount)],
     };
   let foodNotExist = true;
   const billDetailsLength = bill.billDetails.length;
   for (let i = 0; i < billDetailsLength; i++) {
-    if (bill.billDetails[i].food.id !== food.id) continue;
-    bill.billDetails[i].quantity += amount;
+    const currentDetail = bill.billDetails[i];
+    if (currentDetail.food.id !== food.id) continue;
+    const resultAmount = currentDetail.quantity + amount;
+    bill.billDetails[i] = updateDetailsWithAmount(currentDetail, resultAmount);
     foodNotExist = false;
+    break;
   }
   if (foodNotExist) bill.billDetails.push(createNewBillDetail(food, amount));
   return bill;
+}
+
+function changeBillDetailsToAmount(bill, food, amount) {
+  return {
+    ...bill,
+    billDetails: bill.billDetails.map((detail) =>
+      detail.food.id === food.id
+        ? updateDetailsWithAmount(detail, amount)
+        : detail
+    ),
+  };
+}
+
+function updateDetailsWithAmount(detail, newAmount) {
+  return {
+    ...detail,
+    quantity: limitValue(newAmount, detail.doneQuantity),
+  };
+}
+
+function limitValue(amount, min) {
+  return amount < min ? min : amount > 2000 ? 2000 : amount;
 }
 
 export default withRouter(CashierView);

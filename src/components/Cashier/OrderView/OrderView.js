@@ -1,10 +1,17 @@
 import React from "react";
-import { Button, Col, Form, Input, Row } from "reactstrap";
-import ButtonGroup from "reactstrap/lib/ButtonGroup";
+import { Col, Row } from "reactstrap";
+import OrderDetail from "./OrderDetail/OrderDetail";
+
+import { formatDateTime } from "../../../utils/dateUtils";
 
 import "./OrderView.scss";
 
-const OrderView = ({ table, bill = {} }) => {
+const OrderView = ({
+  table,
+  bill = {},
+  handleSelectFood,
+  handleTypeOrderAmount,
+}) => {
   return (
     <div className="bg-white order-container flex-container">
       <div className="order-header">
@@ -21,11 +28,13 @@ const OrderView = ({ table, bill = {} }) => {
             </div>
             <div className="order-meta">
               <span>Giờ vào:</span>
-              <span>{bill.startTime ? bill.startTime : "Chưa có"}</span>
+              <span>
+                {bill.startTime ? formatDateTime(bill.startTime) : "Chưa có"}
+              </span>
             </div>
             <div className="order-meta">
               <span>Mã hóa đơn:</span>
-              <span>{bill.id ? bill.id : "Chưa có"}</span>
+              <span title={bill.id}>{bill.id ? bill.id : "Chưa có"}</span>
             </div>
           </Col>
         </Row>
@@ -46,61 +55,14 @@ const OrderView = ({ table, bill = {} }) => {
               Chọn món trong mục menu để thêm vào hóa đơn
             </p>
           ) : (
-            bill.billDetails.map(
-              ({ food, quantity, doneQuantity, lastOrderTime }) => (
-                <Row className="order-details">
-                  <Col xs="5" title="Tên món" className="food-name">
-                    <span>
-                      {food.name}
-                      {lastOrderTime && (
-                        <i
-                          className="fa fa-clock ml-2"
-                          title={lastOrderTime}
-                        ></i>
-                      )}
-                    </span>
-                  </Col>
-                  <Col xs="2">
-                    <small>{food.price}</small>
-                  </Col>
-                  <Col xs="3">
-                    <Form onSubmit={(e) => e.preventDefault()}>
-                      <ButtonGroup
-                        className="order-details-quantity-group"
-                        size="sm"
-                      >
-                        <Button size="sm" color="warning">
-                          -
-                        </Button>
-                        <Input
-                          type="number"
-                          min={doneQuantity}
-                          max="2000"
-                          value={quantity}
-                          className="order-details-quantity"
-                        />
-                        <Button size="sm" color="warning">
-                          +
-                        </Button>
-                      </ButtonGroup>
-                    </Form>
-                  </Col>
-                  <Col xs="1">
-                    <p className="text-center">{doneQuantity}</p>
-                  </Col>
-                  <Col xs="1">
-                    <Button
-                      disabled={doneQuantity > 0}
-                      outline
-                      size="sm"
-                      color="warning"
-                    >
-                      <i title="Xóa món" className="fa fa-trash"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              )
-            )
+            bill.billDetails.map((detail, i) => (
+              <OrderDetail
+                handleSelectFood={handleSelectFood}
+                handleTypeOrderAmount={handleTypeOrderAmount}
+                key={i}
+                {...detail}
+              />
+            ))
           )}
         </div>
       </div>
