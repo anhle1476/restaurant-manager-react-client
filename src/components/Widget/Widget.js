@@ -323,7 +323,7 @@ class Widget extends React.Component {
                 >
                   <DropdownItem onClick={this.handleReload} title="Reload">
                     Reload &nbsp;&nbsp;
-                    <span className="badge badge-pill badge-success animated bounceIn">
+                    <span className="badge badge-pill badge-success">
                       <strong>9</strong>
                     </span>
                   </DropdownItem>

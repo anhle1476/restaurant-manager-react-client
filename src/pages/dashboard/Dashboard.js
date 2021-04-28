@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Table } from "reactstrap";
+import { Row, Col } from "reactstrap";
 
 import usersImg from "../../images/usersImg.svg";
 import smileImg from "../../images/smileImg.svg";
@@ -14,13 +14,6 @@ import Widget from "../../components/Widget";
 
 import s from "./Dashboard.module.scss";
 import ApexChart from "react-apexcharts";
-
-//people
-import p1 from "../../images/people/p1.png";
-import p2 from "../../images/people/p2.png";
-import p3 from "../../images/people/p3.png";
-import p4 from "../../images/people/p4.png";
-import p5 from "../../images/userAvatar.png";
 
 const orderValueOverride = {
   options: {
@@ -167,8 +160,8 @@ const area = {
       },
     },
     fill: {
-      type: 'solid',
-      colors: ["rgba(252, 215, 206, .25)"]
+      type: "solid",
+      colors: ["rgba(252, 215, 206, .25)"],
     },
     colors: ["rgba(246, 121, 93)"],
     dataLabels: {
@@ -233,8 +226,8 @@ const area2 = {
       },
     },
     fill: {
-      type: 'solid',
-      colors: ["rgba(255, 230, 179, .25)"]
+      type: "solid",
+      colors: ["rgba(255, 230, 179, .25)"],
     },
     colors: ["rgba(255, 173, 1)"],
     dataLabels: {
@@ -299,8 +292,8 @@ const splineArea = {
       },
     },
     fill: {
-      colors: ["rgba(255, 205, 101, .2)", 'rgba(0,0,0,0)'],
-      type: 'solid'
+      colors: ["rgba(255, 205, 101, .2)", "rgba(0,0,0,0)"],
+      type: "solid",
     },
     colors: ["#FFBF69", "#323232"],
     legend: {
@@ -365,7 +358,7 @@ const splineArea = {
 class Dashboard extends React.Component {
   constructor() {
     super();
-    this.forceUpdate = this.forceUpdate.bind(this)
+    this.forceUpdate = this.forceUpdate.bind(this);
   }
   state = {
     orderValue: { ...chartData.apex.column, ...orderValueOverride },
@@ -376,11 +369,11 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    window.addEventListener("resize", this.forceUpdate.bind(this))
+    window.addEventListener("resize", this.forceUpdate.bind(this));
   }
 
   forceUpdate() {
-    return this.setState({})
+    return this.setState({});
   }
 
   render() {
@@ -724,121 +717,6 @@ class Dashboard extends React.Component {
                   </div>
                 </Col>
               </Row>
-            </Widget>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <Widget
-              customDropDown
-              title={<p className={"fw-bold"}>Recent Order</p>}
-            >
-              <Table className={"mb-0"} borderless responsive>
-                <thead>
-                  <tr>
-                    <th key={0} scope="col" className={"pl-0"}>
-                      Invoices
-                    </th>
-                    <th key={1} scope="col" className={"pl-0"}>
-                      Customers
-                    </th>
-                    <th key={2} scope="col" className={"pl-0"}>
-                      Date
-                    </th>
-                    <th key={3} scope="col" className={"pl-0"}>
-                      Amount
-                    </th>
-                    <th key={4} scope="col" className={"pl-0"}>
-                      Status
-                    </th>
-                    <th key={5} scope="col" className={"pl-0"}>
-                      Tracking
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-dark">
-                  <tr key={0}>
-                    <td className="fw-thin pl-0 fw-thin">
-                      <i className={`fa fa-circle text-success mr-3`} />
-                      #003486
-                    </td>
-                    <td className={"pl-0 fw-thin"}>
-                      <img src={p1} alt="" className={"mr-3"} />
-                      Kate Claus
-                    </td>
-                    <td className={"pl-0 fw-thin"}>10 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>$8400</td>
-                    <td className={"pl-0 text-success fw-normal"}>
-                      On Delivery
-                    </td>
-                    <td className={"pl-0 fw-thin"}>RU00250TF</td>
-                  </tr>
-                  <tr key={1}>
-                    <td className="fw-normal pl-0 fw-thin">
-                      <i className={`fa fa-circle text-success mr-3`} />
-                      #004326
-                    </td>
-                    <td className={"pl-0 fw-thin"}>
-                      <img src={p2} alt="" className={"mr-3"} />
-                      Maria Gordon
-                    </td>
-                    <td className={"pl-0 fw-thin"}>08 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>$8400</td>
-                    <td className={"pl-0 text-success fw-normal"}>
-                      On Delivery
-                    </td>
-                    <td className={"pl-0 fw-thin"}>RU00250TF</td>
-                  </tr>
-                  <tr key={2}>
-                    <td className="fw-normal pl-0 fw-thin">
-                      <i className={`fa fa-circle text-danger mr-3`} />
-                      #001258
-                    </td>
-                    <td className={"pl-0 fw-thin"}>
-                      <img src={p3} alt="" className={"mr-3"} />
-                      Nick Peru
-                    </td>
-                    <td className={"pl-0 fw-thin"}>05 Jan 2020</td>
-                    <td className={"pl-0 fw-normal"}>$1300</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Pending</td>
-                    <td className={"pl-0 fw-thin"}>RU00250TF</td>
-                  </tr>
-                  <tr key={3}>
-                    <td className="fw-normal pl-0 fw-thin">
-                      <i className={`fa fa-circle text-danger mr-3`} />
-                      #0014176
-                    </td>
-                    <td className={"pl-0 fw-thin"}>
-                      <img src={p4} alt="" className={"mr-3"} />
-                      Lian Robinson
-                    </td>
-                    <td className={"pl-0 fw-thin"}>20 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>$880</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Pending</td>
-                    <td className={"pl-0 fw-thin"}>RU00250TF</td>
-                  </tr>
-                  <tr key={4}>
-                    <td className="fw-normal pl-0 fw-thin">
-                      <i className={`fa fa-circle text-danger mr-3`} />
-                      #0014177
-                    </td>
-                    <td className={"pl-0 fw-thin"}>
-                      <img
-                        src={p5}
-                        alt=""
-                        className={"mr-3"}
-                        width={"34px"}
-                        height={"34px"}
-                      />
-                      Sam Fisher
-                    </td>
-                    <td className={"pl-0 fw-thin"}>16 Dec 2019</td>
-                    <td className={"pl-0 fw-normal"}>$9400</td>
-                    <td className={"pl-0 text-danger fw-normal"}>Pending</td>
-                    <td className={"pl-0 fw-thin"}>RU00250TF</td>
-                  </tr>
-                </tbody>
-              </Table>
             </Widget>
           </Col>
         </Row>

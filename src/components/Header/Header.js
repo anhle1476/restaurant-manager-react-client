@@ -20,8 +20,6 @@ import {
   changeActiveSidebarItem,
 } from "../../actions/navigation";
 
-import notify from "../../images/notify.svg";
-import lightNotify from "../../images/light-notify.svg";
 import arrowUnactive from "../../images/Arrow 6.svg";
 import arrowActive from "../../images/Arrow 5.svg";
 
@@ -42,12 +40,9 @@ class Header extends React.Component {
 
     this.state = {
       menuOpen: false,
-      notificationsOpen: false,
       accountOpen: false,
       notificationsTabSelected: 1,
       focus: false,
-      showNewMessage: false,
-      hideMessage: true,
       run: true,
       arrowImg: arrowActive,
     };
@@ -118,7 +113,7 @@ class Header extends React.Component {
     });
   };
   render() {
-    const { notificationsOpen, accountOpen } = this.state;
+    const { accountOpen } = this.state;
     const { openUsersList } = this.props;
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -140,47 +135,7 @@ class Header extends React.Component {
           </NavLink>
         </NavItem>
         <Nav className="ml-auto">
-          <Dropdown
-            nav
-            isOpen={notificationsOpen}
-            toggle={this.toggleNotifications}
-            id="basic-nav-dropdown"
-            className={`${s.notificationsMenu}`}
-          >
-            <DropdownToggle
-              nav
-              className={"text-white"}
-              style={{ marginLeft: 20 }}
-            >
-              {notificationsOpen ? (
-                <img
-                  src={lightNotify}
-                  alt="notify"
-                  width="24px"
-                  height={"24px"}
-                />
-              ) : (
-                <>
-                  <img src={notify} alt="notify" width="24px" height={"24px"} />
-                  <i
-                    className={`fa fa-circle text-danger mb-2 ${s.circleStyle}`}
-                  />
-                </>
-              )}
-            </DropdownToggle>
-            <DropdownMenu
-              right
-              className={`${s.notificationsWrapper} py-0 animated animated-fast fadeInUp`}
-            >
-              <Notifications />
-            </DropdownMenu>
-          </Dropdown>
-          <Dropdown
-            nav
-            className={`${s.notificationsMenu}`}
-            isOpen={accountOpen}
-            toggle={this.toggleAccount}
-          >
+          <Dropdown nav isOpen={accountOpen} toggle={this.toggleAccount}>
             <DropdownToggle
               nav
               className={"text-white"}
@@ -192,10 +147,7 @@ class Header extends React.Component {
                 {firstUserLetter}
               </span>
             </DropdownToggle>
-            <DropdownMenu
-              right
-              className={`${s.notificationsWrapper} py-0 animated animated-fast fadeInUp`}
-            >
+            <DropdownMenu right>
               <Notifications notificationsTabSelected={4} />
             </DropdownMenu>
           </Dropdown>
