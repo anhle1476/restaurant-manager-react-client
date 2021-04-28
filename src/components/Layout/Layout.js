@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Switch, Route, withRouter } from "react-router";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Hammer from "rc-hammerjs";
 
 import Dashboard from "../../pages/dashboard";
@@ -16,10 +15,6 @@ import {
 import s from "./Layout.module.scss";
 
 // pages
-import Typography from "../../pages/typography";
-import Notifications from "../../pages/notifications/Notifications";
-import Icons from "../../pages/icons";
-import Tables from "../../pages/tables";
 import Charts from "../../pages/charts";
 import StaffManager from "../../pages/staffManager/StaffManager";
 import RoleManager from "../../pages/roleManager/RoleManager";
@@ -111,38 +106,23 @@ class Layout extends React.Component {
 
           <Hammer onSwipe={this.handleSwipe}>
             <main className={s.content}>
-              <TransitionGroup>
-                <CSSTransition
-                  key={this.props.location.key}
-                  classNames="fade"
-                  timeout={200}
-                >
-                  <Switch>
-                    <Route path="/app/dashboard" component={Dashboard} />
-                    <Route path="/app/salaries" component={Salary} />
-                    <Route path={"/app/hr/staffs"} component={StaffManager} />
-                    <Route path={"/app/hr/roles"} component={RoleManager} />
-                    <Route
-                      path={"/app/hr/violations"}
-                      component={ViolationManager}
-                    />
-                    <Route
-                      path={"/app/menu/food-types"}
-                      component={FoodTypeManager}
-                    />
-                    <Route path={"/app/menu/foods"} component={FoodManager} />
-                    <Route path={"/app/schedule"} component={Schedule} />
-                    <Route path={"/app/typography"} component={Typography} />
-                    <Route path={"/app/tables"} component={Tables} />
-                    <Route
-                      path={"/app/ui/notifications"}
-                      component={Notifications}
-                    />
-                    <Route path={"/app/ui/icons"} component={Icons} />
-                    <Route path={"/app/ui/charts"} component={Charts} />
-                  </Switch>
-                </CSSTransition>
-              </TransitionGroup>
+              <Switch>
+                <Route path="/app/dashboard" component={Dashboard} />
+                <Route path="/app/salaries" component={Salary} />
+                <Route path={"/app/hr/staffs"} component={StaffManager} />
+                <Route path={"/app/hr/roles"} component={RoleManager} />
+                <Route
+                  path={"/app/hr/violations"}
+                  component={ViolationManager}
+                />
+                <Route
+                  path={"/app/menu/food-types"}
+                  component={FoodTypeManager}
+                />
+                <Route path={"/app/menu/foods"} component={FoodManager} />
+                <Route path={"/app/schedule"} component={Schedule} />
+                <Route path={"/app/ui/charts"} component={Charts} />
+              </Switch>
             </main>
           </Hammer>
         </div>
