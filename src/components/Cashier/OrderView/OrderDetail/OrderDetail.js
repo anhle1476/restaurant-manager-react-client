@@ -9,33 +9,34 @@ const OrderDetail = ({
   quantity,
   doneQuantity,
   lastOrderTime,
-  handleSelectFood,
+  handleClickOrderAmount,
   handleTypeOrderAmount,
+  handleDeleteOrderDetail,
 }) => {
   const minuteDiff = lastOrderTime ? getMinuteDifference(lastOrderTime) : 0;
   const clockColor =
     minuteDiff < 10 ? "success" : minuteDiff < 20 ? "warning" : "danger";
   return (
     <Row className="order-details">
-      <Col xs="5" title="Tên món" className="food-name">
+      <Col xs="5" title={food.name} className="food-name">
         <span>
           {food.name}
-          {lastOrderTime && (
+          {lastOrderTime && quantity > doneQuantity && (
             <i
-              className={`fa fa-clock-o ml-2 text-${clockColor}`}
+              className={`fa fa-clock-o px-2 text-${clockColor}`}
               title={`${minuteDiff} phút trước`}
             ></i>
           )}
         </span>
       </Col>
       <Col xs="2">
-        <small>{food.price}</small>
+        <small>{food.price}₫</small>
       </Col>
       <Col xs="3">
         <Form onSubmit={(e) => e.preventDefault()}>
           <ButtonGroup className="order-details-quantity-group" size="sm">
             <Button
-              onClick={() => handleSelectFood(food, -1)}
+              onClick={() => handleClickOrderAmount(food, -1)}
               size="sm"
               color="warning"
             >
@@ -52,7 +53,7 @@ const OrderDetail = ({
               }
             />
             <Button
-              onClick={() => handleSelectFood(food, 1)}
+              onClick={() => handleClickOrderAmount(food, 1)}
               size="sm"
               color="warning"
             >
@@ -65,7 +66,13 @@ const OrderDetail = ({
         <p className="text-center">{doneQuantity}</p>
       </Col>
       <Col xs="1">
-        <Button disabled={doneQuantity > 0} outline size="sm" color="warning">
+        <Button
+          disabled={doneQuantity > 0}
+          onClick={() => handleDeleteOrderDetail(food.id)}
+          outline
+          size="sm"
+          color="warning"
+        >
           <i title="Xóa món" className="fa fa-trash"></i>
         </Button>
       </Col>

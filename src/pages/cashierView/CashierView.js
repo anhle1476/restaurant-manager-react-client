@@ -106,6 +106,12 @@ const CashierView = () => {
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
+  const handleDeleteOrderDetail = (foodId) => {
+    const billOfTable = billsByTable[currentTable.id];
+    const updatedBill = changeBillDetailsByRemoveFood(billOfTable, foodId);
+    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+  };
+
   return (
     <div className="px-3 view-container">
       <Row className="view-header py-2">
@@ -195,8 +201,9 @@ const CashierView = () => {
           <OrderView
             table={currentTable}
             bill={billsByTable[currentTable.id]}
-            handleSelectFood={handleSelectFood}
+            handleClickOrderAmount={handleSelectFood}
             handleTypeOrderAmount={handleTypeOrderAmount}
+            handleDeleteOrderDetail={handleDeleteOrderDetail}
           />
         </Col>
       </Row>
@@ -247,6 +254,13 @@ function changeBillDetailsToAmount(bill, food, amount) {
         ? updateDetailsWithAmount(detail, amount)
         : detail
     ),
+  };
+}
+
+function changeBillDetailsByRemoveFood(bill, foodId) {
+  return {
+    ...bill,
+    billDetails: bill.billDetails.filter((detail) => detail.food.id !== foodId),
   };
 }
 

@@ -27,6 +27,7 @@
     .tab-pane {
       height: 95%;
       position: relative;
+      padding-bottom: 1rem;
       > div {
         height: 100%;
       }
@@ -65,16 +66,11 @@
   }
 
   .flex-footer {
-    height: 50px;
+    height: 70px;
     padding-bottom: 10px;
     background-color: rgba(255, 255, 255, 0.76);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     .btn {
-      box-shadow: 0 2.6px 5.3px rgba(0, 0, 0, 0.028),
-        0 8.7px 17.9px rgba(0, 0, 0, 0.042), 0 39px 80px rgba(0, 0, 0, 0.07);
       margin: 0 5px;
     }
   }

@@ -36,4 +36,38 @@
       }
     }
   }
+
+  .order-footer {
+    display: grid;
+    grid-template-areas: "grouping moving update" "delete payment update";
+    gap: 5px;
+    padding: 0 !important;
+    margin-bottom: 1rem;
+
+    .btn {
+      margin: 0;
+      border-radius: 0;
+      font-weight: bold;
+    }
+
+    .order-grouping {
+      grid-area: grouping;
+      border-radius: 5px 0 0 0;
+    }
+    .order-moving {
+      grid-area: moving;
+    }
+    .order-update {
+      grid-area: update;
+      height: 100%;
+      border-radius: 0 5px 5px 0;
+    }
+    .order-delete {
+      grid-area: delete;
+      border-radius: 0 0 0 5px;
+    }
+    .order-payment {
+      grid-area: payment;
+    }
+  }
 }

@@ -6,6 +6,12 @@
   > div {
     height: 100%;
   }
+
+  .area-and-table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .table-container {

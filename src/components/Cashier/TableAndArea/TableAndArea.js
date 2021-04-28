@@ -124,7 +124,7 @@ const TableAndArea = ({
               </Button>
             </div>
           </div>
-          <div className="flex-footer">
+          <div className="flex-footer area-and-table-container">
             <Button
               block
               color="info"
@@ -173,7 +173,7 @@ const TableAndArea = ({
               </div>
             </div>
           </div>
-          <div className="flex-footer">
+          <div className="flex-footer area-and-table-container">
             <Button onClick={() => toggleModal("EDIT_TABLE")} color="warning">
               Sửa bàn hiện tại ({currentTable.name})
             </Button>

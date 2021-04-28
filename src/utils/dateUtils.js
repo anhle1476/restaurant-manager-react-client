@@ -15,7 +15,7 @@ export const formatMonthStr = (str) => {
 };
 
 export const formatDateTime = (str) =>
-  moment(new Date(str)).format("DD/MM hh:mm");
+  moment(new Date(str)).format("HH:mm DD/MM");
 
 export const getMinuteDifference = (str) => {
   let diff = (new Date().getTime() - new Date(str).getTime()) / 1000;
