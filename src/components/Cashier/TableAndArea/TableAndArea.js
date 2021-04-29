@@ -24,6 +24,7 @@ const MODAL_SCHEMA = {
 const TableAndArea = ({
   tables,
   currentTable,
+  refreshTables,
   handleSelectTable,
   handleAddTable,
   handleUpdateTable,
@@ -69,6 +70,7 @@ const TableAndArea = ({
   const handleUpdateArea = (updated) => {
     setAreas(areas.map((area) => (area.id === updated.id ? updated : area)));
     setCurrentArea(updated);
+    refreshTables();
   };
 
   const handleDeleteArea = (id) => {

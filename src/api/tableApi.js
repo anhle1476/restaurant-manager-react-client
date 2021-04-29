@@ -31,7 +31,10 @@ const restore = (id) => {
 };
 
 const grouping = (data) => {
-  return axios.post(`${TABLES_URL}/${data.parent}/grouping`, data);
+  return axios.post(`${TABLES_URL}/${data.parent}/grouping`, {
+    ...data,
+    children: Array.from(data.children),
+  });
 };
 
 const separate = (id) => {

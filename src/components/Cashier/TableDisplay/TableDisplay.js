@@ -36,9 +36,14 @@ const TableDisplay = ({
           {formatTime(bill.startTime)}
         </span>
       )}
+      {disabled && (
+        <span className="table-widget table-in-use">Đang sử dụng</span>
+      )}
       {table.name}
-      {isChild && <small>(Ghép {table.parent.name})</small>}
-      {total && (
+      {isChild && (
+        <small className="table-in-group">(Ghép {table.parent.name})</small>
+      )}
+      {total > 0 && (
         <span className="table-widget table-total">{formatVnd(total)}</span>
       )}
     </div>

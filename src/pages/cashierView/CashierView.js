@@ -20,7 +20,11 @@ import { deleteBillActions, changeBillActions } from "./billUpdate";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
 import OrderView from "../../components/Cashier/OrderView/OrderView";
-import { toastErrorLeft, toastSuccessLeft } from "../../utils/toastUtils";
+import {
+  toastErrorLeft,
+  toastImportant,
+  toastSuccessLeft,
+} from "../../utils/toastUtils";
 import { separateTable } from "./tableUpdate";
 import TableGroupingModal from "../../components/Cashier/TableGroupingModal/TableGroupingModal";
 
@@ -42,16 +46,22 @@ const CashierView = () => {
       tableApi.getAll(),
       foodApi.getAll(),
       billApi.getCurrentBillsByTable(),
-    ]).then(([tableRes, foodRes, billRes]) => {
-      const tableData = tableRes.data;
-      if (tableData.length) {
-        sortTables(tableData);
-        setTables(tableData);
-        handleSelectTable(tableData[0]);
-      }
-      setFoods(foodRes.data);
-      setBillsByTable(billRes.data);
-    });
+    ])
+      .then(([tableRes, foodRes, billRes]) => {
+        const tableData = tableRes.data;
+        if (tableData.length) {
+          sortTables(tableData);
+          setTables(tableData);
+          handleSelectTable(tableData[0]);
+        }
+        setFoods(foodRes.data);
+        setBillsByTable(billRes.data);
+      })
+      .catch((ex) =>
+        toastImportant(
+          `Lấy dữ liệu thất bại, vui lòng tải lại trang (${ex.response?.data?.message})`
+        )
+      );
   }, []);
 
   const toggleTab = (tab) => {
@@ -60,6 +70,32 @@ const CashierView = () => {
 
   const toggleModal = (modalName) => {
     setModals((modal) => (modal ? "" : modalName));
+  };
+
+  // const refreshBills = async () => {
+  //   try {
+  //     const res = await billApi.getCurrentBillsByTable();
+  //     setBillsByTable(res.data);
+  //   } catch (ex) {
+  //     toastErrorLeft("Cập nhật dữ liệu hóa đơn thất bại");
+  //   }
+  // };
+
+  const refreshTables = async () => {
+    try {
+      const res = await tableApi.getAll();
+      updateTablesState(res.data);
+    } catch (ex) {
+      toastImportant("Cập nhật dữ liệu bàn thất bại, vui lòng tải lại trang");
+    }
+  };
+
+  const updateTablesState = (tableData) => {
+    sortTables(tableData);
+    setTables(tableData);
+    setCurrentTable((table) =>
+      tableData.find((updated) => updated.id === table.id)
+    );
   };
 
   const sortAndSetTables = (data) => {
@@ -183,6 +219,7 @@ const CashierView = () => {
                 <TableAndArea
                   currentTable={currentTable}
                   billsByTable={billsByTable}
+                  refreshTables={refreshTables}
                   handleSelectTable={handleSelectTable}
                   handleAddTable={handlePushTable}
                   handleUpdateTable={handleUpdateTable}
@@ -236,6 +273,7 @@ const CashierView = () => {
         tables={tables}
         currentTable={currentTable}
         billsByTable={billsByTable}
+        updateTablesState={updateTablesState}
       />
     </>
   );
