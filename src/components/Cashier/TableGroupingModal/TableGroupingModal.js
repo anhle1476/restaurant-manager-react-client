@@ -33,9 +33,9 @@ const TableGroupingModal = ({
   const isCurrentTable = (table) => table.id === currentTableId;
 
   const isAChildOfAnotherTable = (table) =>
-    Boolean(table.parent) && table.parent?.id !== currentTableId;
+    Boolean(table.parent) && table.parent.id !== currentTableId;
 
-  const isNoSelect = (table) =>
+  const isDisabled = (table) =>
     !isCurrentTable(table) &&
     (isAChildOfAnotherTable(table) || Boolean(billsByTable[table.id]?.id));
 
@@ -50,13 +50,13 @@ const TableGroupingModal = ({
       </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         <div className="table-grouping">
-          {tables.filter(currentAreaFilter).map((table, i) => (
+          {tables.filter(currentAreaFilter).map((table) => (
             <TableDisplay
-              key={i}
+              key={table.id}
               table={table}
-              noSelect={isNoSelect(table)}
+              disabled={isDisabled(table)}
               selected={isSelected(table)}
-              current={table.id === currentTableId}
+              current={isCurrentTable(table)}
               onClick={() => console.log(table)}
             />
           ))}

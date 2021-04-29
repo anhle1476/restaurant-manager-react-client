@@ -2,32 +2,45 @@ import React from "react";
 import "./TableDisplay.scss";
 
 import classnames from "classnames";
+import { formatVnd, getBillRawCost } from "../../../utils/moneyUtils";
+import { formatTime } from "../../../utils/dateUtils";
 
 const TableDisplay = ({
   table,
-  disabled,
   current,
-  busy,
   selected,
-  noSelect,
+  disabled,
+  bill,
   onClick,
 }) => {
-  const isGrouping = Boolean(table.parent);
+  const isChild = Boolean(table.parent);
+
+  const isBusy = Boolean(bill?.id);
+
+  const total = isBusy ? getBillRawCost(bill) : 0;
 
   return (
     <div
       className={classnames(
         "table-display",
-        { "table-disabled": isGrouping || disabled },
-        { "table-busy": busy },
+        { "table-child": isChild },
+        { "table-busy": isBusy },
         { "table-current": current },
         { "table-selected": selected },
-        { "table-no-select": noSelect }
+        { "table-disabled": disabled }
       )}
       onClick={onClick}
     >
+      {isBusy && (
+        <span className="table-widget table-time">
+          {formatTime(bill.startTime)}
+        </span>
+      )}
       {table.name}
-      {isGrouping && <small>(Ghép {table.parent.name})</small>}
+      {isChild && <small>(Ghép {table.parent.name})</small>}
+      {total && (
+        <span className="table-widget table-total">{formatVnd(total)}</span>
+      )}
     </div>
   );
 };

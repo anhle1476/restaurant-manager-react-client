@@ -164,7 +164,7 @@ const TableAndArea = ({
                   key={i}
                   current={table.id === currentTable.id}
                   table={table}
-                  busy={Boolean(billsByTable[table.id]?.id)}
+                  bill={billsByTable[table.id]}
                 />
               ))}
               <div
