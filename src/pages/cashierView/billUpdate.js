@@ -16,7 +16,7 @@ const BILL_DETAILS_SCHEMA = {
 
 /* CHANGE BILL FUNCTIONS */
 
-export const changeBill = {
+export const changeBillActions = {
   plusAmount: function (bill = { ...BILL_SCHEMA }, food, amount, table) {
     // if bill is a new bill or don't have any food -> add food and return
     if (bill.billDetails.length === 0)
@@ -74,5 +74,13 @@ export const changeBill = {
   },
   limitValue: function (amount, min) {
     return amount < min ? min : amount > 2000 ? 2000 : amount;
+  },
+};
+
+export const deleteBillActions = {
+  updateBillByTable: function (currentBillMap, tableId) {
+    const newBillsByTable = { ...currentBillMap };
+    delete newBillsByTable[tableId];
+    return newBillsByTable;
   },
 };

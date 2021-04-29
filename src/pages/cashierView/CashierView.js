@@ -16,10 +16,12 @@ import "./CashierView.scss";
 import tableApi from "../../api/tableApi";
 import foodApi from "../../api/foodApi";
 import billApi from "../../api/billApi";
-import { changeBill } from "./billUpdate";
+import { deleteBillActions, changeBillActions } from "./billUpdate";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
 import OrderView from "../../components/Cashier/OrderView/OrderView";
+import { toastErrorLeft, toastSuccessLeft } from "../../utils/toastUtils";
+import { separateTable } from "./tableUpdate";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -76,7 +78,7 @@ const CashierView = () => {
 
   const handleSelectFood = (food, amount = 1) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBill.plusAmount(
+    const updatedBill = changeBillActions.plusAmount(
       billOfTable,
       food,
       amount,
@@ -87,14 +89,39 @@ const CashierView = () => {
 
   const handleTypeOrderAmount = (food, amount) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBill.toAmount(billOfTable, food, amount);
+    const updatedBill = changeBillActions.toAmount(billOfTable, food, amount);
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
   const handleDeleteOrderDetail = (foodId) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBill.removeFood(billOfTable, foodId);
+    const updatedBill = changeBillActions.removeFood(billOfTable, foodId);
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+  };
+
+  const handleSaveBill = async () => {
+    try {
+      const res = await billApi.saveOrUpdate(billsByTable[currentTable.id]);
+      setBillsByTable({ ...billsByTable, [currentTable.id]: res.data });
+      toastSuccessLeft("Lưu hóa đơn thành công");
+    } catch (ex) {
+      toastErrorLeft("Lưu hóa đơn thất bại: " + ex.response?.data?.message);
+    }
+  };
+
+  const handleDeleteBill = async () => {
+    try {
+      await billApi.hardDelete(billsByTable[currentTable.id].id);
+      const newBillsByTable = deleteBillActions.updateBillByTable(
+        billsByTable,
+        currentTable.id
+      );
+      setBillsByTable(newBillsByTable);
+      setTables(separateTable(tables, currentTable.id));
+      toastSuccessLeft("Xóa hóa đơn thành công");
+    } catch (ex) {
+      toastErrorLeft("Xóa hóa đơn thất bại: " + ex.response?.data?.message);
+    }
   };
 
   return (
@@ -189,6 +216,8 @@ const CashierView = () => {
             handleClickOrderAmount={handleSelectFood}
             handleTypeOrderAmount={handleTypeOrderAmount}
             handleDeleteOrderDetail={handleDeleteOrderDetail}
+            handleSaveBill={handleSaveBill}
+            handleDeleteBill={handleDeleteBill}
           />
         </Col>
       </Row>

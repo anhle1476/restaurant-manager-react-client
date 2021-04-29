@@ -13,6 +13,8 @@ const OrderView = ({
   handleClickOrderAmount,
   handleTypeOrderAmount,
   handleDeleteOrderDetail,
+  handleSaveBill,
+  handleDeleteBill,
 }) => {
   const total = getBillRawCost(bill);
 
@@ -94,7 +96,7 @@ const OrderView = ({
           <span>Tổng giá trị:</span>
           <span>
             {chefHasNotDoAnything ? (
-              <Badge color="danger">Bếp chưa làm</Badge>
+              <Badge color="danger">Chưa ra món nào</Badge>
             ) : hasUndoneFood ? (
               <Badge color="warning">Chưa ra hết món</Badge>
             ) : (
@@ -105,10 +107,20 @@ const OrderView = ({
         </div>
       )}
       <div className="flex-footer order-footer">
-        <Button block color="secondary" className="text-white order-grouping">
+        <Button
+          block
+          disabled={!bill.id || bill.changed}
+          color="dark"
+          className="text-white order-grouping"
+        >
           <i className="fas fa-chair"></i> Gộp bàn
         </Button>
-        <Button block color="info" className="order-moving">
+        <Button
+          block
+          disabled={!bill.id || bill.changed}
+          color="info"
+          className="order-moving"
+        >
           <i className="fa fa-arrows-alt"></i> Chuyển bàn
         </Button>
         <Button
@@ -117,6 +129,7 @@ const OrderView = ({
           disabled={!(hasBillDetails && Boolean(bill.changed))}
           color="primary"
           className="order-update"
+          onClick={handleSaveBill}
         >
           <i className="fas fa-book"></i> Lưu
         </Button>
@@ -125,6 +138,7 @@ const OrderView = ({
           color="danger"
           disabled={canNotDeleteBill}
           className="order-delete"
+          onClick={handleDeleteBill}
         >
           <i className="fas fa-trash"></i> Xóa hóa đơn
         </Button>

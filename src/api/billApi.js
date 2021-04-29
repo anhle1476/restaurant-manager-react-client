@@ -31,6 +31,10 @@ const doPayment = (data) => {
   return axios.get(`${BILLS_URL}/${data.id}/payment`, data);
 };
 
+const saveOrUpdate = (bill) => {
+  return bill.id ? update(bill) : create(bill);
+};
+
 export default {
   create,
   getCurrentBills,
@@ -39,4 +43,5 @@ export default {
   update,
   hardDelete,
   doPayment,
+  saveOrUpdate,
 };
