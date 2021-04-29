@@ -21,6 +21,7 @@ const OrderView = ({
   handleDeleteOrderDetail,
   handleSaveBill,
   handleDeleteBill,
+  toggleTableGroupingModal,
 }) => {
   const [showModal, setShowModal] = useState(MODAL_SCHEMA);
 
@@ -125,6 +126,7 @@ const OrderView = ({
             disabled={!bill.id || bill.changed}
             color="dark"
             className="text-white order-grouping"
+            onClick={toggleTableGroupingModal}
           >
             <i className="fas fa-chair"></i> Gộp bàn
           </Button>

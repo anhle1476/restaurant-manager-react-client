@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Button } from "reactstrap";
-import TableDisplay from "./TableDisplay/TableDisplay";
+import TableDisplay from "../TableDisplay/TableDisplay";
 import AddAreaModal from "./AddAreaModal/AddAreaModal";
 import AddTableModal from "./AddTableModal/AddTableModal";
 import RestoreTableModal from "./RestoreTableModal/RestoreTableModal";
@@ -29,6 +29,7 @@ const TableAndArea = ({
   handleUpdateTable,
   handleDeleteTable,
   handleRestoreTable,
+  billsByTable,
 }) => {
   const [areas, setAreas] = useState([]);
   const [currentArea, setCurrentArea] = useState({});
@@ -163,6 +164,7 @@ const TableAndArea = ({
                   key={i}
                   current={table.id === currentTable.id}
                   table={table}
+                  busy={Boolean(billsByTable[table.id]?.id)}
                 />
               ))}
               <div

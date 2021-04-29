@@ -3,7 +3,15 @@ import "./TableDisplay.scss";
 
 import classnames from "classnames";
 
-const TableDisplay = ({ table, disabled, current, onClick }) => {
+const TableDisplay = ({
+  table,
+  disabled,
+  current,
+  busy,
+  selected,
+  noSelect,
+  onClick,
+}) => {
   const isGrouping = Boolean(table.parent);
 
   return (
@@ -11,8 +19,10 @@ const TableDisplay = ({ table, disabled, current, onClick }) => {
       className={classnames(
         "table-display",
         { "table-disabled": isGrouping || disabled },
-        { "table-busy": false },
-        { "table-current": current }
+        { "table-busy": busy },
+        { "table-current": current },
+        { "table-selected": selected },
+        { "table-no-select": noSelect }
       )}
       onClick={onClick}
     >

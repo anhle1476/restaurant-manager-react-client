@@ -1,0 +1,6 @@
+{
+  "name": "TableGroupingModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TableGroupingModal.js"
+}
