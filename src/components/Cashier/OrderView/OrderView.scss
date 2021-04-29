@@ -37,10 +37,23 @@
     }
   }
 
+  .flex-body.order-body {
+    .flex-scrollable {
+      max-height: calc(100vh - 300px);
+    }
+  }
+
+  .order-total {
+    height: 30px;
+    display: flex;
+    padding: 0 5px;
+    font-weight: bold;
+    justify-content: space-between;
+  }
+
   .order-footer {
     display: grid;
     grid-template-areas: "grouping moving update" "delete payment update";
-    gap: 5px;
     padding: 0 !important;
     margin-bottom: 1rem;
 

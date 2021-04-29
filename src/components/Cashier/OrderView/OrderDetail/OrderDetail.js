@@ -73,7 +73,7 @@ const OrderDetail = ({
           size="sm"
           color="warning"
         >
-          <i title="Xóa món" className="fa fa-trash"></i>
+          <i title="Xóa món" className="fas fa-trash"></i>
         </Button>
       </Col>
     </Row>

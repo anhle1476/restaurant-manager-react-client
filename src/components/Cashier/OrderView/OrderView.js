@@ -1,10 +1,11 @@
 import React from "react";
-import { Button, Col, Row } from "reactstrap";
+import { Badge, Button, Col, Row } from "reactstrap";
 import OrderDetail from "./OrderDetail/OrderDetail";
 
 import { formatDateTime } from "../../../utils/dateUtils";
 
 import "./OrderView.scss";
+import { formatVnd, getBillRawCost } from "../../../utils/moneyUtils";
 
 const OrderView = ({
   table,
@@ -13,6 +14,26 @@ const OrderView = ({
   handleTypeOrderAmount,
   handleDeleteOrderDetail,
 }) => {
+  const total = getBillRawCost(bill);
+
+  const hasBillDetails = Boolean(bill.billDetails?.length);
+
+  const chefHasNotDoAnything =
+    hasBillDetails &&
+    !bill.billDetails.some(({ doneQuantity }) => doneQuantity > 0);
+
+  const canNotDeleteBill =
+    Boolean(bill.changed) || !hasBillDetails || !chefHasNotDoAnything;
+
+  const hasUndoneFood =
+    hasBillDetails &&
+    bill.billDetails.some(
+      ({ quantity, doneQuantity }) => quantity !== doneQuantity
+    );
+
+  const canNotDoPayment =
+    Boolean(bill.changed) || !hasBillDetails || hasUndoneFood;
+
   return (
     <div className="bg-white order-container flex-container">
       <div className="order-header">
@@ -40,7 +61,7 @@ const OrderView = ({
           </Col>
         </Row>
       </div>
-      <div className="flex-body">
+      <div className="flex-body order-body">
         <div className="flex-scrollable">
           <Row className="order-details order-details-header">
             <Col xs="5">Món</Col>
@@ -51,7 +72,7 @@ const OrderView = ({
           </Row>
           {bill.billDetails === undefined ? (
             <p className="text-center mt-3">Bàn đang trống</p>
-          ) : !bill.billDetails.length ? (
+          ) : !hasBillDetails ? (
             <p className="text-center mt-3">
               Chọn món trong mục menu để thêm vào hóa đơn
             </p>
@@ -68,21 +89,52 @@ const OrderView = ({
           )}
         </div>
       </div>
+      {total !== 0 && (
+        <div className="order-total">
+          <span>Tổng giá trị:</span>
+          <span>
+            {chefHasNotDoAnything ? (
+              <Badge color="danger">Bếp chưa làm</Badge>
+            ) : hasUndoneFood ? (
+              <Badge color="warning">Chưa ra hết món</Badge>
+            ) : (
+              <Badge color="success">Đã ra hết món</Badge>
+            )}{" "}
+            {formatVnd(total)}
+          </span>
+        </div>
+      )}
       <div className="flex-footer order-footer">
-        <Button block color="primary" className="order-grouping">
+        <Button block color="secondary" className="text-white order-grouping">
           <i className="fas fa-chair"></i> Gộp bàn
         </Button>
-        <Button block color="primary" className="order-moving">
-          <i className="fa fa-arrows-alt"></i> move
+        <Button block color="info" className="order-moving">
+          <i className="fa fa-arrows-alt"></i> Chuyển bàn
         </Button>
-        <Button block color="info" className="order-update">
-          update
+        <Button
+          block
+          size="lg"
+          disabled={!(hasBillDetails && Boolean(bill.changed))}
+          color="primary"
+          className="order-update"
+        >
+          <i className="fas fa-book"></i> Lưu
         </Button>
-        <Button block color="danger" className="order-delete">
-          delete
+        <Button
+          block
+          color="danger"
+          disabled={canNotDeleteBill}
+          className="order-delete"
+        >
+          <i className="fas fa-trash"></i> Xóa hóa đơn
         </Button>
-        <Button block color="primary" className="order-payment">
-          pay
+        <Button
+          block
+          disabled={canNotDoPayment}
+          color="warning"
+          className="order-payment text-white"
+        >
+          <i className="fas fa-coins"></i> Thanh toán
         </Button>
       </div>
     </div>

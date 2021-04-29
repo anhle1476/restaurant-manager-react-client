@@ -16,25 +16,10 @@ import "./CashierView.scss";
 import tableApi from "../../api/tableApi";
 import foodApi from "../../api/foodApi";
 import billApi from "../../api/billApi";
+import { changeBill } from "./billUpdate";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
 import OrderView from "../../components/Cashier/OrderView/OrderView";
-
-const BILL_SCHEMA = {
-  startTime: undefined,
-  appTable: {},
-  billDetails: [],
-  surcharge: 0,
-  discount: 0,
-  discountDescription: "",
-  lastPrice: 0,
-};
-
-const BILL_DETAILS_SCHEMA = {
-  food: {},
-  quantity: 0,
-  doneQuantity: 0,
-};
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -91,7 +76,7 @@ const CashierView = () => {
 
   const handleSelectFood = (food, amount = 1) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBillDetailsPlusAmount(
+    const updatedBill = changeBill.plusAmount(
       billOfTable,
       food,
       amount,
@@ -102,13 +87,13 @@ const CashierView = () => {
 
   const handleTypeOrderAmount = (food, amount) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBillDetailsToAmount(billOfTable, food, amount);
+    const updatedBill = changeBill.toAmount(billOfTable, food, amount);
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
   const handleDeleteOrderDetail = (foodId) => {
     const billOfTable = billsByTable[currentTable.id];
-    const updatedBill = changeBillDetailsByRemoveFood(billOfTable, foodId);
+    const updatedBill = changeBill.removeFood(billOfTable, foodId);
     setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
   };
 
@@ -213,66 +198,6 @@ const CashierView = () => {
 
 function sortTables(tables) {
   return tables.sort((t1, t2) => t1.name.localeCompare(t2.name));
-}
-
-function createNewBillDetail(food, amount) {
-  return { ...BILL_DETAILS_SCHEMA, food: food, quantity: amount };
-}
-
-function changeBillDetailsPlusAmount(
-  bill = { ...BILL_SCHEMA },
-  food,
-  amount,
-  table
-) {
-  // if bill is a new bill or don't have any food -> add food and return
-  if (bill.billDetails.length === 0)
-    return {
-      ...bill,
-      appTable: table,
-      billDetails: [createNewBillDetail(food, amount)],
-    };
-  let foodNotExist = true;
-  const billDetailsLength = bill.billDetails.length;
-  for (let i = 0; i < billDetailsLength; i++) {
-    const currentDetail = bill.billDetails[i];
-    if (currentDetail.food.id !== food.id) continue;
-    const resultAmount = currentDetail.quantity + amount;
-    bill.billDetails[i] = updateDetailsWithAmount(currentDetail, resultAmount);
-    foodNotExist = false;
-    break;
-  }
-  if (foodNotExist) bill.billDetails.push(createNewBillDetail(food, amount));
-  return bill;
-}
-
-function changeBillDetailsToAmount(bill, food, amount) {
-  return {
-    ...bill,
-    billDetails: bill.billDetails.map((detail) =>
-      detail.food.id === food.id
-        ? updateDetailsWithAmount(detail, amount)
-        : detail
-    ),
-  };
-}
-
-function changeBillDetailsByRemoveFood(bill, foodId) {
-  return {
-    ...bill,
-    billDetails: bill.billDetails.filter((detail) => detail.food.id !== foodId),
-  };
-}
-
-function updateDetailsWithAmount(detail, newAmount) {
-  return {
-    ...detail,
-    quantity: limitValue(newAmount, detail.doneQuantity),
-  };
-}
-
-function limitValue(amount, min) {
-  return amount < min ? min : amount > 2000 ? 2000 : amount;
 }
 
 export default withRouter(CashierView);
