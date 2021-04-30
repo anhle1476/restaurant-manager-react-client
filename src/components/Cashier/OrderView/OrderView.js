@@ -23,6 +23,7 @@ const OrderView = ({
   handleSaveBill,
   handleDeleteBill,
   toggleTableGroupingModal,
+  toggleTableChangingModal,
 }) => {
   const [showModal, setShowModal] = useState(MODAL_SCHEMA);
 
@@ -144,6 +145,7 @@ const OrderView = ({
             color="info"
             className="order-moving"
             title="Chức năng chỉ áp dụng với bàn chưa gộp"
+            onClick={toggleTableChangingModal}
           >
             <i className="fa fa-arrows-alt"></i> Chuyển bàn
           </Button>

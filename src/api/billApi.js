@@ -31,7 +31,7 @@ const doPayment = (data) => {
   return axios.post(`${BILLS_URL}/${data.id}/payment`, data);
 };
 
-const changeTable = ({ billId, tableId }) => {
+const changeTable = (billId, tableId) => {
   return axios.post(`${BILLS_URL}/${billId}/moving-to/${tableId}`);
 };
 

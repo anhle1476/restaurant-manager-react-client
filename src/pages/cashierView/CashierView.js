@@ -27,6 +27,7 @@ import {
 } from "../../utils/toastUtils";
 import { separateTable } from "./tableUpdate";
 import TableGroupingModal from "../../components/Cashier/TableGroupingModal/TableGroupingModal";
+import ChangeTableModal from "../../components/Cashier/ChangeTableModal/ChangeTableModal";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -116,6 +117,15 @@ const CashierView = () => {
   const handleDeleteTable = (id) => {
     setTables(tables.filter((table) => table.id !== id));
     handleSelectTable(tables.length ? tables[0] : {});
+  };
+
+  const handleChangeTable = (bill, oldTable, newTable) => {
+    const newBillByTable = {
+      ...billsByTable,
+      [newTable]: bill,
+    };
+    delete newBillByTable[oldTable];
+    setBillsByTable(newBillByTable);
   };
 
   const handleSelectFood = (food, amount = 1) => {
@@ -266,6 +276,7 @@ const CashierView = () => {
               handleSaveBill={handleSaveBill}
               handleDeleteBill={handleDeleteBill}
               toggleTableGroupingModal={() => toggleModal("TABLE_GROUPING")}
+              toggleTableChangingModal={() => toggleModal("TABLE_CHANGING")}
             />
           </Col>
         </Row>
@@ -277,6 +288,14 @@ const CashierView = () => {
         currentTable={currentTable}
         billsByTable={billsByTable}
         updateTablesState={updateTablesState}
+      />
+      <ChangeTableModal
+        show={modals === "TABLE_CHANGING"}
+        toggle={() => toggleModal("TABLE_CHANGING")}
+        tables={tables}
+        currentTable={currentTable}
+        billsByTable={billsByTable}
+        handleChangeTable={handleChangeTable}
       />
     </>
   );

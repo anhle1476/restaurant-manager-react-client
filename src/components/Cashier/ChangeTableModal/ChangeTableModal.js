@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 
-import { Modal, ModalBody, ModalFooter, Button } from "reactstrap";
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  Input,
+  FormGroup,
+  Label,
+} from "reactstrap";
 import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 import TablesInModal from "../TablesInModal/TablesInModal";
 
 import { toastError, toastSuccessLeft } from "../../../utils/toastUtils";
-import tableApi from "../../../api/tableApi";
+import billApi from "../../../api/billApi";
+import areaApi from "../../../api/areaApi";
 
 const ChangeTableModal = ({
   show,
@@ -13,46 +23,47 @@ const ChangeTableModal = ({
   tables,
   billsByTable,
   currentTable,
-  updateTablesState,
+  handleChangeTable,
 }) => {
-  const [tableGroup, setTableGroup] = useState({});
+  const [changeTable, setChangeTable] = useState(0);
+  const [areas, setAreas] = useState([]);
+  const [selectArea, setSelectArea] = useState("");
 
   useEffect(() => {
-    const parentId = currentTable.id;
-    const children = tables
-      .filter((table) => table.parent?.id === parentId)
-      .map((table) => table.id);
-    const childrenSet = new Set(children);
-    setTableGroup({ parent: parentId, children: childrenSet });
-  }, [tables, currentTable]);
+    if (!show) return;
+    const fetchAreas = async () => {
+      try {
+        const res = await areaApi.getAll();
+        setAreas(res.data);
+        setSelectArea(String(currentTable.area?.id));
+      } catch (ex) {
+        toastError("Lấy thông tin thất bại, vui lòng thử lại sau");
+      }
+    };
+    fetchAreas();
+  }, [show, currentTable]);
 
-  const isSelected = (tableId) => tableGroup.children.has(tableId);
+  const doToggle = () => {
+    setChangeTable(0);
+    toggle();
+  };
+
+  const isSelected = (tableId) => tableId === changeTable;
 
   const handleSelectTable = (tableId) => {
-    if (tableId === tableGroup.parent) return;
-    const childrenSet = tableGroup.children;
-    if (isSelected(tableId)) childrenSet.delete(tableId);
-    else childrenSet.add(tableId);
-    setTableGroup({ ...tableGroup, children: childrenSet });
+    setChangeTable(tableId === currentTable.id ? 0 : tableId);
   };
 
-  const handleSubmitGroupingTable = async () => {
+  const handleSubmitChangeTable = async () => {
     try {
-      const res = await tableApi.grouping(tableGroup);
-      updateTablesState(res.data);
-      toastSuccessLeft("Gộp bàn thành công");
+      const oldTableId = currentTable.id;
+      const billId = billsByTable[currentTable.id].id;
+      const res = await billApi.changeTable(billId, changeTable);
+      handleChangeTable(res.data, oldTableId, changeTable);
+      doToggle();
+      toastSuccessLeft("Chuyển bàn thành công");
     } catch (ex) {
-      toastError("Gộp bàn thất bại: " + ex.response?.data?.message);
-    }
-  };
-
-  const handleSubmitSeparatingTable = async () => {
-    try {
-      const res = await tableApi.separate(tableGroup.parent);
-      updateTablesState(res.data);
-      toastSuccessLeft("Tách bàn thành công");
-    } catch (ex) {
-      toastError("Tách bàn đã gộp thất bại: " + ex.response?.data?.message);
+      toastError("Chuyển bàn thất bại: " + ex.response?.data?.message);
     }
   };
 
@@ -60,40 +71,56 @@ const ChangeTableModal = ({
     <Modal
       className="modal-lg modal-dialog-scrollable"
       isOpen={show}
-      toggle={toggle}
+      toggle={doToggle}
     >
-      <ModalHeaderWithCloseBtn toggle={toggle}>
-        Gộp bàn {currentTable.name}
+      <ModalHeaderWithCloseBtn toggle={doToggle}>
+        Chuyển bàn {currentTable.name}
       </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white">
         {show && (
-          <TablesInModal
-            tables={tables}
-            billsByTable={billsByTable}
-            currentTableId={currentTable.id}
-            selectedAreaId={currentTable.area.id}
-            selector={isSelected}
-            onClick={handleSelectTable}
-          />
+          <>
+            <div className="mb-2">
+              <Form inline onSubmit={(e) => e.preventDefault()}>
+                <FormGroup>
+                  <Label for="area" className="mr-2">
+                    Chọn khu vực:
+                  </Label>
+                  <Input
+                    type="select"
+                    name="area"
+                    value={selectArea}
+                    onChange={(e) => setSelectArea(e.target.value)}
+                  >
+                    {areas.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+              </Form>
+            </div>
+            <TablesInModal
+              tables={tables}
+              billsByTable={billsByTable}
+              currentTableId={currentTable.id}
+              selectedAreaId={Number(selectArea)}
+              selector={isSelected}
+              onClick={handleSelectTable}
+            />
+          </>
         )}
       </ModalBody>
       <ModalFooter>
-        <Button
-          color="danger"
-          className="my-0 mx-1"
-          onClick={handleSubmitSeparatingTable}
-          block
-          disabled={!tableGroup.children?.size}
-        >
-          Tách toàn bộ bàn con
+        <Button color="light" onClick={doToggle}>
+          Hủy
         </Button>
         <Button
+          disabled={changeTable === 0}
           color="warning"
-          className="my-0 mx-1"
-          onClick={handleSubmitGroupingTable}
-          block
+          onClick={handleSubmitChangeTable}
         >
-          Lưu trạng thái gộp
+          Chuyển bàn
         </Button>
       </ModalFooter>
     </Modal>
