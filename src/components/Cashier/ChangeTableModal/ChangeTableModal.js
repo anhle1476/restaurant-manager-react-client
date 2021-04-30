@@ -7,7 +7,7 @@ import TablesInModal from "../TablesInModal/TablesInModal";
 import { toastError, toastSuccessLeft } from "../../../utils/toastUtils";
 import tableApi from "../../../api/tableApi";
 
-const TableGroupingModal = ({
+const ChangeTableModal = ({
   show,
   toggle,
   tables,
@@ -100,4 +100,4 @@ const TableGroupingModal = ({
   );
 };
 
-export default TableGroupingModal;
+export default ChangeTableModal;

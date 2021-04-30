@@ -257,6 +257,9 @@ const CashierView = () => {
             <OrderView
               table={currentTable}
               bill={billsByTable[currentTable.id]}
+              isGrouping={tables.some(
+                (table) => table.parent?.id === currentTable.id
+              )}
               handleClickOrderAmount={handleSelectFood}
               handleTypeOrderAmount={handleTypeOrderAmount}
               handleDeleteOrderDetail={handleDeleteOrderDetail}

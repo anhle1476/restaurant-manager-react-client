@@ -28,7 +28,11 @@ const hardDelete = (id) => {
 };
 
 const doPayment = (data) => {
-  return axios.get(`${BILLS_URL}/${data.id}/payment`, data);
+  return axios.post(`${BILLS_URL}/${data.id}/payment`, data);
+};
+
+const changeTable = ({ billId, tableId }) => {
+  return axios.post(`${BILLS_URL}/${billId}/moving-to/${tableId}`);
 };
 
 const saveOrUpdate = (bill) => {
@@ -36,12 +40,11 @@ const saveOrUpdate = (bill) => {
 };
 
 export default {
-  create,
   getCurrentBills,
   getCurrentBillsByTable,
   getById,
-  update,
   hardDelete,
   doPayment,
+  changeTable,
   saveOrUpdate,
 };

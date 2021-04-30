@@ -16,6 +16,7 @@ const MODAL_SCHEMA = {
 const OrderView = ({
   table,
   bill = {},
+  isGrouping,
   handleClickOrderAmount,
   handleTypeOrderAmount,
   handleDeleteOrderDetail,
@@ -33,21 +34,19 @@ const OrderView = ({
 
   const hasBillDetails = Boolean(bill.billDetails?.length);
 
-  const chefHasNotDoAnything =
+  const noFoodIsOut =
     hasBillDetails &&
     !bill.billDetails.some(({ doneQuantity }) => doneQuantity > 0);
 
-  const canNotDeleteBill =
-    Boolean(bill.changed) || !hasBillDetails || !chefHasNotDoAnything;
+  const emptyOrNotSaved = Boolean(bill.changed) || !hasBillDetails;
+
+  const canNotDeleteBill = emptyOrNotSaved || !noFoodIsOut;
 
   const hasUndoneFood =
     hasBillDetails &&
     bill.billDetails.some(
       ({ quantity, doneQuantity }) => quantity !== doneQuantity
     );
-
-  const canNotDoPayment =
-    Boolean(bill.changed) || !hasBillDetails || hasUndoneFood;
 
   return (
     <>
@@ -57,6 +56,11 @@ const OrderView = ({
             <Col xs="4" className="order-table">
               <span>Bàn</span>
               <h2>{table.name}</h2>
+              {isGrouping && (
+                <Badge color="light" className="text-warning font-weight-bold">
+                  Bàn gộp
+                </Badge>
+              )}
             </Col>
             <Col xs="8">
               <h5 className="text-center">Nhà hàng Super Pig</h5>
@@ -106,10 +110,13 @@ const OrderView = ({
           </div>
         </div>
         {total !== 0 && (
-          <div className="order-total">
+          <div
+            title="Tổng giá trị hàng hóa, chưa bao gồm chiết khấu và phụ thu"
+            className="order-total"
+          >
             <span>Tổng giá trị:</span>
             <span>
-              {chefHasNotDoAnything ? (
+              {noFoodIsOut ? (
                 <Badge color="danger">Chưa ra món nào</Badge>
               ) : hasUndoneFood ? (
                 <Badge color="warning">Chưa ra hết món</Badge>
@@ -126,15 +133,17 @@ const OrderView = ({
             disabled={!bill.id || bill.changed}
             color="dark"
             className="text-white order-grouping"
+            title="Chức năng chỉ áp dụng với bàn trong cùng khu vực"
             onClick={toggleTableGroupingModal}
           >
-            <i className="fas fa-chair"></i> Gộp bàn
+            <i className="fas fa-th"></i> Gộp/tách bàn
           </Button>
           <Button
             block
-            disabled={!bill.id || bill.changed}
+            disabled={!bill.id || bill.changed || isGrouping}
             color="info"
             className="order-moving"
+            title="Chức năng chỉ áp dụng với bàn chưa gộp"
           >
             <i className="fa fa-arrows-alt"></i> Chuyển bàn
           </Button>
@@ -144,6 +153,7 @@ const OrderView = ({
             disabled={!(hasBillDetails && Boolean(bill.changed))}
             color="primary"
             className="order-update"
+            title="Lưu thay đổi trước khi thực hiện hành động khác"
             onClick={handleSaveBill}
           >
             <i className="fas fa-book"></i> Lưu
@@ -153,15 +163,17 @@ const OrderView = ({
             color="danger"
             disabled={canNotDeleteBill}
             className="order-delete"
+            title="Chức năng chỉ áp dụng với bàn chưa ra món (không thể khôi phục)"
             onClick={() => toggleModal("DELETE_MODAL")}
           >
             <i className="fas fa-trash"></i> Xóa hóa đơn
           </Button>
           <Button
             block
-            disabled={canNotDoPayment}
+            disabled={emptyOrNotSaved}
             color="warning"
             className="order-payment text-white"
+            title="In hóa đơn tạm tính và thanh toán"
           >
             <i className="fas fa-coins"></i> Thanh toán
           </Button>

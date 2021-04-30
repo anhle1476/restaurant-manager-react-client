@@ -1,19 +1,19 @@
 @import "../../../styles/app";
 
-.table-grouping {
+.tables-modal-view {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
 }
 
 @media (max-width: 800px) {
-  .table-grouping {
+  .tables-modal-view {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 500px) {
-  .table-grouping {
+  .tables-modal-view {
     grid-template-columns: repeat(2, 1fr);
   }
 }
