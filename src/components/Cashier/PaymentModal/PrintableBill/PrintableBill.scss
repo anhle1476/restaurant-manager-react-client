@@ -1,0 +1,53 @@
+@import "../../../../styles/app";
+
+.printing-bill {
+  .printing-bill-meta-group {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .printing-bill-body {
+    .table {
+      margin-top: 15px;
+
+      th {
+        background-color: $dark;
+        color: white;
+      }
+
+      td,
+      th {
+        text-align: end;
+
+        &:first-child {
+          text-align: start;
+        }
+      }
+
+      .printing-bill-raw-cost td {
+        border-top: 1px solid $dark;
+        color: $dark;
+      }
+
+      .printing-bill-total-cost td {
+        border-top: 1px solid $dark;
+        color: $dark;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .printing-bill-footer {
+    margin-top: 20px;
+    padding: 20px 0;
+    border-top: 1px solid $dark;
+  }
+}
+
+@media print {
+  .printing-bill {
+    max-width: 500px;
+    padding: 10px;
+    margin: auto;
+  }
+}

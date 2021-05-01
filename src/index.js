@@ -33,7 +33,7 @@ if (window.navigator.userAgent.includes("Chrome") && ReactReduxDevTools) {
 
 // TODO: remove after finish setup security
 axios.defaults.headers.common["Authorization"] =
-  "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQURNSU4iLCJzdGFmZklkIjoiMSIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MTkwNTgxNTIsImV4cCI6MTYxOTg4ODQwMH0.Ve_KdMw5E0kouRL5nhqqffP3k7yiqiB282J3rP9gFvm4WwBLn8Kb-UwWVglk1rgNVDdSh-gV08JTjpc6D-dUAA";
+  "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQURNSU4iLCJzdGFmZklkIjoiMSIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2MTk4ODg0NzksImV4cCI6MTYyMDc1MjQwMH0.EQB6szK2J7cni0UIMXpyIE7Ck-PRZD_oSoq84U3NcnfR4oqUXHWnWWVtnjMdqjK5brf4beM2rvWptQWCSLykdg";
 
 ReactDOM.render(
   <Provider store={store}>

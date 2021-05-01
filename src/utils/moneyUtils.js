@@ -1,9 +1,13 @@
-const FORMATTER = new Intl.NumberFormat("vi-VN", {
+const VND_FORMATTER = new Intl.NumberFormat("vi-VN", {
   style: "currency",
   currency: "VND",
 });
 
-export const formatVnd = (money) => FORMATTER.format(money);
+const MONEY_FORMATTER = new Intl.NumberFormat("vi-VN");
+
+export const formatVnd = (money) => VND_FORMATTER.format(money);
+
+export const formatMoney = (money) => MONEY_FORMATTER.format(money);
 
 export const getBillRawCost = (bill) =>
   bill.billDetails?.length

@@ -17,6 +17,12 @@ export const formatMonthStr = (str) => {
 export const formatDateTime = (str) =>
   moment(new Date(str)).format("HH:mm DD/MM");
 
+export const formatFullDateTime = (str) =>
+  moment(new Date(str)).format("HH:mm DD/MM/YYYY");
+
+export const formatCurrentFullDateTime = () =>
+  moment(new Date()).format("HH:mm DD/MM/YYYY");
+
 export const formatTime = (str) => moment(new Date(str)).format("HH:mm");
 
 export const getMinuteDifference = (str) => {

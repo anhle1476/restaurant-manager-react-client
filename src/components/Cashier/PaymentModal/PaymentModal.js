@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import ReactToPrint from "react-to-print";
 
 import {
   Modal,
@@ -16,6 +17,7 @@ import ModalHeaderWithCloseBtn from "../../ModalHeaderWithCloseBtn/ModalHeaderWi
 import PaymentInput from "./PaymentInput/PaymentInput";
 
 import "./PaymentModal.scss";
+import PrintableBill from "./PrintableBill/PrintableBill";
 
 const PaymentModal = ({
   show,
@@ -28,11 +30,19 @@ const PaymentModal = ({
 }) => {
   const [takeIn, setTakeIn] = useState(0);
 
-  const rawCost = bill?.id ? getBillRawCost(bill) : 0;
+  const printerRef = useRef();
+
+  const rawCost = show ? getBillRawCost(bill) : 0;
 
   const totalCost = rawCost + bill.surcharge - bill.discount;
 
   const shouldSave = bill.unsaved || !bill.lastPrice;
+
+  const hasUnfinishedFood =
+    bill.billDetails?.length &&
+    bill.billDetails.some(
+      ({ quantity, doneQuantity }) => doneQuantity < quantity
+    );
 
   const doToggle = () => {
     toggle();
@@ -128,17 +138,23 @@ const PaymentModal = ({
                   >
                     <i className="fas fa-book"></i> Lưu thông tin
                   </Button>
+                  <ReactToPrint
+                    trigger={() => (
+                      <Button
+                        block
+                        disabled={shouldSave}
+                        className="payment-print"
+                        color="dark"
+                      >
+                        <i className="fas fa-print"></i> In tạm tính
+                      </Button>
+                    )}
+                    content={() => printerRef.current}
+                  />
+
                   <Button
                     block
-                    disabled={shouldSave}
-                    className="payment-print"
-                    color="dark"
-                  >
-                    <i className="fas fa-print"></i> In tạm tính
-                  </Button>
-                  <Button
-                    block
-                    disabled={shouldSave}
+                    disabled={shouldSave || hasUnfinishedFood}
                     className="payment-process"
                     color="warning"
                     onClick={handleDoPayment}
@@ -146,7 +162,21 @@ const PaymentModal = ({
                     <i className="fas fa-coins"></i> Xác nhận thanh toán
                   </Button>
                 </div>
+
+                {hasUnfinishedFood && (
+                  <p className="text-center text-danger">
+                    * Không thể thanh toán hóa đơn chưa ra hết món
+                  </p>
+                )}
               </Form>
+            </Col>
+            <Col md="6" sm="12">
+              <PrintableBill
+                {...bill}
+                rawCost={rawCost}
+                totalCost={totalCost}
+                ref={printerRef}
+              />
             </Col>
           </Row>
         </ModalBody>
