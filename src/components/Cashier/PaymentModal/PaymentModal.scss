@@ -1,0 +1,71 @@
+@import "../../../styles/app";
+
+.modal-full-screen {
+  height: 100vh !important;
+  width: 100vw !important;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+
+  .modal-content {
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .modal-header {
+    border-radius: 0;
+  }
+}
+
+.payment-form-group {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-take-in {
+  -moz-appearance: textfield;
+  text-align: end;
+  padding-right: 4px;
+  font-size: 1rem;
+  color: #323232;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &:focus {
+    border: 1px solid $warning;
+  }
+}
+
+.payment-btn-group {
+  display: grid;
+  grid-template-areas: "save print" "process process";
+
+  .btn {
+    margin: 0;
+    border-radius: 0;
+
+    &.payment-save {
+      grid-area: save;
+      border-top-left-radius: 5px;
+    }
+
+    &.payment-print {
+      grid-area: print;
+      border-top-right-radius: 5px;
+      color: white;
+    }
+
+    &.payment-process {
+      grid-area: process;
+      border-radius: 0 0 5px 5px;
+      height: 50px;
+    }
+  }
+}

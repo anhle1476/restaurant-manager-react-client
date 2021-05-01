@@ -24,6 +24,7 @@ const OrderView = ({
   handleDeleteBill,
   toggleTableGroupingModal,
   toggleTableChangingModal,
+  togglePaymentModal,
 }) => {
   const [showModal, setShowModal] = useState(MODAL_SCHEMA);
 
@@ -176,6 +177,7 @@ const OrderView = ({
             color="warning"
             className="order-payment text-white"
             title="In hóa đơn tạm tính và thanh toán"
+            onClick={togglePaymentModal}
           >
             <i className="fas fa-coins"></i> Thanh toán
           </Button>

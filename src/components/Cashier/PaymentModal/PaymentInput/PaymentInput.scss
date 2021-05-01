@@ -1,0 +1,45 @@
+@import "../../../../styles/app";
+
+.payment-input {
+  position: absolute;
+  right: 0;
+  bottom: -180px;
+  display: none;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid $gray-400;
+  padding: 2px 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+
+  &.show {
+    display: block;
+  }
+
+  .payment-input-header {
+    display: flex;
+    justify-content: space-between;
+
+    .payment-input-close-btn {
+      padding: 0px 5px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover {
+        background-color: $gray-400;
+      }
+    }
+  }
+
+  .input-group-text {
+    min-width: 50px;
+  }
+
+  .payment-input-value {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+}

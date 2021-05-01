@@ -28,6 +28,8 @@ import {
 import { separateTable } from "./tableUpdate";
 import TableGroupingModal from "../../components/Cashier/TableGroupingModal/TableGroupingModal";
 import ChangeTableModal from "../../components/Cashier/ChangeTableModal/ChangeTableModal";
+import PaymentModal from "../../components/Cashier/PaymentModal/PaymentModal";
+import { formatVnd } from "../../utils/moneyUtils";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -126,6 +128,11 @@ const CashierView = () => {
     };
     delete newBillByTable[oldTable];
     setBillsByTable(newBillByTable);
+    setCurrentTable(tables.find((table) => table.id === newTable));
+  };
+
+  const saveCurrentBill = (bill) => {
+    setBillsByTable({ ...billsByTable, [currentTable.id]: bill });
   };
 
   const handleSelectFood = (food, amount = 1) => {
@@ -136,25 +143,25 @@ const CashierView = () => {
       amount,
       currentTable
     );
-    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+    saveCurrentBill(updatedBill);
   };
 
   const handleTypeOrderAmount = (food, amount) => {
     const billOfTable = billsByTable[currentTable.id];
     const updatedBill = changeBillActions.toAmount(billOfTable, food, amount);
-    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+    saveCurrentBill(updatedBill);
   };
 
   const handleDeleteOrderDetail = (foodId) => {
     const billOfTable = billsByTable[currentTable.id];
     const updatedBill = changeBillActions.removeFood(billOfTable, foodId);
-    setBillsByTable({ ...billsByTable, [currentTable.id]: updatedBill });
+    saveCurrentBill(updatedBill);
   };
 
   const handleSaveBill = async () => {
     try {
       const res = await billApi.saveOrUpdate(billsByTable[currentTable.id]);
-      setBillsByTable({ ...billsByTable, [currentTable.id]: res.data });
+      saveCurrentBill(res.data);
       toastSuccessLeft("Lưu hóa đơn thành công");
     } catch (ex) {
       toastErrorLeft("Lưu hóa đơn thất bại: " + ex.response?.data?.message);
@@ -173,6 +180,54 @@ const CashierView = () => {
       toastSuccessLeft("Xóa hóa đơn thành công");
     } catch (ex) {
       toastErrorLeft("Xóa hóa đơn thất bại: " + ex.response?.data?.message);
+    }
+  };
+
+  const handleChangePaymentInfo = ({ name, value }) => {
+    saveCurrentBill({
+      ...billsByTable[currentTable.id],
+      [name]: value,
+      unsaved: true,
+    });
+  };
+
+  const handleSavePayment = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await billApi.preparePayment(billsByTable[currentTable.id]);
+      saveCurrentBill(res.data);
+      toastSuccessLeft("Lưu thông tin thanh toán thành công");
+    } catch (ex) {
+      toastErrorLeft(
+        "Lưu thông tin thanh toán thất bại: " + ex.response?.data?.message
+      );
+    }
+  };
+
+  const handleDoPayment = async () => {
+    try {
+      const currentTableId = currentTable.id;
+      const res = await billApi.doPayment(billsByTable[currentTableId].id);
+      const { appTable, lastPrice } = res.data;
+      const newBillByTable = { ...billsByTable };
+      delete newBillByTable[currentTableId];
+      setBillsByTable(newBillByTable);
+      setTables(
+        tables.map((table) =>
+          table.parent?.id === currentTableId
+            ? {
+                ...table,
+                parent: null,
+              }
+            : table
+        )
+      );
+      toggleModal("");
+      toastSuccessLeft(
+        `Thanh toán ${appTable.name} bàn công: ${formatVnd(lastPrice)}`
+      );
+    } catch (ex) {
+      toastErrorLeft("Thanh toán thất bại: " + ex.response?.data?.message);
     }
   };
 
@@ -277,6 +332,7 @@ const CashierView = () => {
               handleDeleteBill={handleDeleteBill}
               toggleTableGroupingModal={() => toggleModal("TABLE_GROUPING")}
               toggleTableChangingModal={() => toggleModal("TABLE_CHANGING")}
+              togglePaymentModal={() => toggleModal("PAYMENT")}
             />
           </Col>
         </Row>
@@ -296,6 +352,15 @@ const CashierView = () => {
         currentTable={currentTable}
         billsByTable={billsByTable}
         handleChangeTable={handleChangeTable}
+      />
+      <PaymentModal
+        show={modals === "PAYMENT"}
+        toggle={() => toggleModal("PAYMENT")}
+        currentTable={currentTable}
+        bill={billsByTable[currentTable.id]}
+        handleChangePaymentInfo={handleChangePaymentInfo}
+        handleSavePayment={handleSavePayment}
+        handleDoPayment={handleDoPayment}
       />
     </>
   );

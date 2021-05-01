@@ -27,8 +27,12 @@ const hardDelete = (id) => {
   return axios.delete(`${BILLS_URL}/${id}`);
 };
 
-const doPayment = (data) => {
-  return axios.post(`${BILLS_URL}/${data.id}/payment`, data);
+const preparePayment = (data) => {
+  return axios.post(`${BILLS_URL}/${data.id}/prepare-payment`, data);
+};
+
+const doPayment = (billId) => {
+  return axios.post(`${BILLS_URL}/${billId}/payment`);
 };
 
 const changeTable = (billId, tableId) => {
@@ -44,6 +48,7 @@ export default {
   getCurrentBillsByTable,
   getById,
   hardDelete,
+  preparePayment,
   doPayment,
   changeTable,
   saveOrUpdate,
