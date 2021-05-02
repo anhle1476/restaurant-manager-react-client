@@ -11,11 +11,14 @@ const TableDisplay = ({
   selected,
   disabled,
   bill,
+  reserving,
   onClick,
 }) => {
   const isChild = Boolean(table.parent);
 
   const isBusy = Boolean(bill?.id);
+
+  const isReserved = Boolean(reserving?.id);
 
   const total = isBusy ? getBillRawCost(bill) : 0;
 
@@ -25,6 +28,7 @@ const TableDisplay = ({
         "table-display",
         { "table-child": isChild },
         { "table-busy": isBusy },
+        { "table-reserved": isReserved },
         { "table-current": current },
         { "table-selected": selected },
         { "table-disabled": disabled }
@@ -38,6 +42,12 @@ const TableDisplay = ({
       )}
       {disabled && (
         <span className="table-widget table-in-use">Đang sử dụng</span>
+      )}
+      {isReserved && (
+        <span className="table-widget table-reserved">
+          <i className="fas fa-flag text-white"></i>
+          {formatTime(reserving.reservingTime)}
+        </span>
       )}
       {table.name}
       {isChild && (

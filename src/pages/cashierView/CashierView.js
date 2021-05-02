@@ -16,6 +16,7 @@ import "./CashierView.scss";
 import tableApi from "../../api/tableApi";
 import foodApi from "../../api/foodApi";
 import billApi from "../../api/billApi";
+import reservingApi from "../../api/reservingApi";
 import {
   deleteBillActions,
   changeBillActions,
@@ -34,6 +35,7 @@ import TableGroupingModal from "../../components/Cashier/TableGroupingModal/Tabl
 import ChangeTableModal from "../../components/Cashier/ChangeTableModal/ChangeTableModal";
 import PaymentModal from "../../components/Cashier/PaymentModal/PaymentModal";
 import { formatVnd } from "../../utils/moneyUtils";
+import ReservingView from "../../components/Cashier/ReservingView/ReservingView";
 
 const CashierView = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -43,6 +45,7 @@ const CashierView = () => {
   const [tables, setTables] = useState([]);
   const [foods, setFoods] = useState([]);
   const [billsByTable, setBillsByTable] = useState({});
+  const [reservingByTable, setReservingByTable] = useState({});
 
   const handleSelectTable = (table) => {
     setCurrentTable(!table.parent ? table : table.parent);
@@ -70,6 +73,25 @@ const CashierView = () => {
         )
       );
   }, []);
+
+  useEffect(() => {
+    updateReservingByTable();
+  }, []);
+
+  const updateReservingByTable = async () => {
+    try {
+      const res = await reservingApi.getAllToday();
+      const reservingData = res.data.reduce((obj, order) => {
+        order.appTables.forEach((table) => (obj[table.id] = order));
+        return obj;
+      }, {});
+      setReservingByTable(reservingData);
+    } catch (ex) {
+      toastImportant(
+        `Lấy dữ liệu đặt bàn, vui lòng tải lại trang (${ex.response?.data?.message})`
+      );
+    }
+  };
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -304,6 +326,7 @@ const CashierView = () => {
                 <TableAndArea
                   currentTable={currentTable}
                   billsByTable={billsByTable}
+                  reservingByTable={reservingByTable}
                   refreshTables={refreshTables}
                   handleSelectTable={handleSelectTable}
                   handleAddTable={handlePushTable}
@@ -326,7 +349,7 @@ const CashierView = () => {
               <TabPane tabId="3">
                 <Row>
                   <Col>
-                    <h2>reserving</h2>
+                    <ReservingView />
                   </Col>
                 </Row>
               </TabPane>

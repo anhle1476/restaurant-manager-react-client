@@ -76,7 +76,8 @@
       border-radius: 5px 0 0 0;
     }
 
-    &.table-in-use {
+    &.table-in-use,
+    &.table-reversed {
       top: 0;
       right: 0;
       border-radius: 0 0 0 5px;

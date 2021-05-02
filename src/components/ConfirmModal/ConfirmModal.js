@@ -41,7 +41,7 @@ const DeleteConfirmModal = ({
             <Form onSubmit={handleSubmitDelete}>
               <FormGroup>
                 <Label for="confirmDelete">
-                  Nhập <strong>{confirm}</strong> và bấm xác nhận để xóa
+                  Nhập <strong>{confirm}</strong> và bấm xác nhận để thực hiện
                 </Label>
                 <Input
                   required

@@ -6,7 +6,7 @@ import { formatDateTime } from "../../../utils/dateUtils";
 
 import "./OrderView.scss";
 import { formatVnd, getBillRawCost } from "../../../utils/moneyUtils";
-import DeleteConfirmModal from "../../DeleteConfirmModal/DeleteConfirmModal";
+import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 import { useState } from "react";
 
 const MODAL_SCHEMA = {
@@ -183,7 +183,7 @@ const OrderView = ({
           </Button>
         </div>
       </div>
-      <DeleteConfirmModal
+      <ConfirmModal
         show={showModal.DELETE_MODAL}
         toggle={() => toggleModal("DELETE_MODAL")}
         handleDelete={handleDeleteBill}

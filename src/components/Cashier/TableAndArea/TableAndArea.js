@@ -24,13 +24,14 @@ const MODAL_SCHEMA = {
 const TableAndArea = ({
   tables,
   currentTable,
+  billsByTable,
+  reservingByTable,
   refreshTables,
   handleSelectTable,
   handleAddTable,
   handleUpdateTable,
   handleDeleteTable,
   handleRestoreTable,
-  billsByTable,
 }) => {
   const [areas, setAreas] = useState([]);
   const [currentArea, setCurrentArea] = useState({});
@@ -167,6 +168,7 @@ const TableAndArea = ({
                   current={table.id === currentTable.id}
                   table={table}
                   bill={billsByTable[table.id]}
+                  reserving={reservingByTable[table.id]}
                 />
               ))}
               <div
