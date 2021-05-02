@@ -17,6 +17,16 @@
 
     &.food-name {
       justify-content: flex-start;
+
+      .fas {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
   }
 
@@ -34,7 +44,8 @@
 
   .order-details-quantity-group {
     .btn {
-      padding: 7px;
+      padding: 7px 10px;
+      font-weight: bold;
     }
 
     .order-details-quantity {

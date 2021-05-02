@@ -43,10 +43,10 @@
   &.food-disabled {
     opacity: 0.8;
     cursor: default;
-    border: 2px solid $danger;
+    border: 2px solid hsl(6, 90%, 56%);
 
     .food-name {
-      background-color: $danger;
+      background-color: hsl(6, 90%, 56%);
     }
   }
 }

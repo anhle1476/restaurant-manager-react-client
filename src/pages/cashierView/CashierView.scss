@@ -7,6 +7,10 @@
   box-sizing: border-box;
   overflow: hidden;
 
+  > div {
+    max-height: 100vh;
+  }
+
   .view-header {
     height: 7vh;
   }
@@ -21,11 +25,11 @@
   }
 
   .tab-content {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px) !important;
     position: relative;
 
     .tab-pane {
-      height: 95%;
+      height: 100%;
       position: relative;
       padding-bottom: 1rem;
       > div {
@@ -67,7 +71,7 @@
 
   .flex-footer {
     height: 70px;
-    padding-bottom: 10px;
+    padding: 10px 0;
     background-color: rgba(255, 255, 255, 0.76);
 
     .btn {

@@ -15,17 +15,30 @@ const OrderDetail = ({
 }) => {
   const minuteDiff = lastOrderTime ? getMinuteDifference(lastOrderTime) : 0;
   const clockColor =
-    minuteDiff < 10 ? "success" : minuteDiff < 20 ? "warning" : "danger";
+    minuteDiff < 10
+      ? "success fa-hourglass-start"
+      : minuteDiff < 20
+      ? "warning fa-hourglass-half"
+      : "danger fa-hourglass-end";
   return (
     <Row className="order-details">
       <Col xs="5" title={food.name} className="food-name">
         <span>
           {food.name}
+          {food.foodType.refundable && (
+            <i
+              className="fas fa-undo-alt text-secondary pl-2"
+              title="Món trả được"
+            ></i>
+          )}
           {lastOrderTime && quantity > doneQuantity && (
             <i
-              className={`fa fa-clock-o px-2 text-${clockColor}`}
-              title={`${minuteDiff} phút trước`}
+              className={`fas pl-2 text-${clockColor}`}
+              title={minuteDiff + " phút trước"}
             ></i>
+          )}
+          {!food.available && (
+            <i className="fas fa-ban pl-2 text-danger" title="Hết hàng"></i>
           )}
         </span>
       </Col>

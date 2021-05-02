@@ -54,7 +54,7 @@
   .order-footer {
     display: grid;
     grid-template-areas: "grouping moving update" "delete payment update";
-    padding: 0 !important;
+    padding: 3px 0 0 0 !important;
     margin-bottom: 1rem;
 
     .btn {

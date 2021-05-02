@@ -40,6 +40,10 @@ const restore = (id) => {
   return axios.post(`${FOODS_URL}/${id}/restore`);
 };
 
+const toggleAvailability = (id) => {
+  return axios.post(`${FOODS_URL}/${id}/toggle-availability`);
+};
+
 export default {
   getAll,
   getAllDeleted,
@@ -48,4 +52,5 @@ export default {
   softDelete,
   create,
   restore,
+  toggleAvailability,
 };

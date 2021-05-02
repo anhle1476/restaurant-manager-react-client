@@ -33,7 +33,8 @@ export const changeBillActions = {
       const resultAmount = currentDetail.quantity + amount;
       bill.billDetails[i] = this.updateDetailWithAmount(
         currentDetail,
-        resultAmount
+        resultAmount,
+        food
       );
       foodNotExist = false;
       break;
@@ -48,7 +49,7 @@ export const changeBillActions = {
       ...bill,
       billDetails: bill.billDetails.map((detail) =>
         detail.food.id === food.id
-          ? this.updateDetailWithAmount(detail, amount)
+          ? this.updateDetailWithAmount(detail, amount, food)
           : detail
       ),
       changed: true,
@@ -66,14 +67,18 @@ export const changeBillActions = {
   createNewBillDetail: function (food, amount) {
     return { ...BILL_DETAILS_SCHEMA, food: food, quantity: amount };
   },
-  updateDetailWithAmount: function (detail, newAmount) {
+  updateDetailWithAmount: function (detail, newAmount, food) {
+    const min = food.foodType.refundable ? 0 : detail.doneQuantity;
+    const max = !food.available
+      ? Math.max(detail.doneQuantity, detail.quantity - 1)
+      : 2000;
     return {
       ...detail,
-      quantity: this.limitValue(newAmount, detail.doneQuantity),
+      quantity: this.limitValue(newAmount, min, max),
     };
   },
-  limitValue: function (amount, min) {
-    return amount < min ? min : amount > 2000 ? 2000 : amount;
+  limitValue: function (amount, min, max) {
+    return amount < min ? min : amount > max ? max : amount;
   },
 };
 
@@ -82,5 +87,35 @@ export const deleteBillActions = {
     const newBillsByTable = { ...currentBillMap };
     delete newBillsByTable[tableId];
     return newBillsByTable;
+  },
+};
+
+export const updateRelatedInfo = {
+  changeFoodInfo: function (currentBillMap, food) {
+    const updatedFoodId = food.id;
+    const newBillInfo = {};
+    Object.keys(currentBillMap).forEach((key) => {
+      // check if value is not undefined
+      const currentBill = currentBillMap[key];
+      if (!currentBill) return;
+
+      // if billDetails is empty -> return old bill
+      let newBillDetails = currentBill.billDetails;
+      if (!newBillDetails.length) {
+        newBillInfo[key] = currentBill;
+        return;
+      }
+      newBillDetails = newBillDetails.map((detail) =>
+        detail.food.id !== updatedFoodId
+          ? detail
+          : {
+              ...detail,
+              food,
+            }
+      );
+
+      newBillInfo[key] = { ...currentBill, billDetails: newBillDetails };
+    });
+    return newBillInfo;
   },
 };

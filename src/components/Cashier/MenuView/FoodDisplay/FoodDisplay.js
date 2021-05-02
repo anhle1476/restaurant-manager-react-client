@@ -16,7 +16,7 @@ const FoodDisplay = ({ food, handleSelectFood }) => {
 
   return (
     <div
-      className="food-display"
+      className={`food-display ${!available ? "food-disabled" : ""}`}
       title={title}
       onClick={() => handleSelectFood(food)}
     >

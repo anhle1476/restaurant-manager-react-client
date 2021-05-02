@@ -16,7 +16,11 @@ import "./CashierView.scss";
 import tableApi from "../../api/tableApi";
 import foodApi from "../../api/foodApi";
 import billApi from "../../api/billApi";
-import { deleteBillActions, changeBillActions } from "./billUpdate";
+import {
+  deleteBillActions,
+  changeBillActions,
+  updateRelatedInfo,
+} from "./billUpdate";
 import TableAndArea from "../../components/Cashier/TableAndArea/TableAndArea";
 import MenuView from "../../components/Cashier/MenuView/MenuView";
 import OrderView from "../../components/Cashier/OrderView/OrderView";
@@ -133,6 +137,22 @@ const CashierView = () => {
 
   const saveCurrentBill = (bill) => {
     setBillsByTable({ ...billsByTable, [currentTable.id]: bill });
+  };
+
+  const handleToggleAvailable = async ({ id, name }) => {
+    try {
+      const res = await foodApi.toggleAvailability(id);
+      setFoods(foods.map((food) => (food.id === id ? res.data : food)));
+      setBillsByTable(updateRelatedInfo.changeFoodInfo(billsByTable, res.data));
+      toastSuccessLeft("Thay đổi trạng thái món " + name + " thành công");
+    } catch (ex) {
+      toastErrorLeft(
+        "Thay đổi trạng thái món " +
+          name +
+          " thất bại:" +
+          ex.response?.data?.message
+      );
+    }
   };
 
   const handleSelectFood = (food, amount = 1) => {
@@ -296,7 +316,11 @@ const CashierView = () => {
 
               {/* MENU */}
               <TabPane tabId="2">
-                <MenuView foods={foods} handleSelectFood={handleSelectFood} />
+                <MenuView
+                  foods={foods}
+                  handleSelectFood={handleSelectFood}
+                  handleToggleAvailable={handleToggleAvailable}
+                />
               </TabPane>
               {/* RESERVING ORDERS */}
               <TabPane tabId="3">

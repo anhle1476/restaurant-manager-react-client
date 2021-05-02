@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, FormGroup, Input } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Row } from "reactstrap";
 
 import FoodDisplay from "./FoodDisplay/FoodDisplay";
 
@@ -7,9 +7,10 @@ import foodTypeApi from "../../../api/foodTypeApi";
 
 import "./MenuView.scss";
 
-const MenuView = ({ foods, handleSelectFood }) => {
+const MenuView = ({ foods, handleSelectFood, handleToggleAvailable }) => {
   const [foodTypes, setFoodTypes] = useState([]);
   const [foodSearch, setFoodSearch] = useState({ name: "", type: "" });
+  const [availableMarking, setAvailableMarking] = useState(false);
 
   useEffect(() => {
     const doFetch = async () => {
@@ -23,15 +24,24 @@ const MenuView = ({ foods, handleSelectFood }) => {
     setFoodSearch({ ...foodSearch, [target.name]: target.value });
   };
 
-  const foodSearchFilter = (food) => {
-    return (
-      food.name.toLowerCase().indexOf(foodSearch.name.toLowerCase()) !== -1 &&
-      (!foodSearch.type || food.foodType.id === Number(foodSearch.type))
-    );
+  const handleSelectOrToggle = (e) => {
+    if (availableMarking) handleToggleAvailable(e);
+    else handleSelectFood(e);
   };
 
+  const displayingFoods = foods.filter(
+    ({ name, foodType }) =>
+      name.toLowerCase().indexOf(foodSearch.name.toLowerCase()) !== -1 &&
+      (!foodSearch.type || foodType.id === Number(foodSearch.type))
+  );
+
+  const notAvailableCount = foods.reduce(
+    (sum, food) => (sum += food.available ? 0 : 1),
+    0
+  );
+
   return (
-    <div className="flex-container">
+    <div className={`flex-container ${availableMarking ? "marking-mode" : ""}`}>
       <div className="flex-header">
         <h4>Menu</h4>
         <Form
@@ -64,14 +74,34 @@ const MenuView = ({ foods, handleSelectFood }) => {
       </div>
       <div className="flex-body">
         <div className="flex-scrollable food-container">
-          {foods.filter(foodSearchFilter).map((food) => (
+          {displayingFoods.map((food) => (
             <FoodDisplay
-              handleSelectFood={handleSelectFood}
+              handleSelectFood={handleSelectOrToggle}
               key={food.id}
               food={food}
             />
           ))}
         </div>
+      </div>
+      <div className="flex-footer">
+        <Row className="m-0">
+          <Col sm="5" xs="12" className="px-3">
+            <p>
+              {displayingFoods.length}/{foods.length} món ({notAvailableCount}{" "}
+              hết)
+            </p>
+          </Col>
+          <Col sm="7" xs="12" className="px-3">
+            <Button
+              block
+              onClick={() => setAvailableMarking(!availableMarking)}
+              color={availableMarking ? "danger" : "warning"}
+              className="font-weight-bold mx-2"
+            >
+              {availableMarking ? "Thoát đánh dấu món" : "Đánh dấu hết món"}
+            </Button>
+          </Col>
+        </Row>
       </div>
     </div>
   );
