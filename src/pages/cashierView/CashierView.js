@@ -69,9 +69,31 @@ const CashierView = () => {
       })
       .catch((ex) =>
         toastImportant(
-          `Lấy dữ liệu thất bại, vui lòng tải lại trang (${ex.response?.data?.message})`
+          "Lấy dữ liệu thất bại, vui lòng tải lại trang:" +
+            ex.response?.data?.message
         )
       );
+  }, []);
+
+  useEffect(() => {
+    const updateBills = async () => {
+      try {
+        console.log("update bill");
+        const res = await billApi.getCurrentBillsByTable();
+        setBillsByTable((prev) =>
+          updateRelatedInfo.mergeBillData(prev, res.data)
+        );
+      } catch (ex) {
+        toastErrorLeft(
+          "Tự động cập nhật dữ liệu hóa đơn thất bại:" +
+            ex.response?.data?.message
+        );
+      }
+    };
+
+    const updateBillInterval = setInterval(() => updateBills(), 10000);
+
+    return () => clearInterval(updateBillInterval);
   }, []);
 
   useEffect(() => {
@@ -352,6 +374,7 @@ const CashierView = () => {
                     <ReservingView
                       tables={tables}
                       refreshReservingState={updateReservingByTable}
+                      show={activeTab === "3"}
                     />
                   </Col>
                 </Row>

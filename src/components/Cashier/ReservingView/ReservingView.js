@@ -15,7 +15,7 @@ import "./ReservingView.scss";
 import EditReservingModal from "./EditReservingModal/EditReservingModal";
 import ConfirmModal from "../../ConfirmModal/ConfirmModal";
 
-const ReservingView = ({ tables, refreshReservingState }) => {
+const ReservingView = ({ show, tables, refreshReservingState }) => {
   const [reservingOrders, setReservingOrders] = useState([]);
   const [date, setDate] = useState(new Date());
   const [modal, setModal] = useState("");
@@ -28,6 +28,7 @@ const ReservingView = ({ tables, refreshReservingState }) => {
   });
 
   useEffect(() => {
+    if (!show) return;
     const fetchByDate = async () => {
       try {
         const res = await reservingApi.getAllByDate(date);
@@ -39,7 +40,7 @@ const ReservingView = ({ tables, refreshReservingState }) => {
       }
     };
     fetchByDate();
-  }, [date]);
+  }, [date, show]);
 
   const dayDisplay = formatDateDayFirst(date);
 

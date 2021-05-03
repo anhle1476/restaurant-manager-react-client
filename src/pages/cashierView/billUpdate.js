@@ -119,4 +119,55 @@ export const updateRelatedInfo = {
     });
     return newBillInfo;
   },
+
+  mergeBillData: function (oldData, newData) {
+    const newBillMap = this.buildBillByIdMap(newData);
+    const mergeData = {};
+    Object.values(oldData).forEach((oldBill) => {
+      const billId = oldBill.id;
+      // case 1: new bill (not saved) -> merge
+      if (!billId) {
+        mergeData[oldBill.appTable.id] = oldBill;
+        return;
+      }
+      // case 2: bill is deleted -> return
+      const newBill = newBillMap[billId];
+      if (!newBill) return;
+
+      // case 3: bill still exists -> update
+      oldBill.appTable = newBill.appTable;
+      // update doneQuantity in billDetail
+      const newBillDetailMap = this.buildBillDetailByIdMap(newBill);
+      const mergeBill = {
+        ...oldBill,
+        //update bill current table
+        appTable: newBill.appTable,
+        //update doneQuantity in billDetail
+        billDetails: oldBill.billDetails.map((detail) => {
+          const newBillDetail = newBillDetailMap[detail.id];
+          if (!newBillDetail) return detail;
+          return {
+            ...newBillDetail,
+            quantity: detail.quantity,
+          };
+        }),
+      };
+      mergeData[mergeBill.appTable.id] = mergeBill;
+    });
+    return mergeData;
+  },
+
+  buildBillByIdMap: function (billMap) {
+    return Object.values(billMap).reduce((obj, bill) => {
+      obj[bill.id] = bill;
+      return obj;
+    }, {});
+  },
+
+  buildBillDetailByIdMap: function (bill) {
+    return bill.billDetails.reduce((obj, detail) => {
+      obj[detail.id] = detail;
+      return obj;
+    }, {});
+  },
 };
