@@ -31,7 +31,7 @@ const EditTableModal = ({
   toggle,
   table,
   areas,
-  isGrouping,
+  isBusy,
   handleUpdateTable,
   handleDeleteTable,
 }) => {
@@ -139,7 +139,7 @@ const EditTableModal = ({
                     required
                     type="select"
                     name="area"
-                    disabled={isGrouping}
+                    disabled={isBusy}
                     label="Khu vực"
                     value={editInfo.area.id}
                     onChange={handleChangeArea}
@@ -151,9 +151,9 @@ const EditTableModal = ({
                       </option>
                     ))}
                   </CustomInputGroup>
-                  {isGrouping && (
+                  {isBusy && (
                     <p className="text-center">
-                      Bàn đang được ghép, tạm thời không thể đổi khu vực
+                      Bàn đang bận, tạm thời không thể đổi khu vực
                     </p>
                   )}
                   <Button type="submit" color="warning" block>
@@ -172,9 +172,9 @@ const EditTableModal = ({
                 <p>Bàn bị khóa có thể khôi phục ở cuối phần quản lý</p>
                 <Form onSubmit={handleSubmitDelete}>
                   <FormGroup>
-                    {isGrouping && (
+                    {isBusy && (
                       <p className="text-danger">
-                        Bàn đang được gộp, không thể khóa
+                        Bàn đang bận, không thể khóa
                       </p>
                     )}
                     <Label for="confirmDelete">
@@ -182,7 +182,7 @@ const EditTableModal = ({
                     </Label>
                     <Input
                       required
-                      disabled={isGrouping}
+                      disabled={isBusy}
                       onChange={handleChangeConfirmDelete}
                       name="confirmDelete"
                       value={confirmDelete}
@@ -190,7 +190,7 @@ const EditTableModal = ({
                     />
                   </FormGroup>
                   <Button
-                    disabled={confirmDelete !== table.name || isGrouping}
+                    disabled={confirmDelete !== table.name || isBusy}
                     type="submit"
                     color="danger"
                     block

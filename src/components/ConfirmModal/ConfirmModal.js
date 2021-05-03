@@ -13,22 +13,22 @@ import {
 } from "reactstrap";
 import ModalHeaderWithCloseBtn from "../ModalHeaderWithCloseBtn/ModalHeaderWithCloseBtn";
 
-const DeleteConfirmModal = ({
+const ConfirmModal = ({
   show,
   toggle,
   confirm = "Xóa",
-  handleDelete,
+  onAccept,
   title = "Xác nhận xóa",
 }) => {
-  const [confirmDelete, setConfirmDelete] = useState("");
+  const [confirmInput, setConfirmInput] = useState("");
 
-  const handleChangeConfirmDelete = ({ target }) => {
-    setConfirmDelete(target.value);
+  const handleChangeConfirmInput = ({ target }) => {
+    setConfirmInput(target.value);
   };
 
-  const handleSubmitDelete = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    handleDelete();
+    onAccept();
     toggle();
   };
 
@@ -38,21 +38,21 @@ const DeleteConfirmModal = ({
       <ModalBody className="bg-white">
         <Row>
           <Col sm="12">
-            <Form onSubmit={handleSubmitDelete}>
+            <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label for="confirmDelete">
+                <Label for="confirmInput">
                   Nhập <strong>{confirm}</strong> và bấm xác nhận để thực hiện
                 </Label>
                 <Input
                   required
-                  onChange={handleChangeConfirmDelete}
-                  name="confirmDelete"
-                  value={confirmDelete}
+                  onChange={handleChangeConfirmInput}
+                  name="confirmInput"
+                  value={confirmInput}
                   placeholder={confirm}
                 />
               </FormGroup>
               <Button
-                disabled={confirmDelete !== confirm}
+                disabled={confirmInput !== confirm}
                 type="submit"
                 color="danger"
                 block
@@ -67,4 +67,4 @@ const DeleteConfirmModal = ({
   );
 };
 
-export default DeleteConfirmModal;
+export default ConfirmModal;

@@ -6,13 +6,14 @@ import "./TablesInModal.scss";
 
 const TablesInModal = ({
   tables,
-  billsByTable,
-  currentTableId,
-  selectedAreaId,
+  billsByTable = {},
+  currentTableId = 0,
+  selectedAreaId = 0,
   selector,
   onClick,
 }) => {
-  const currentAreaFilter = (table) => table.area.id === selectedAreaId;
+  const currentAreaFilter = (table) =>
+    selectedAreaId === 0 || table.area.id === selectedAreaId;
 
   const isCurrentTable = (table) => table.id === currentTableId;
 

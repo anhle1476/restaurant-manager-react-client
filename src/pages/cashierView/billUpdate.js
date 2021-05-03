@@ -39,8 +39,9 @@ export const changeBillActions = {
       foodNotExist = false;
       break;
     }
-    if (foodNotExist)
+    if (foodNotExist && food.available) {
       bill.billDetails.push(this.createNewBillDetail(food, amount));
+    }
     bill.changed = true;
     return bill;
   },

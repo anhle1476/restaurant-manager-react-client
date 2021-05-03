@@ -18,7 +18,7 @@ const TableDisplay = ({
 
   const isBusy = Boolean(bill?.id);
 
-  const isReserved = Boolean(reserving?.id);
+  const isReserved = Boolean(reserving?.id) && !reserving.deleted;
 
   const total = isBusy ? getBillRawCost(bill) : 0;
 
@@ -41,11 +41,11 @@ const TableDisplay = ({
         </span>
       )}
       {disabled && (
-        <span className="table-widget table-in-use">Đang sử dụng</span>
+        <span className="table-widget table-in-use">Đã có khách</span>
       )}
       {isReserved && (
         <span className="table-widget table-reserved">
-          <i className="fas fa-flag text-white"></i>
+          <i className="fas fa-user text-white mr-1"></i>
           {formatTime(reserving.reservingTime)}
         </span>
       )}

@@ -36,6 +36,10 @@ const restore = (id) => {
   return axios.post(`${RESERVING_URL}/${id}/restore`);
 };
 
+const saveOrUpdate = (data) => {
+  return data.id ? update(data) : create(data);
+};
+
 export default {
   create,
   getAll,
@@ -45,4 +49,5 @@ export default {
   update,
   softDelete,
   restore,
+  saveOrUpdate,
 };

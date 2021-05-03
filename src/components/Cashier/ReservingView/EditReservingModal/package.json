@@ -1,0 +1,6 @@
+{
+  "name": "EditReservingModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EditReservingModal.js"
+}

@@ -349,7 +349,10 @@ const CashierView = () => {
               <TabPane tabId="3">
                 <Row>
                   <Col>
-                    <ReservingView />
+                    <ReservingView
+                      tables={tables}
+                      refreshReservingState={updateReservingByTable}
+                    />
                   </Col>
                 </Row>
               </TabPane>

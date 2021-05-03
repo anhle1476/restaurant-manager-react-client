@@ -90,9 +90,6 @@ const TableAndArea = ({
   const hasTablesInCurrentArea =
     currentArea.id && tables.some((table) => table.area.id === currentArea.id);
 
-  const isCurrentTableInGroup =
-    currentTable.parent ||
-    tables.some((table) => table.parent?.id === currentTable.id);
   return (
     <div>
       <Row className="area-and-table-container">
@@ -218,7 +215,7 @@ const TableAndArea = ({
         toggle={() => toggleModal("EDIT_TABLE")}
         table={currentTable}
         areas={areas}
-        isGrouping={isCurrentTableInGroup}
+        isBusy={Boolean(billsByTable[currentTable.id])}
         handleDeleteTable={handleDeleteTable}
         handleUpdateTable={handleUpdateTable}
       />

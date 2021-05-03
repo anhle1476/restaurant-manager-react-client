@@ -186,7 +186,7 @@ const OrderView = ({
       <ConfirmModal
         show={showModal.DELETE_MODAL}
         toggle={() => toggleModal("DELETE_MODAL")}
-        handleDelete={handleDeleteBill}
+        onAccept={handleDeleteBill}
         confirm={`Bàn ${table.name}`}
         title="Xóa hóa đơn"
       />
