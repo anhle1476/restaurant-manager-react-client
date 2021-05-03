@@ -120,8 +120,8 @@ export const updateRelatedInfo = {
     return newBillInfo;
   },
 
-  mergeBillData: function (oldData, newData) {
-    const newBillMap = this.buildBillByIdMap(newData);
+  mergeBillData: function (oldData, newDataList) {
+    const newBillMap = this.buildBillByIdMap(newDataList);
     const mergeData = {};
     Object.values(oldData).forEach((oldBill) => {
       const billId = oldBill.id;
@@ -157,8 +157,8 @@ export const updateRelatedInfo = {
     return mergeData;
   },
 
-  buildBillByIdMap: function (billMap) {
-    return Object.values(billMap).reduce((obj, bill) => {
+  buildBillByIdMap: function (billList) {
+    return billList.reduce((obj, bill) => {
       obj[bill.id] = bill;
       return obj;
     }, {});

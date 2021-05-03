@@ -97,7 +97,7 @@ const CashierView = () => {
   async function refreshBillsByTable() {
     try {
       console.log("update bill");
-      const res = await billApi.getCurrentBillsByTable();
+      const res = await billApi.getCurrentBills();
       setBillsByTable((prev) =>
         updateRelatedInfo.mergeBillData(prev, res.data)
       );
@@ -366,14 +366,6 @@ const CashierView = () => {
                   Đặt bàn
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: activeTab === "4" })}
-                  onClick={() => toggleTab("4")}
-                >
-                  Hóa đơn
-                </NavLink>
-              </NavItem>
             </Nav>
             {/* TABLE */}
             <TabContent activeTab={activeTab}>
@@ -409,14 +401,6 @@ const CashierView = () => {
                       refreshReservingState={refreshReservingByTable}
                       show={activeTab === "3"}
                     />
-                  </Col>
-                </Row>
-              </TabPane>
-              {/* BILLS */}
-              <TabPane tabId="4">
-                <Row>
-                  <Col>
-                    <h2>bills</h2>
                   </Col>
                 </Row>
               </TabPane>

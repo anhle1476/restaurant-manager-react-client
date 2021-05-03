@@ -1,0 +1,61 @@
+@import "../../styles/app";
+
+.chef-container {
+  height: 100vh;
+
+  .chef-header {
+    > .col {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .chef-content {
+    height: calc(100vh - 3.25rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+
+    .chef-order-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+    }
+
+    .search-result {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.651);
+      font-weight: bold;
+      pointer-events: none;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .chef-container .chef-content .chef-order-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .chef-container .chef-content .chef-order-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .chef-container .chef-content .chef-order-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .chef-container .chef-content .chef-order-container {
+    grid-template-columns: 1fr;
+  }
+}

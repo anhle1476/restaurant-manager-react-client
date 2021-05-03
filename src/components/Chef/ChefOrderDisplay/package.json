@@ -1,0 +1,6 @@
+{
+  "name": "ChefOrderDisplay",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ChefOrderDisplay.js"
+}

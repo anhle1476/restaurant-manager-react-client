@@ -43,6 +43,10 @@ const saveOrUpdate = (bill) => {
   return bill.id ? update(bill) : create(bill);
 };
 
+const processFood = (data) => {
+  return axios.post(`${BILLS_URL}/${data.billId}/process-food`, data);
+};
+
 export default {
   getCurrentBills,
   getCurrentBillsByTable,
@@ -52,4 +56,5 @@ export default {
   doPayment,
   changeTable,
   saveOrUpdate,
+  processFood,
 };
