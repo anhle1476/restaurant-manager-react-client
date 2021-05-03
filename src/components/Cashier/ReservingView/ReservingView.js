@@ -79,9 +79,11 @@ const ReservingView = ({ show, tables, refreshReservingState }) => {
 
   const handleEditReservingOrder = (updatedOrder) => {
     setReservingOrders(
-      reservingOrders.map((order) =>
-        order.id === updatedOrder.id ? updatedOrder : order
-      )
+      reservingOrders
+        .map((order) => (order.id === updatedOrder.id ? updatedOrder : order))
+        .sort(
+          (o1, o2) => new Date(o1.reservingTime) - new Date(o2.reservingTime)
+        )
     );
     if (daysFromToday === 0) refreshReservingState();
   };

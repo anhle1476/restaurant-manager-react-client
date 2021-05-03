@@ -18,7 +18,7 @@ import ModalHeaderWithCloseBtn from "../../../ModalHeaderWithCloseBtn/ModalHeade
 
 import reservingApi from "../../../../api/reservingApi";
 import areaApi from "../../../../api/areaApi";
-import { formatDateDayFirst } from "../../../../utils/dateUtils";
+import { formatDateDayFirst, fromToday } from "../../../../utils/dateUtils";
 import { toastError, toastSuccess } from "../../../../utils/toastUtils";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -89,7 +89,7 @@ const EditReservingModal = ({
 
   const selectedCount = Object.keys(data.appTables).length;
 
-  const currentTime = new Date();
+  const isFuture = fromToday(date) !== 0;
 
   const doToggle = () => {
     toggle();
@@ -104,7 +104,7 @@ const EditReservingModal = ({
   const handleChangeTime = (time) => {
     setData({
       ...data,
-      reservingTime: time < currentTime ? currentTime : time,
+      reservingTime: time < new Date() ? new Date() : time,
     });
   };
 
@@ -151,6 +151,7 @@ const EditReservingModal = ({
       <ModalHeaderWithCloseBtn toggle={doToggle}>
         {data.id ? "Chỉnh sửa đơn đặt bàn" : "Thêm đơn đặt bàn"} ngày{" "}
         {formatDateDayFirst(date)}
+        {fromToday(date)}
       </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white edit-reserving-modal">
         <Form onSubmit={handleSubmit}>
@@ -182,10 +183,10 @@ const EditReservingModal = ({
               onChange={handleChangeTime}
               closeOnScroll={true}
               minTime={setHours(
-                setMinutes(currentTime, currentTime.getMinutes()),
-                currentTime.getHours()
+                setMinutes(date, isFuture ? 0 : date.getMinutes()),
+                isFuture ? 0 : date.getHours()
               )}
-              maxTime={setHours(setMinutes(currentTime, 59), 23)}
+              maxTime={setHours(setMinutes(date, 59), 23)}
             />
           </FormGroup>
 

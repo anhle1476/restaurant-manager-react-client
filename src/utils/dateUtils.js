@@ -38,5 +38,5 @@ export const isPastDay = (date) => {
 };
 
 export const fromToday = (date) => {
-  return moment().diff(date, "days");
+  return moment().startOf("day").diff(moment(date).startOf("day"), "days");
 };

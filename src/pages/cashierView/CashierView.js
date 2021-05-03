@@ -10,6 +10,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Button,
 } from "reactstrap";
 
 import "./CashierView.scss";
@@ -76,32 +77,41 @@ const CashierView = () => {
   }, []);
 
   useEffect(() => {
-    const updateBills = async () => {
-      try {
-        console.log("update bill");
-        const res = await billApi.getCurrentBillsByTable();
-        setBillsByTable((prev) =>
-          updateRelatedInfo.mergeBillData(prev, res.data)
-        );
-      } catch (ex) {
-        toastErrorLeft(
-          "Tự động cập nhật dữ liệu hóa đơn thất bại:" +
-            ex.response?.data?.message
-        );
-      }
+    // refresh bill each 1 min
+    const refreshBillsByTableInterval = setInterval(refreshBillsByTable, 60000);
+    // refresh reserving order each 10 min
+    const refreshReservingByTableInterval = setInterval(
+      refreshReservingByTable,
+      600000
+    );
+    return () => {
+      clearInterval(refreshBillsByTableInterval);
+      clearInterval(refreshReservingByTableInterval);
     };
-
-    const updateBillInterval = setInterval(() => updateBills(), 10000);
-
-    return () => clearInterval(updateBillInterval);
   }, []);
 
   useEffect(() => {
-    updateReservingByTable();
+    refreshReservingByTable();
   }, []);
 
-  const updateReservingByTable = async () => {
+  async function refreshBillsByTable() {
     try {
+      console.log("update bill");
+      const res = await billApi.getCurrentBillsByTable();
+      setBillsByTable((prev) =>
+        updateRelatedInfo.mergeBillData(prev, res.data)
+      );
+    } catch (ex) {
+      toastErrorLeft(
+        "Tự động cập nhật dữ liệu hóa đơn thất bại:" +
+          ex.response?.data?.message
+      );
+    }
+  }
+
+  async function refreshReservingByTable() {
+    try {
+      console.log("update reserving orders");
       const res = await reservingApi.getAllToday();
       const reservingData = res.data.reduce((obj, order) => {
         order.appTables.forEach((table) => (obj[table.id] = order));
@@ -109,10 +119,41 @@ const CashierView = () => {
       }, {});
       setReservingByTable(reservingData);
     } catch (ex) {
-      toastImportant(
-        `Lấy dữ liệu đặt bàn, vui lòng tải lại trang (${ex.response?.data?.message})`
+      toastErrorLeft(
+        `Lấy dữ liệu đặt bàn thất bại (${ex.response?.data?.message})`
       );
     }
+  }
+
+  async function refreshTables() {
+    try {
+      console.log("update tables");
+      const res = await tableApi.getAll();
+      updateTablesState(res.data);
+    } catch (ex) {
+      toastErrorLeft(
+        `Lấy dữ liệu bàn thất bại (${ex.response?.data?.message})`
+      );
+    }
+  }
+
+  async function refreshFoods() {
+    try {
+      console.log("update foods");
+      const res = await foodApi.getAll();
+      setFoods(res.data);
+    } catch (ex) {
+      toastErrorLeft(
+        `Lấy dữ liệu món ăn thất bại (${ex.response?.data?.message})`
+      );
+    }
+  }
+
+  const manualRefreshData = () => {
+    refreshTables();
+    refreshFoods();
+    refreshBillsByTable();
+    refreshReservingByTable();
   };
 
   const toggleTab = (tab) => {
@@ -121,24 +162,6 @@ const CashierView = () => {
 
   const toggleModal = (modalName) => {
     setModals((modal) => (modal ? "" : modalName));
-  };
-
-  // const refreshBills = async () => {
-  //   try {
-  //     const res = await billApi.getCurrentBillsByTable();
-  //     setBillsByTable(res.data);
-  //   } catch (ex) {
-  //     toastErrorLeft("Cập nhật dữ liệu hóa đơn thất bại");
-  //   }
-  // };
-
-  const refreshTables = async () => {
-    try {
-      const res = await tableApi.getAll();
-      updateTablesState(res.data);
-    } catch (ex) {
-      toastImportant("Cập nhật dữ liệu bàn thất bại, vui lòng tải lại trang");
-    }
   };
 
   const updateTablesState = (tableData) => {
@@ -303,7 +326,17 @@ const CashierView = () => {
             <Link to="/app/dashboard">
               ❮ <strong> Trở về</strong>
             </Link>
-            <h4 className="mb-0">Màn hình thu ngân</h4>
+            <div className="d-flex justify-content-end align-items-center">
+              <Button
+                title="Làm mới dữ liệu"
+                color="secondary"
+                outline
+                onClick={manualRefreshData}
+              >
+                <i className="fas fa-sync-alt"></i>
+              </Button>
+              <h4 className="mb-0"> Màn hình thu ngân</h4>
+            </div>
           </Col>
         </Row>
         <Row className="view-content">
@@ -373,7 +406,7 @@ const CashierView = () => {
                   <Col>
                     <ReservingView
                       tables={tables}
-                      refreshReservingState={updateReservingByTable}
+                      refreshReservingState={refreshReservingByTable}
                       show={activeTab === "3"}
                     />
                   </Col>
