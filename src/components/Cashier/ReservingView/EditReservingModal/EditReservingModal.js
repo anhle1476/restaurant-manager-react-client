@@ -55,7 +55,7 @@ const EditReservingModal = ({
     if (!show) return;
     // set default date if need and convert appTables to Object<ID, Table>
     const newData = !reserving?.id
-      ? { ...RESERVING_SCHEMA, reservingTime: new Date() }
+      ? { ...RESERVING_SCHEMA, reservingTime: date }
       : {
           ...reserving,
           reservingTime: new Date(reserving.reservingTime),
@@ -151,7 +151,6 @@ const EditReservingModal = ({
       <ModalHeaderWithCloseBtn toggle={doToggle}>
         {data.id ? "Chỉnh sửa đơn đặt bàn" : "Thêm đơn đặt bàn"} ngày{" "}
         {formatDateDayFirst(date)}
-        {fromToday(date)}
       </ModalHeaderWithCloseBtn>
       <ModalBody className="bg-white edit-reserving-modal">
         <Form onSubmit={handleSubmit}>
