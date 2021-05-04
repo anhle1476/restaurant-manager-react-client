@@ -19,12 +19,16 @@ const BILL_DETAILS_SCHEMA = {
 export const changeBillActions = {
   plusAmount: function (bill = { ...BILL_SCHEMA }, food, amount, table) {
     // if bill is a new bill or don't have any food -> add food and return
-    if (bill.billDetails.length === 0)
+    if (bill.billDetails.length === 0) {
       return {
         ...bill,
         appTable: table,
-        billDetails: [this.createNewBillDetail(food, amount)],
+        billDetails: !food.available
+          ? []
+          : [this.createNewBillDetail(food, amount)],
       };
+    }
+
     let foodNotExist = true;
     const billDetailsLength = bill.billDetails.length;
     for (let i = 0; i < billDetailsLength; i++) {
@@ -71,7 +75,7 @@ export const changeBillActions = {
   updateDetailWithAmount: function (detail, newAmount, food) {
     const min = food.foodType.refundable ? 0 : detail.doneQuantity;
     const max = !food.available
-      ? Math.max(detail.doneQuantity, detail.quantity - 1)
+      ? Math.max(detail.doneQuantity, detail.quantity)
       : 2000;
     return {
       ...detail,
