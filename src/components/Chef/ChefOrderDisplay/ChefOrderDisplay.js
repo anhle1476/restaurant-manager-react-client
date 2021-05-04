@@ -23,12 +23,12 @@ const ChefOrderDisplay = ({ order, handleSubmit }) => {
   const minutesAgo = getMinuteDifference(order.lastOrderTime);
 
   const color =
-    minutesAgo < 10 ? "success" : minutesAgo < 20 ? "warning" : "danger";
+    minutesAgo < 15 ? "success" : minutesAgo < 30 ? "warning" : "danger";
 
   const iconClass =
-    minutesAgo < 10
+    minutesAgo < 15
       ? "fa-hourglass-start"
-      : minutesAgo < 20
+      : minutesAgo < 30
       ? "fa-hourglass-half"
       : "fa-hourglass-end";
 

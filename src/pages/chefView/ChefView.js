@@ -25,7 +25,7 @@ const ChefView = () => {
 
   useEffect(() => {
     refreshOrders();
-    const ordersUpdateInterval = setInterval(refreshOrders, 60000);
+    const ordersUpdateInterval = setInterval(refreshOrders, 30000);
     return () => {
       clearInterval(ordersUpdateInterval);
     };
@@ -49,7 +49,6 @@ const ChefView = () => {
   }
 
   async function fetchOptions() {
-    console.log("vo");
     try {
       const res = await foodApi.getAll();
       console.log(res.data);

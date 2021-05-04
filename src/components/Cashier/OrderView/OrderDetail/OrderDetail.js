@@ -15,9 +15,9 @@ const OrderDetail = ({
 }) => {
   const minuteDiff = lastOrderTime ? getMinuteDifference(lastOrderTime) : 0;
   const clockColor =
-    minuteDiff < 10
+    minuteDiff < 15
       ? "success fa-hourglass-start"
-      : minuteDiff < 20
+      : minuteDiff < 30
       ? "warning fa-hourglass-half"
       : "danger fa-hourglass-end";
   return (
