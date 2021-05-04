@@ -1,0 +1,21 @@
+@import "../../styles/app.scss";
+
+.bill-table {
+  tr {
+    th {
+      text-align: center;
+    }
+
+    td {
+      text-align: end;
+    }
+
+    th:first-child,
+    td:first-child {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

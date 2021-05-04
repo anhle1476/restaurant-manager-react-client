@@ -1,0 +1,7 @@
+{
+  "name": "BillSearch",
+  "version": "0.0.0",
+  "private": true,
+  "main": "BillSearch.js",
+  "license": "MIT"
+}

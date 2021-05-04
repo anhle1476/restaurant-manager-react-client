@@ -12,7 +12,12 @@ import TablePagination from "../TablePagination/TablePagination";
 
 import s from "./CustomTable.module.scss";
 
-const CustomTable = ({ tableData, tableColumns, children }) => {
+const CustomTable = ({
+  tableData,
+  tableColumns,
+  children,
+  tableClassName = "",
+}) => {
   const data = useMemo(() => tableData, [tableData]);
 
   const tableConfig = useTable(
@@ -40,7 +45,7 @@ const CustomTable = ({ tableData, tableColumns, children }) => {
   return (
     <div className={s.root}>
       <Row className="mb-1">
-        <Col>{children}</Col>
+        <Col className="d-flex align-items-center">{children}</Col>
         <Col className="d-flex justify-content-end">
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
@@ -51,12 +56,13 @@ const CustomTable = ({ tableData, tableColumns, children }) => {
       </Row>
       <Row>
         <Col className="table-responsive">
-          <Table {...getTableProps} bordered>
+          <Table className={tableClassName} {...getTableProps} bordered>
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
                     <th
+                      className="text-white"
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                     >
                       {column.render("Header")}

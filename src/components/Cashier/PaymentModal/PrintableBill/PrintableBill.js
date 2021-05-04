@@ -15,6 +15,8 @@ class PrintableBill extends React.Component {
     const {
       id,
       startTime,
+      payTime,
+      staff,
       appTable,
       billDetails,
       surcharge,
@@ -22,9 +24,12 @@ class PrintableBill extends React.Component {
       discountDescription,
       rawCost,
       totalCost,
+      lastPrice,
     } = this.props;
 
     if (!id) return <div>Chưa có thông tin</div>;
+
+    const isPayed = Boolean(payTime);
 
     return (
       <div className="printing-bill">
@@ -33,16 +38,32 @@ class PrintableBill extends React.Component {
           <p className="text-center">
             28 Nguyễn Tri Phương, phường Phú Nhuận, TP Huế
           </p>
-          <h3 className="text-center">HÓA ĐƠN TẠM TÍNH</h3>
+          <h3 className="text-center">
+            {isPayed ? "HÓA ĐƠN BÁN HÀNG" : "HÓA ĐƠN TẠM TÍNH"}{" "}
+          </h3>
           <div className="printing-bill-meta">
             <div className="printing-bill-meta-group">
               <span>Giờ vào:</span>
               <span>{formatFullDateTime(startTime)}</span>
             </div>
+            {isPayed && (
+              <div className="printing-bill-meta-group">
+                <span>Giờ thanh toán:</span>
+                <span>{formatFullDateTime(payTime)}</span>
+              </div>
+            )}
             <div className="printing-bill-meta-group">
               <span>Giờ xuất hóa đơn:</span>
               <span>{formatCurrentFullDateTime()}</span>
             </div>
+
+            {staff?.id && (
+              <div className="printing-bill-meta-group">
+                <span>Nhân viên thanh toán:</span>
+                <span>{staff.fullname}</span>
+              </div>
+            )}
+
             <div className="printing-bill-meta-group">
               <span>Bàn:</span>
               <span>
@@ -90,7 +111,9 @@ class PrintableBill extends React.Component {
               </tr>
               <tr className="printing-bill-total-cost">
                 <td colSpan="2">Tổng tiền:</td>
-                <td colSpan="2">{formatMoney(totalCost)}</td>
+                <td colSpan="2">
+                  {formatMoney(totalCost ? totalCost : lastPrice)}
+                </td>
               </tr>
             </tbody>
           </Table>

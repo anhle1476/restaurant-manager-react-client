@@ -1,5 +1,6 @@
 import { BASE_URL } from "./constant";
 import axios from "axios";
+import { formatDateYearFirst } from "../utils/dateUtils";
 
 const BILLS_URL = `${BASE_URL}/bills`;
 
@@ -9,6 +10,14 @@ const create = (data) => {
 
 const getCurrentBills = () => {
   return axios.get(BILLS_URL);
+};
+
+const getBillsByDate = (date) => {
+  return axios.get(`${BILLS_URL}?date=${formatDateYearFirst(date)}`);
+};
+
+const searchById = (id) => {
+  return axios.get(`${BILLS_URL}?search=${id}`);
 };
 
 const getCurrentBillsByTable = () => {
@@ -50,7 +59,9 @@ const processFood = (data) => {
 export default {
   getCurrentBills,
   getCurrentBillsByTable,
+  getBillsByDate,
   getById,
+  searchById,
   hardDelete,
   preparePayment,
   doPayment,

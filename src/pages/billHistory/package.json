@@ -1,0 +1,7 @@
+{
+  "name": "BillHistory",
+  "version": "0.0.0",
+  "private": true,
+  "main": "BillHistory.js",
+  "license": "MIT"
+}

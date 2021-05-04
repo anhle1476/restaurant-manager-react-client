@@ -25,6 +25,8 @@ import FoodTypeManager from "../../pages/foodTypeManager/FoodTypeManager";
 import FoodManager from "../../pages/foodManager/FoodManager";
 import CashierView from "../../pages/cashierView/CashierView";
 import ChefView from "../../pages/chefView/ChefView";
+import BillHistory from "../../pages/billHistory/BillHistory";
+import BillSearch from "../../pages/billSearch/BillSearch";
 
 class Layout extends React.Component {
   static propTypes = {
@@ -120,6 +122,8 @@ class Layout extends React.Component {
                   component={FoodTypeManager}
                 />
                 <Route path={"/app/menu/foods"} component={FoodManager} />
+                <Route path={"/app/bills/history"} component={BillHistory} />
+                <Route path={"/app/bills/search"} component={BillSearch} />
                 <Route path={"/app/schedule"} component={Schedule} />
                 <Route path={"/app/ui/charts"} component={Charts} />
               </Switch>
