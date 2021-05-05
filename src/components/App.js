@@ -8,25 +8,12 @@ import { ToastContainer } from "react-toastify";
 import ErrorPage from "../pages/error";
 /* eslint-enable */
 
-import "../styles/theme.scss";
 import LayoutComponent from "../components/Layout";
 import Login from "../pages/login";
-import { logoutUser } from "../actions/user";
-
-const PrivateRoute = ({ dispatch, component, ...rest }) => {
-  if (!Login.isAuthenticated(localStorage.getItem("authenticated"))) {
-    dispatch(logoutUser());
-    return <Redirect to="/login" />;
-  } else {
-    return (
-      // eslint-disable-line
-      <Route
-        {...rest}
-        render={(props) => React.createElement(component, props)}
-      />
-    );
-  }
-};
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import ErrorFallback from "./ErrorFallback/ErrorFallback";
+import "../styles/theme.scss";
+import "./App.scss";
 
 const CloseButton = ({ closeToast }) => (
   <i onClick={closeToast} className="la la-close notifications-close" />
@@ -34,6 +21,20 @@ const CloseButton = ({ closeToast }) => (
 
 class App extends React.PureComponent {
   render() {
+    const { initApp, shouldRetry } = this.props;
+
+    if (initApp) return <ErrorFallback message={"Đang tải..."} />;
+
+    if (shouldRetry)
+      return (
+        <ErrorFallback message={"Sự cố kết nối với máy chủ..."}>
+          <span>
+            Hệ thống sẽ thử kết nối lại sau 30s hoặc vui lòng bấm F5 để tải lại
+            trang
+          </span>
+        </ErrorFallback>
+      );
+
     return (
       <div>
         <ToastContainer
@@ -43,17 +44,17 @@ class App extends React.PureComponent {
         />
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact render={() => <Redirect to="/app/main" />} />
+            <Route
+              path="/"
+              exact
+              render={() => <Redirect to="/app/dashboard" />}
+            />
             <Route
               path="/app"
               exact
-              render={() => <Redirect to="/app/main" />}
+              render={() => <Redirect to="/app/dashboard" />}
             />
-            <PrivateRoute
-              path="/app"
-              dispatch={this.props.dispatch}
-              component={LayoutComponent}
-            />
+            <PrivateRoute path="/app" component={LayoutComponent} />
             <Route path="/login" exact component={Login} />
             <Route path="/error" exact component={ErrorPage} />
             <Route component={ErrorPage} />
@@ -66,6 +67,8 @@ class App extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  initApp: state.auth.initApp,
+  shouldRetry: state.auth.shouldRetry,
 });
 
 export default connect(mapStateToProps)(App);

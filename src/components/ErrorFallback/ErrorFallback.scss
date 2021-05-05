@@ -1,0 +1,14 @@
+@import "../../styles/app.scss";
+
+.error-fallback {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .main-message {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}

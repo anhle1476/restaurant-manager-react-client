@@ -1,51 +1,31 @@
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+import { logout } from "../api/accountApi";
 
-export function receiveLogin() {
-    return {
-        type: LOGIN_SUCCESS
-    };
-}
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_REFRESH = "LOGIN_REFRESH";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const LOGIN_RETRY = "LOGIN_RETRY";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 
-function loginError(payload) {
-    return {
-        type: LOGIN_FAILURE,
-        payload,
-    };
-}
+export const logoutRequest = () => (dispatch) => {
+  logout();
+  dispatch({
+    type: LOGOUT_SUCCESS,
+  });
+};
 
-function requestLogout() {
-    return {
-        type: LOGOUT_REQUEST,
-    };
-}
+export const loginSuccess = (token) => (dispatch) => {
+  dispatch({
+    type: LOGIN_SUCCESS,
+    payload: token,
+  });
+};
 
-export function receiveLogout() {
-    return {
-        type: LOGOUT_SUCCESS,
-    };
-}
+export const loginRefresh = () => (dispatch) => {
+  dispatch({
+    type: LOGIN_REFRESH,
+  });
+};
 
-// Logs the user out
-export function logoutUser() {
-    return (dispatch) => {
-        dispatch(requestLogout());
-        localStorage.removeItem('authenticated');
-        dispatch(receiveLogout());
-    };
-}
-
-export function loginUser(creds) {
-    return (dispatch) => {
-
-        dispatch(receiveLogin());
-
-        if (creds.email.length > 0 && creds.password.length > 0) {
-            localStorage.setItem('authenticated', true)
-        } else {
-            dispatch(loginError('Something was wrong. Try again'));
-        }
-    }
-}
+export const logoutUser = () => {
+  console.log("logout");
+};
