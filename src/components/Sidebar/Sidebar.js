@@ -27,6 +27,7 @@ class Sidebar extends React.Component {
     sidebarOpened: PropTypes.bool,
     dispatch: PropTypes.func.isRequired,
     activeItem: PropTypes.string,
+    role: PropTypes.string,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -56,6 +57,12 @@ class Sidebar extends React.Component {
     this.props.dispatch(changeActiveSidebarItem(activeItem));
 
   render() {
+    const { role } = this.props;
+
+    const adminLink = role === "ADMIN";
+    const adminAndCashierLink = adminLink || role === "CASHIER";
+    const adminAndChefLink = adminLink || role === "CHEF";
+
     return (
       <div
         className={`${
@@ -123,122 +130,144 @@ class Sidebar extends React.Component {
                 />
               </LinksGroup>
             </ul>
-            <h5 className={s.navTitle}>QUẢN LÝ NHÀ HÀNG</h5>
-            <ul className={s.nav}>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Nhân sự"
-                isHeader
-                link="/app/hr"
-                index="hr"
-                exact={false}
-                childrenLinks={[
-                  {
-                    header: "Nhân viên",
-                    link: "/app/hr/staffs",
-                  },
-                  {
-                    header: "Chức vụ",
-                    link: "/app/hr/roles",
-                  },
-                  {
-                    header: "Vi phạm",
-                    link: "/app/hr/violations",
-                  },
-                ]}
-              >
-                <img
-                  src={lightUI}
-                  alt="lightDashboard"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Menu"
-                isHeader
-                link="/app/menu"
-                index="menu"
-                exact={false}
-                childrenLinks={[
-                  {
-                    header: "Loại món",
-                    link: "/app/menu/food-types",
-                  },
-                  {
-                    header: "Món ăn",
-                    link: "/app/menu/foods",
-                  },
-                ]}
-              >
-                <img
-                  src={packLight}
-                  alt="packLight"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-            </ul>
-            <h5 className={s.navTitle}>THU NGÂN</h5>
-            <ul className={s.nav}>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Màn hình thu ngân"
-                isHeader
-                link="/app/cashier-view"
-                index="main"
-              >
-                <img
-                  src={eccomerceLight}
-                  alt="eccomerceLight"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Hóa đơn"
-                isHeader
-                link="/app/bills"
-                index="bills"
-                exact={false}
-                childrenLinks={[
-                  {
-                    header: "Lịch sử hóa đơn",
-                    link: "/app/bills/history",
-                  },
-                  {
-                    header: "Tìm kiếm",
-                    link: "/app/bills/search",
-                  },
-                ]}
-              >
-                <img
-                  src={documentationLight}
-                  alt="documentationLight"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-            </ul>
-            <h5 className={s.navTitle}>ĐẦU BẾP</h5>
-            <ul className={s.nav}>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Màn hình bếp"
-                isHeader
-                link="/app/chef-view"
-                index="main"
-              >
-                <img
-                  src={gridLight}
-                  alt="gridLight"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-            </ul>
+            {adminLink && (
+              <>
+                <h5 className={s.navTitle}>QUẢN LÝ NHÀ HÀNG</h5>
+                <ul className={s.nav}>
+                  <LinksGroup
+                    onActiveSidebarItemChange={
+                      this.handleActiveSidebarItemChange
+                    }
+                    activeItem={this.props.activeItem}
+                    header="Nhân sự"
+                    isHeader
+                    link="/app/hr"
+                    index="hr"
+                    exact={false}
+                    childrenLinks={[
+                      {
+                        header: "Nhân viên",
+                        link: "/app/hr/staffs",
+                      },
+                      {
+                        header: "Chức vụ",
+                        link: "/app/hr/roles",
+                      },
+                      {
+                        header: "Vi phạm",
+                        link: "/app/hr/violations",
+                      },
+                    ]}
+                  >
+                    <img
+                      src={lightUI}
+                      alt="lightDashboard"
+                      className={s.sidebarIcon}
+                    />
+                  </LinksGroup>
+                  <LinksGroup
+                    onActiveSidebarItemChange={
+                      this.handleActiveSidebarItemChange
+                    }
+                    activeItem={this.props.activeItem}
+                    header="Menu"
+                    isHeader
+                    link="/app/menu"
+                    index="menu"
+                    exact={false}
+                    childrenLinks={[
+                      {
+                        header: "Loại món",
+                        link: "/app/menu/food-types",
+                      },
+                      {
+                        header: "Món ăn",
+                        link: "/app/menu/foods",
+                      },
+                    ]}
+                  >
+                    <img
+                      src={packLight}
+                      alt="packLight"
+                      className={s.sidebarIcon}
+                    />
+                  </LinksGroup>
+                </ul>
+              </>
+            )}
+            {adminAndCashierLink && (
+              <>
+                <h5 className={s.navTitle}>THU NGÂN</h5>
+                <ul className={s.nav}>
+                  <LinksGroup
+                    onActiveSidebarItemChange={
+                      this.handleActiveSidebarItemChange
+                    }
+                    activeItem={this.props.activeItem}
+                    header="Màn hình thu ngân"
+                    isHeader
+                    link="/app/cashier-view"
+                    index="main"
+                  >
+                    <img
+                      src={eccomerceLight}
+                      alt="eccomerceLight"
+                      className={s.sidebarIcon}
+                    />
+                  </LinksGroup>
+                  <LinksGroup
+                    onActiveSidebarItemChange={
+                      this.handleActiveSidebarItemChange
+                    }
+                    activeItem={this.props.activeItem}
+                    header="Hóa đơn"
+                    isHeader
+                    link="/app/bills"
+                    index="bills"
+                    exact={false}
+                    childrenLinks={[
+                      {
+                        header: "Lịch sử hóa đơn",
+                        link: "/app/bills/history",
+                      },
+                      {
+                        header: "Tìm kiếm",
+                        link: "/app/bills/search",
+                      },
+                    ]}
+                  >
+                    <img
+                      src={documentationLight}
+                      alt="documentationLight"
+                      className={s.sidebarIcon}
+                    />
+                  </LinksGroup>
+                </ul>
+              </>
+            )}
+            {adminAndChefLink && (
+              <>
+                <h5 className={s.navTitle}>ĐẦU BẾP</h5>
+                <ul className={s.nav}>
+                  <LinksGroup
+                    onActiveSidebarItemChange={
+                      this.handleActiveSidebarItemChange
+                    }
+                    activeItem={this.props.activeItem}
+                    header="Màn hình bếp"
+                    isHeader
+                    link="/app/chef-view"
+                    index="main"
+                  >
+                    <img
+                      src={gridLight}
+                      alt="gridLight"
+                      className={s.sidebarIcon}
+                    />
+                  </LinksGroup>
+                </ul>
+              </>
+            )}
             <h5 className={s.navTitle}>TEMPLATE</h5>
             <ul className={s.nav}>
               <LinksGroup
@@ -339,6 +368,7 @@ function mapStateToProps(store) {
     alertsList: store.alerts.alertsList,
     activeItem: store.navigation.activeItem,
     navbarType: store.navigation.navbarType,
+    role: store.auth.role,
   };
 }
 

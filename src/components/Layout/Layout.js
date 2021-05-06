@@ -27,6 +27,19 @@ import CashierView from "../../pages/cashierView/CashierView";
 import ChefView from "../../pages/chefView/ChefView";
 import BillHistory from "../../pages/billHistory/BillHistory";
 import BillSearch from "../../pages/billSearch/BillSearch";
+import RoleRestrictRoute from "../PrivateRoute/RoleRestrictRoute/RoleRestrictRoute";
+
+const AdminOnlyRoute = ({ ...props }) => (
+  <RoleRestrictRoute permittedRoles={["ADMIN"]} {...props} />
+);
+
+const CashierRoute = ({ ...props }) => (
+  <RoleRestrictRoute permittedRoles={["ADMIN", "CASHIER"]} {...props} />
+);
+
+const ChefRoute = ({ ...props }) => (
+  <RoleRestrictRoute permittedRoles={["ADMIN", "CHEF"]} {...props} />
+);
 
 class Layout extends React.Component {
   static propTypes = {
@@ -90,8 +103,10 @@ class Layout extends React.Component {
 
   render() {
     const pathname = this.props.location.pathname;
-    if (pathname === "/app/cashier-view") return <CashierView />;
-    if (pathname === "/app/chef-view") return <ChefView />;
+    if (pathname === "/app/cashier-view")
+      return <CashierRoute path="/app/cashier-view" component={CashierView} />;
+    if (pathname === "/app/chef-view")
+      return <ChefRoute path="/app/chef-view" component={ChefView} />;
     return (
       <div
         className={[
@@ -110,21 +125,37 @@ class Layout extends React.Component {
             <main className={s.content}>
               <Switch>
                 <Route path="/app/dashboard" component={Dashboard} />
+                <Route path={"/app/schedule"} component={Schedule} />
                 <Route path="/app/salaries" component={Salary} />
-                <Route path={"/app/hr/staffs"} component={StaffManager} />
-                <Route path={"/app/hr/roles"} component={RoleManager} />
-                <Route
+
+                <AdminOnlyRoute
+                  path={"/app/hr/staffs"}
+                  component={StaffManager}
+                />
+                <AdminOnlyRoute
+                  path={"/app/hr/roles"}
+                  component={RoleManager}
+                />
+                <AdminOnlyRoute
                   path={"/app/hr/violations"}
                   component={ViolationManager}
                 />
-                <Route
+                <AdminOnlyRoute
                   path={"/app/menu/food-types"}
                   component={FoodTypeManager}
                 />
-                <Route path={"/app/menu/foods"} component={FoodManager} />
-                <Route path={"/app/bills/history"} component={BillHistory} />
-                <Route path={"/app/bills/search"} component={BillSearch} />
-                <Route path={"/app/schedule"} component={Schedule} />
+                <AdminOnlyRoute
+                  path={"/app/menu/foods"}
+                  component={FoodManager}
+                />
+                <CashierRoute
+                  path={"/app/bills/history"}
+                  component={BillHistory}
+                />
+                <CashierRoute
+                  path={"/app/bills/search"}
+                  component={BillSearch}
+                />
                 <Route path={"/app/ui/charts"} component={Charts} />
               </Switch>
             </main>

@@ -6,8 +6,9 @@ import ShiftsModal from "../../components/Schedule/ShiftsModal/ShiftsModal";
 
 import shiftApi from "../../api/shiftApi";
 import { toastError } from "../../utils/toastUtils";
+import { connect } from "react-redux";
 
-function Schedule() {
+function Schedule({ isAdmin }) {
   const [shifts, setShifts] = useState([]);
   const [showShifts, setShowShifts] = useState(false);
 
@@ -59,11 +60,13 @@ function Schedule() {
         <Col>
           <h2>Lịch làm việc</h2>
         </Col>
-        <Col color="warning" className="d-flex justify-content-end">
-          <Button color="warning" onClick={toggleShowShifts}>
-            Quản lý ca làm
-          </Button>
-        </Col>
+        {isAdmin && (
+          <Col color="warning" className="d-flex justify-content-end">
+            <Button color="warning" onClick={toggleShowShifts}>
+              Quản lý ca làm
+            </Button>
+          </Col>
+        )}
       </Row>
       <br />
       <Row>
@@ -71,17 +74,25 @@ function Schedule() {
           <CustomCalendar shifts={shifts} />
         </Col>
       </Row>
-      <ShiftsModal
-        shifts={shifts}
-        handleAddNewShift={handleAddNewShift}
-        handleUpdateShift={handleUpdateShift}
-        handleRestoreShift={handleRestoreShift}
-        handleDeleteShift={handleDeleteShift}
-        show={showShifts}
-        toggle={toggleShowShifts}
-      />
+      {isAdmin && (
+        <ShiftsModal
+          shifts={shifts}
+          handleAddNewShift={handleAddNewShift}
+          handleUpdateShift={handleUpdateShift}
+          handleRestoreShift={handleRestoreShift}
+          handleDeleteShift={handleDeleteShift}
+          show={showShifts}
+          toggle={toggleShowShifts}
+        />
+      )}
     </>
   );
 }
 
-export default Schedule;
+function mapStateToProps(store) {
+  return {
+    isAdmin: store.auth.role === "ADMIN",
+  };
+}
+
+export default connect(mapStateToProps)(Schedule);

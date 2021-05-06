@@ -11,8 +11,9 @@ import { toastError } from "../../../utils/toastUtils";
 import { isBeforeThisMonth } from "../../../utils/dateUtils";
 
 import "./CustomCalendar.scss";
+import { connect } from "react-redux";
 
-const CustomCalendar = ({ shifts }) => {
+const CustomCalendar = ({ shifts, isNotAdmin }) => {
   const [editDate, setEditDate] = useState("");
   const [eventMap, setEventMap] = useState({});
   const [disabledEdit, setDisabledEdit] = useState(false);
@@ -23,7 +24,7 @@ const CustomCalendar = ({ shifts }) => {
   }, [shifts]);
 
   const onMonthChange = async (e) => {
-    setDisabledEdit(isBeforeThisMonth(e.start));
+    setDisabledEdit(isNotAdmin || isBeforeThisMonth(e.start));
     try {
       const res = await scheduleApi.getAllByMonth(e.start);
       setEventMap(res.data);
@@ -170,4 +171,10 @@ function updateEventMapWithNewShiftsData(eventMap, shifts) {
   return updatedEventMap;
 }
 
-export default CustomCalendar;
+function mapStateToProps(store) {
+  return {
+    isNotAdmin: store.auth.role !== "ADMIN",
+  };
+}
+
+export default connect(mapStateToProps)(CustomCalendar);
