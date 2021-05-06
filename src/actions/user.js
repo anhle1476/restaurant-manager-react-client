@@ -7,10 +7,7 @@ export const LOGIN_RETRY = "LOGIN_RETRY";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 
 export const logoutRequest = () => (dispatch) => {
-  logout();
-  dispatch({
-    type: LOGOUT_SUCCESS,
-  });
+  dispatch(logoutUser());
 };
 
 export const loginSuccess = (token) => (dispatch) => {
@@ -27,5 +24,8 @@ export const loginRefresh = () => (dispatch) => {
 };
 
 export const logoutUser = () => {
-  console.log("logout");
+  logout();
+  return {
+    type: LOGOUT_SUCCESS,
+  };
 };

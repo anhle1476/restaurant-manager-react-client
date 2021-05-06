@@ -21,8 +21,8 @@ class MessagesDemo extends React.Component {
   render() {
     return (
       <ListGroup className={[s.listGroupAccount, "thin-scroll"].join(" ")}>
-        <p className={`${s.listGroupTitleAccount}`}>Sara Smith</p>
-        <p className={`${s.listGroupSubtitleAccount}`}>Sara_smith@gmail.com</p>
+        <p className={`${s.listGroupTitleAccount}`}>{this.props.username}</p>
+        <p className={`${s.listGroupSubtitleAccount}`}>{this.props.role}</p>
         <ListGroupItem className={`${s.listGroupItemAccount} mt-2`}>
           <img src={accountIcon} alt="settings" className={"mr-2"} /> Account
         </ListGroupItem>
@@ -41,6 +41,8 @@ function mapStateToProps(store) {
   return {
     sidebarOpened: store.navigation.sidebarOpened,
     sidebarStatic: store.navigation.sidebarStatic,
+    username: store.auth.username,
+    role: store.auth.role,
   };
 }
 

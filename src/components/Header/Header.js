@@ -29,6 +29,7 @@ class Header extends React.Component {
   static propTypes = {
     sidebarOpened: PropTypes.bool.isRequired,
     sidebarStatic: PropTypes.bool.isRequired,
+    username: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
@@ -114,11 +115,7 @@ class Header extends React.Component {
   };
   render() {
     const { accountOpen } = this.state;
-    const { openUsersList } = this.props;
-
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-    const firstUserLetter = (user.name || user.email || "P")[0].toUpperCase();
+    const { openUsersList, username } = this.props;
 
     return (
       <Navbar
@@ -141,10 +138,8 @@ class Header extends React.Component {
               className={"text-white"}
               style={{ marginLeft: 20 }}
             >
-              <span
-                className={`${s.avatar} rounded-circle thumb-sm float-left mr-2`}
-              >
-                {firstUserLetter}
+              <span className={`${s.avatar} rounded-circle float-left mr-2`}>
+                {username[0].toUpperCase()}
               </span>
             </DropdownToggle>
             <DropdownMenu right>
@@ -161,6 +156,7 @@ function mapStateToProps(store) {
   return {
     sidebarOpened: store.navigation.sidebarOpened,
     sidebarStatic: store.navigation.sidebarStatic,
+    username: store.auth.username,
   };
 }
 
