@@ -1,6 +1,6 @@
 import { BASE_URL } from "./constant";
 import axios from "axios";
-import { formatDateYearFirst } from "../utils/dateUtils";
+import { formatDateYearFirst, getCurrentMonth } from "../utils/dateUtils";
 
 const BILLS_URL = `${BASE_URL}/bills`;
 
@@ -56,6 +56,10 @@ const processFood = (data) => {
   return axios.post(`${BILLS_URL}/${data.billId}/process-food`, data);
 };
 
+const monthReport = () => {
+  return axios.get(`${BILLS_URL}/report?month=${getCurrentMonth()}`);
+};
+
 export default {
   getCurrentBills,
   getCurrentBillsByTable,
@@ -68,4 +72,5 @@ export default {
   changeTable,
   saveOrUpdate,
   processFood,
+  monthReport,
 };

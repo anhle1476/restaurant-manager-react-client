@@ -11,6 +11,8 @@ export const isBeforeThisMonth = (date) => {
 export const formatMonthStr = (str) => {
   return moment(new Date(str)).format("MM/YYYY");
 };
+export const formatDateAndMonth = (str) =>
+  moment(new Date(str)).format("DD/MM");
 
 export const formatDateYearFirst = (str) =>
   moment(new Date(str)).format("YYYY-MM-DD");
@@ -39,4 +41,8 @@ export const isPastDay = (date) => {
 
 export const fromToday = (date) => {
   return moment().startOf("day").diff(moment(date).startOf("day"), "days");
+};
+
+export const getCurrentMonth = () => {
+  return moment().format("YYYY-MM");
 };

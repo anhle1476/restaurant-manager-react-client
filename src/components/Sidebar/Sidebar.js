@@ -268,29 +268,6 @@ class Sidebar extends React.Component {
               </>
             )}
             <ul className={s.nav}>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="UI Elements"
-                isHeader
-                link="/app/ui"
-                index="ui"
-                exact={false}
-                childrenLinks={[
-                  {
-                    header: "Charts",
-                    link: "/app/ui/charts",
-                  },
-                ]}
-              >
-                <img
-                  src={lightUI}
-                  alt="lightDashboard"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-            </ul>
-            <ul className={s.nav}>
               <hr />
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
