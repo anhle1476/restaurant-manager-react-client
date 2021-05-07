@@ -14,6 +14,7 @@ const getAll = () => {
 const getAllDeleted = () => {
   return axios.get(`${STAFFS_URL}?deleted=true`);
 };
+
 const getById = (id) => {
   return axios.get(`${STAFFS_URL}/${id}`);
 };

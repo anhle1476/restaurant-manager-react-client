@@ -28,6 +28,7 @@ import ChefView from "../../pages/chefView/ChefView";
 import BillHistory from "../../pages/billHistory/BillHistory";
 import BillSearch from "../../pages/billSearch/BillSearch";
 import RoleRestrictRoute from "../PrivateRoute/RoleRestrictRoute/RoleRestrictRoute";
+import AccountManager from "../../pages/accountManager/AccountManager";
 
 const AdminOnlyRoute = ({ ...props }) => (
   <RoleRestrictRoute permittedRoles={["ADMIN"]} {...props} />
@@ -125,6 +126,7 @@ class Layout extends React.Component {
             <main className={s.content}>
               <Switch>
                 <Route path="/app/dashboard" component={Dashboard} />
+                <Route path="/app/account" component={AccountManager} />
                 <Route path={"/app/schedule"} component={Schedule} />
                 <Route path="/app/salaries" component={Salary} />
 

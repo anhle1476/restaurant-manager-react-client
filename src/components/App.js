@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Switch, Route, Redirect } from "react-router";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 /* eslint-disable */
@@ -42,7 +42,7 @@ class App extends React.PureComponent {
           hideProgressBar
           closeButton={<CloseButton />}
         />
-        <BrowserRouter>
+        <HashRouter>
           <Switch>
             <Route
               path="/"
@@ -55,11 +55,11 @@ class App extends React.PureComponent {
               render={() => <Redirect to="/app/dashboard" />}
             />
             <PrivateRoute path="/app" component={LayoutComponent} />
-            <Route path="/login" exact component={Login} />
+            <Route path="/sign-in" exact component={Login} />
             <Route path="/error" exact component={ErrorPage} />
             <Route component={ErrorPage} />
           </Switch>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     );
   }

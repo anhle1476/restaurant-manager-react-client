@@ -12,7 +12,7 @@ const PrivateRoute = ({
 }) => {
   if (!isAuthenticated) {
     logoutRequest();
-    return <Redirect to="/login" />;
+    return <Redirect to="/sign-in" />;
   } else {
     return (
       // eslint-disable-line

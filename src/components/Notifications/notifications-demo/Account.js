@@ -23,14 +23,17 @@ class MessagesDemo extends React.Component {
       <ListGroup className={[s.listGroupAccount, "thin-scroll"].join(" ")}>
         <p className={`${s.listGroupTitleAccount}`}>{this.props.username}</p>
         <p className={`${s.listGroupSubtitleAccount}`}>{this.props.role}</p>
-        <ListGroupItem className={`${s.listGroupItemAccount} mt-2`}>
-          <img src={accountIcon} alt="settings" className={"mr-2"} /> Account
+        <ListGroupItem
+          onClick={() => this.props.history.push("/app/account")}
+          className={`${s.listGroupItemAccount} mt-2`}
+        >
+          <img src={accountIcon} alt="settings" className={"mr-2"} /> Tài khoản
         </ListGroupItem>
         <ListGroupItem
           className={`${s.listGroupItemAccount} mt-2 mb-3`}
-          onClick={() => this.doLogout()}
+          onClick={this.doLogout}
         >
-          <img src={logoutIcon} alt="settings" className={"mr-2"} /> Log out
+          <img src={logoutIcon} alt="settings" className={"mr-2"} /> Đăng xuất
         </ListGroupItem>
       </ListGroup>
     );

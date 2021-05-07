@@ -11,7 +11,6 @@ import { logoutUser } from "../../actions/user";
 import lightDashboardIcon from "../../images/light-dashboard.svg";
 import lightTables from "../../images/tables.svg";
 import lightUI from "../../images/ui-elements.svg";
-import lightTypography from "../../images/Typography.svg";
 import eccomerceLight from "../../images/icons/E-commerce_outlined.svg";
 import documentationLight from "../../images/icons/Documentation_outlined.svg";
 import formsLight from "../../images/icons/Forms_outlined.svg";
@@ -268,36 +267,7 @@ class Sidebar extends React.Component {
                 </ul>
               </>
             )}
-            <h5 className={s.navTitle}>TEMPLATE</h5>
             <ul className={s.nav}>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Typography"
-                isHeader
-                link="/app/typography"
-                index="main"
-              >
-                <img
-                  src={lightTypography}
-                  alt="lightDashboard"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
-              <LinksGroup
-                onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                activeItem={this.props.activeItem}
-                header="Tables"
-                isHeader
-                link="/app/tables"
-                index="main"
-              >
-                <img
-                  src={lightTables}
-                  alt="lightDashboard"
-                  className={s.sidebarIcon}
-                />
-              </LinksGroup>
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
                 activeItem={this.props.activeItem}
@@ -308,16 +278,8 @@ class Sidebar extends React.Component {
                 exact={false}
                 childrenLinks={[
                   {
-                    header: "Notifications",
-                    link: "/app/ui/notifications",
-                  },
-                  {
                     header: "Charts",
                     link: "/app/ui/charts",
-                  },
-                  {
-                    header: "Icons",
-                    link: "/app/ui/icons",
                   },
                 ]}
               >
@@ -328,12 +290,15 @@ class Sidebar extends React.Component {
                 />
               </LinksGroup>
             </ul>
-            <ul className={s.downNav}>
+            <ul className={s.nav}>
               <hr />
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                header="Account"
+                activeItem={this.props.activeItem}
+                header="Tài khoản"
                 isHeader
+                link="/app/account"
+                index="main"
               >
                 <img
                   src={accountIcon}
@@ -343,7 +308,7 @@ class Sidebar extends React.Component {
               </LinksGroup>
               <LinksGroup
                 onActiveSidebarItemChange={this.handleActiveSidebarItemChange}
-                header="Logout"
+                header="Đăng xuất"
                 isHeader
                 onClick={() => this.doLogout()}
               >

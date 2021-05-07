@@ -1,3 +1,3 @@
-export const DOMAIN = "http://localhost:8080";
+// export const DOMAIN = "https://superpig-restaurant.herokuapp.com";
 const VERSION = "v1";
-export const BASE_URL = `${DOMAIN}/api/${VERSION}`;
+export const BASE_URL = `/api/${VERSION}`;

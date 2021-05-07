@@ -33,8 +33,9 @@ const tryRefreshToken = async () => {
   } catch (ex) {
     console.log("Làm mới đăng nhập thất bại");
     const status = ex.response?.status;
+    const shouldRetry = status !== 400 && status !== 401;
     store.dispatch({
-      type: status !== 404 ? LOGIN_RETRY : LOGIN_FAILURE,
+      type: shouldRetry ? LOGIN_RETRY : LOGIN_FAILURE,
     });
   }
 };

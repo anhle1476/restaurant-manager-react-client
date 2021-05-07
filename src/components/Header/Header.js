@@ -124,11 +124,11 @@ class Header extends React.Component {
       >
         <NavItem className={`${s.toggleSidebarNav} d-md-none d-flex mr-2`}>
           <NavLink
-            className="ml-2 pr-4 pl-3"
+            className="ml-2 pr-4 pl-3 py-0"
             id="toggleSidebar"
             onClick={this.toggleSidebar}
           >
-            <i className={`la la-bars`} style={{ color: "#000" }} />
+            <i className={`fas fa-bars`} style={{ color: "#000" }} />
           </NavLink>
         </NavItem>
         <Nav className="ml-auto">
